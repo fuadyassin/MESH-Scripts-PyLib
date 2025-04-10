@@ -1,6 +1,6 @@
 """
 Streamflow File Preparation
-===================================
+===============================================
 gen_streamflow_file.py contains a class GenStreamflowFile that handles fetching and combining streamflow data from USGS and Environment Canada and generating output in the OBSTXT and ENSIM formats.
 
 Parameters:
@@ -11,7 +11,7 @@ Parameters:
 `write_flow_data_to_file_ensim`: Writes the data in ENSIM format.
 
 Example Usage (Please check MESH_streamflowFile_example.ipynb for step by step example)
-------------
+-----------------------------------------------------------------------------------------
 >>> from MESHpyPreProcessing.gen_streamflow_file import GenStreamflowFile
 >>> #Initialize the class
 >>> gen_flow = GenStreamflowFile()

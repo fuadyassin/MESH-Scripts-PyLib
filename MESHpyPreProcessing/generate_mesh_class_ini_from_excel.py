@@ -29,7 +29,7 @@ def generate_mesh_class_ini_from_excel(excel_file, output_file, selected_land_co
         5. Write formatted values into an `.ini` file with the required MESH structure.
     
     Output Format:
-    ------------
+    ---------------
     
     The generated `.ini` file follows MESH parameter conventions with:
         - Header defining basin information.

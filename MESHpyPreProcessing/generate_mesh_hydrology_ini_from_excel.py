@@ -76,7 +76,6 @@ def generate_mesh_hydrology_ini_from_excel(excel_file, sheet_name, output_file):
     >>> generate_mesh_hydrology_ini_from_excel(excel_file, sheet_name, output_file)
     
     - This will generate a properly formatted `MeshHydrology.ini` file in the specified path.
-    ---------------------------------------------------------------------------------
     """
 
     # Read the Excel file and specified sheet

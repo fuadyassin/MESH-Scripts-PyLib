@@ -1,6 +1,7 @@
 """
 NetCDF to CSV/Shapefile Converter
-================================
+==================================
+This script converts a NetCDF file containing hydrological data into either a CSV file or a Shapefile.
 
 This script contains a function `convert_netcdf` that converts a NetCDF file into either a CSV file or a Shapefile.
 
