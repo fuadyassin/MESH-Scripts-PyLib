@@ -10,8 +10,8 @@ build:
     python: "3.11"
 
 sphinx:
-  configuration: docs/source/conf.py  # ✅ Correct location
+  configuration: docs/source/conf.py  # 
 
 python:
   install:
-    - requirements: docs/requirements.txt  # ✅ Also correct
+    - requirements: docs/requirements.txt  # 
