@@ -1,0 +1,17 @@
+version: 2
+
+formats:
+  - epub
+  - pdf
+
+build:
+  os: "ubuntu-22.04"
+  tools:
+    python: "3.11"
+
+sphinx:
+  configuration: docs/source/conf.py  # ✅ Correct location
+
+python:
+  install:
+    - requirements: docs/requirements.txt  # ✅ Also correct
