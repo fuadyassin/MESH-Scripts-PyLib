@@ -1,0 +1,193 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>generate_mesh_class_ini_from_excel &mdash; MESH-Scripts-PyLib 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="generate_mesh_hydrology_ini_from_excel" href="generate_mesh_hydrology_ini_from_excel.html" />
+    <link rel="prev" title="GSDE soil" href="gsde_soil.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MESH-Scripts-PyLib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Aggregation_vector.html">Aggregate vector subbasins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NetCDFWriter.html">Netcdf writer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convert_ddbnetcdf.html">convert_ddbnetcdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gdf_edit.html">gdf_edit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gen_streamflow_file.html">gen_streamflow_file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gsde_soil.html">GSDE soil</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">generate_mesh_class_ini_from_excel</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#MESHpyPreProcessing.generate_mesh_class_ini_from_excel.generate_mesh_class_ini_from_excel"><code class="docutils literal notranslate"><span class="pre">generate_mesh_class_ini_from_excel()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plt_var_from_vector_ddb_netcdf.html">plt_var_from_vector_ddb_netcdf</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MESH_StreamflowFilePrep.html">MESH Streamflow File Preparation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MESH-Scripts-PyLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">generate_mesh_class_ini_from_excel</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/fuadyassin/MESH-Scripts-PyLib/blob/main/docs/source/generate_mesh_class_ini_from_excel.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-MESHpyPreProcessing.generate_mesh_class_ini_from_excel">
+<span id="generate-mesh-class-ini-from-excel"></span><h1>generate_mesh_class_ini_from_excel<a class="headerlink" href="#module-MESHpyPreProcessing.generate_mesh_class_ini_from_excel" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="MESHpyPreProcessing.generate_mesh_class_ini_from_excel.generate_mesh_class_ini_from_excel">
+<span class="sig-prename descclassname"><span class="pre">MESHpyPreProcessing.generate_mesh_class_ini_from_excel.</span></span><span class="sig-name descname"><span class="pre">generate_mesh_class_ini_from_excel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">excel_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_land_covers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/generate_mesh_class_ini_from_excel.html#generate_mesh_class_ini_from_excel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.generate_mesh_class_ini_from_excel.generate_mesh_class_ini_from_excel" title="Link to this definition"></a></dt>
+<dd><section id="parameters">
+<h2>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>excel_file<span class="classifier">str</span></dt><dd><p>Path to the Excel file containing parameter values.</p>
+</dd>
+<dt>output_file<span class="classifier">str</span></dt><dd><p>Path to the output <cite>.ini</cite> file where processed values will be written.</p>
+</dd>
+<dt>num_cels<span class="classifier">int</span></dt><dd><p>Number of grid cells in the model domain.</p>
+</dd>
+<dt>lat<span class="classifier">float</span></dt><dd><p>Latitude of the location.</p>
+</dd>
+<dt>lon<span class="classifier">float</span></dt><dd><p>Longitude of the location.</p>
+</dd>
+</dl>
+</section>
+<section id="overview">
+<h2>Overview:<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This function extracts land cover parameter values from an Excel file and writes them into a MESH-compatible <cite>.ini</cite> file.
+Only active land covers are included, as indicated by the ‘status’ row in the Excel sheet.</p>
+<dl class="simple">
+<dt>Processing Steps:</dt><dd><ol class="arabic simple">
+<li><p>Load the Excel file and normalize column names.</p></li>
+<li><p>Identify active land covers (status &gt; 0).</p></li>
+<li><p>Verify required rows such as ‘colum’.</p></li>
+<li><p>Extract vegetation and land cover parameters.</p></li>
+<li><p>Write formatted values into an <cite>.ini</cite> file with the required MESH structure.</p></li>
+</ol>
+</dd>
+</dl>
+</section>
+<section id="output-format">
+<h2>Output Format:<a class="headerlink" href="#output-format" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>The generated <cite>.ini</cite> file follows MESH parameter conventions with:</dt><dd><ul class="simple">
+<li><p>Header defining basin information.</p></li>
+<li><p>Land cover-specific vegetation and hydrological parameters.</p></li>
+<li><p>Footer containing model time initialization values.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="file-structure">
+<h2>File Structure:<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>The output file consists of:</dt><dd><ol class="arabic simple">
+<li><p><strong>Header Information</strong>: Includes metadata such as location, author, and details.</p></li>
+<li><p><strong>Land Cover Blocks</strong>: Each selected land cover is written separately, including:
+- Vegetation parameters (written in pairs)
+- One-to-One parameter assignments (written in pairs)
+- Multi-value parameter assignments (written in structured format)</p></li>
+<li><p><strong>Final Footer</strong>: Contains three mandatory lines required for MESH processing.</p></li>
+</ol>
+</dd>
+</dl>
+</section>
+<section id="example-usage">
+<h2>Example Usage:<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">MESH</span><span class="o">-</span><span class="n">Model</span><span class="o">/</span><span class="n">MESH</span><span class="o">-</span><span class="n">Scripts</span><span class="o">-</span><span class="n">PyLib</span><span class="o">.</span><span class="n">git</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_mesh_ini_from_excel</span><span class="p">(</span><span class="s2">&quot;meshparameters.xlsx&quot;</span><span class="p">,</span> <span class="s2">&quot;MESH_output.ini&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Forest&quot;</span><span class="p">,</span> <span class="s2">&quot;crop&quot;</span><span class="p">],</span><span class="n">num_cels</span><span class="o">=</span><span class="mi">7408</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="mf">53.18</span><span class="p">,</span> <span class="n">lon</span><span class="o">=-</span><span class="mf">99.25</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gsde_soil.html" class="btn btn-neutral float-left" title="GSDE soil" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generate_mesh_hydrology_ini_from_excel.html" class="btn btn-neutral float-right" title="generate_mesh_hydrology_ini_from_excel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Fuad Yassin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MESHpyPreProcessing.Aggregation_vector &mdash; MESH-Scripts-PyLib 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=29a6c3e3"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            MESH-Scripts-PyLib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Aggregation_vector.html">Aggregate vector subbasins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../NetCDFWriter.html">Netcdf writer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../convert_ddbnetcdf.html">convert_ddbnetcdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gdf_edit.html">gdf_edit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gen_streamflow_file.html">gen_streamflow_file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gsde_soil.html">GSDE soil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plt_var_from_vector_ddb_netcdf.html">plt_var_from_vector_ddb_netcdf</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../MESH_StreamflowFilePrep.html">MESH Streamflow File Preparation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MESH-Scripts-PyLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">MESHpyPreProcessing.Aggregation_vector</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for MESHpyPreProcessing.Aggregation_vector</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Basin and River Network Aggregation</span>
+<span class="sd">===================================</span>
+
+<span class="sd">The `merit_basin_aggregation` function aggregates basin and river network shapefiles.</span>
+<span class="sd">This function uses parameters like minimum sub-area, slope, and river length to iteratively</span>
+<span class="sd">aggregate small sub-basins.</span>
+
+<span class="sd">Parameters:</span>
+<span class="sd">------------</span>
+<span class="sd">- `input_basin`: Basin GeoDataFrame with COMID identifiers.</span>
+<span class="sd">- `input_river`: River network GeoDataFrame with slope and length attributes.</span>
+<span class="sd">- `min_subarea`: Minimum area for sub-basins.</span>
+<span class="sd">- `min_slope`: Minimum allowable river slope.</span>
+<span class="sd">- `min_length`: Minimum river length.</span>
+
+<span class="sd">This function iterates through sub-basins, merging those below the minimum sub-area</span>
+<span class="sd">threshold until no further aggregation is possible. It also computes and adjusts slopes,</span>
+<span class="sd">river lengths, and weighted slopes for simplified river networks.</span>
+
+<span class="sd">Example usage:</span>
+<span class="sd">--------------</span>
+
+<span class="sd">&gt;&gt;&gt; from MESHpyPreProcessing.Aggregation_vector import merit_basin_aggregation</span>
+<span class="sd">&gt;&gt;&gt; import geopandas as gpd</span>
+<span class="sd">&gt;&gt;&gt; import os</span>
+
+<span class="sd">&gt;&gt;&gt; # Define paths and parameters</span>
+<span class="sd">&gt;&gt;&gt; input_basin_path = &quot;/home/fuaday/github-repos/Souris_Assiniboine_MAF/1-geofabric/SrsAboine-geofabric/sras_subbasins_MAF_noAgg.shp&quot;</span>
+<span class="sd">&gt;&gt;&gt; input_river_path = &quot;/home/fuaday/github-repos/Souris_Assiniboine_MAF/1-geofabric/SrsAboine-geofabric/sras_rivers_MAF_noAgg.shp&quot;</span>
+<span class="sd">&gt;&gt;&gt; min_subarea = 50</span>
+<span class="sd">&gt;&gt;&gt; min_slope = 0.0000001</span>
+<span class="sd">&gt;&gt;&gt; min_length = 1.0</span>
+<span class="sd">&gt;&gt;&gt; output_basin_path = &quot;/home/fuaday/github-repos/Souris_Assiniboine_MAF/1-geofabric/sras_subbasins_MAF_Agg.shp&quot;</span>
+<span class="sd">&gt;&gt;&gt; output_river_path = &quot;/home/fuaday/github-repos/Souris_Assiniboine_MAF/1-geofabric/sras_rivers_MAF_Agg.shp&quot;</span>
+
+<span class="sd">&gt;&gt;&gt; # Load input data</span>
+<span class="sd">&gt;&gt;&gt; input_basin = gpd.read_file(input_basin_path)</span>
+<span class="sd">&gt;&gt;&gt; input_river = gpd.read_file(input_river_path)</span>
+
+<span class="sd">&gt;&gt;&gt; # Perform aggregation</span>
+<span class="sd">&gt;&gt;&gt; agg_basin, agg_river = merit_basin_aggregation(input_basin, input_river, min_subarea, min_slope, min_length)</span>
+
+<span class="sd">&gt;&gt;&gt; # Save aggregated data</span>
+<span class="sd">&gt;&gt;&gt; agg_basin.to_file(output_basin_path)</span>
+<span class="sd">&gt;&gt;&gt; agg_river.to_file(output_river_path)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+ 
+<div class="viewcode-block" id="merit_basin_aggregation">
+<a class="viewcode-back" href="../../Aggregation_vector.html#MESHpyPreProcessing.Aggregation_vector.merit_basin_aggregation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">merit_basin_aggregation</span><span class="p">(</span><span class="n">input_basin</span><span class="p">,</span> <span class="n">input_river</span><span class="p">,</span> <span class="n">min_subarea</span><span class="p">,</span> <span class="n">min_slope</span><span class="p">,</span> <span class="n">min_length</span><span class="p">):</span>
+<span class="c1">#    input_basin = input_basin.make_valid()</span>
+<span class="c1">#    input_river = input_river.make_valid()</span>
+    <span class="n">input_river</span><span class="p">[</span><span class="s1">&#39;slope&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_river</span><span class="p">[</span><span class="s1">&#39;slope&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="n">min_slope</span><span class="p">)</span>
+    <span class="n">input_river</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">input_river</span><span class="p">[</span><span class="s1">&#39;slope&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;slope&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">min_slope</span>
+    <span class="n">input_river</span><span class="p">[</span><span class="s1">&#39;lengthkm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_river</span><span class="p">[</span><span class="s1">&#39;lengthkm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="n">min_length</span><span class="p">)</span>
+    <span class="n">input_basin</span> <span class="o">=</span> <span class="n">input_basin</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">input_river</span><span class="p">[[</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="s1">&#39;NextDownID&#39;</span><span class="p">,</span> <span class="s1">&#39;uparea&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    <span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;COMID&#39;</span><span class="p">]</span>
+    <span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;aggdown&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;NextDownID&#39;</span><span class="p">]</span>
+    <span class="n">agg_basin</span> <span class="o">=</span> <span class="n">input_basin</span><span class="p">[[</span><span class="s1">&#39;agg&#39;</span><span class="p">,</span> <span class="s1">&#39;aggdown&#39;</span><span class="p">,</span> <span class="s1">&#39;unitarea&#39;</span><span class="p">,</span> <span class="s1">&#39;uparea&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">agg_basin</span> <span class="o">=</span> <span class="n">agg_basin</span><span class="p">[</span><span class="o">~</span><span class="p">((</span><span class="n">agg_basin</span><span class="p">[</span><span class="s1">&#39;aggdown&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">agg_basin</span><span class="p">[</span><span class="s1">&#39;uparea&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">min_subarea</span><span class="p">))]</span>
+    <span class="n">NoSubbasin</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_basin</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="c1"># Aggregated the headwaters sub-basins</span>
+        <span class="n">small_subbasin</span> <span class="o">=</span> <span class="n">agg_basin</span><span class="p">[</span><span class="o">~</span><span class="n">agg_basin</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">agg_basin</span><span class="p">[</span><span class="s1">&#39;aggdown&#39;</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">agg_basin</span><span class="p">[</span><span class="s1">&#39;unitarea&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">min_subarea</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;uparea&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">small_subbasin</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="n">small_subbasin</span> <span class="o">=</span> <span class="n">small_subbasin</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;agg&#39;</span><span class="p">:</span> <span class="s1">&#39;aggold&#39;</span><span class="p">,</span> <span class="s1">&#39;aggdown&#39;</span><span class="p">:</span> <span class="s1">&#39;agg&#39;</span><span class="p">})</span>
+            <span class="n">xx</span> <span class="o">=</span> <span class="n">small_subbasin</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">agg_basin</span><span class="p">[[</span><span class="s1">&#39;agg&#39;</span><span class="p">,</span> <span class="s1">&#39;aggdown&#39;</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;agg&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xx</span><span class="p">)):</span>
+                <span class="n">input_basin</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">xx</span><span class="p">[</span><span class="s1">&#39;aggold&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;aggdown&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xx</span><span class="p">[</span><span class="s1">&#39;aggdown&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">input_basin</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">xx</span><span class="p">[</span><span class="s1">&#39;aggold&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;agg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xx</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">agg_basin</span> <span class="o">=</span> <span class="n">input_basin</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;geometry&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;agg&#39;</span><span class="p">,</span> <span class="s1">&#39;aggdown&#39;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;unitarea&#39;</span><span class="p">:</span> <span class="s1">&#39;sum&#39;</span><span class="p">})</span>
+            <span class="n">agg_basin</span> <span class="o">=</span> <span class="n">agg_basin</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;agg&#39;</span><span class="p">:</span> <span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="s1">&#39;aggdown&#39;</span><span class="p">:</span> <span class="s1">&#39;NextDownID&#39;</span><span class="p">})</span>
+            <span class="n">agg_basin</span> <span class="o">=</span> <span class="n">agg_basin</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">input_basin</span><span class="p">[[</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="s1">&#39;uparea&#39;</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+            <span class="n">agg_basin</span> <span class="o">=</span> <span class="n">agg_basin</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;COMID&#39;</span><span class="p">:</span> <span class="s1">&#39;agg&#39;</span><span class="p">,</span> <span class="s1">&#39;NextDownID&#39;</span><span class="p">:</span> <span class="s1">&#39;aggdown&#39;</span><span class="p">})</span>
+            <span class="n">agg_basin</span> <span class="o">=</span> <span class="n">agg_basin</span><span class="p">[</span><span class="o">~</span><span class="p">((</span><span class="n">agg_basin</span><span class="p">[</span><span class="s1">&#39;aggdown&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">agg_basin</span><span class="p">[</span><span class="s1">&#39;uparea&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">min_subarea</span><span class="p">))]</span>
+        <span class="c1"># Aggregated the intermediate sub-basins </span>
+        <span class="n">small_subbasin</span> <span class="o">=</span> <span class="n">agg_basin</span><span class="p">[</span><span class="n">agg_basin</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">agg_basin</span><span class="p">[</span><span class="s1">&#39;aggdown&#39;</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">agg_basin</span><span class="p">[</span><span class="s1">&#39;unitarea&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">min_subarea</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;uparea&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">small_subbasin</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">small_subbasin</span><span class="p">)):</span>
+                <span class="n">xx</span> <span class="o">=</span> <span class="n">input_basin</span><span class="p">[</span><span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;COMID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">small_subbasin</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;unitarea&#39;</span><span class="p">][</span><span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">xx</span><span class="p">]]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">min_subarea</span><span class="p">:</span>
+                    <span class="n">xy</span> <span class="o">=</span> <span class="n">input_basin</span><span class="p">[</span><span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;NextDownID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;COMID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">xx</span><span class="p">]]</span><span class="o">.</span><span class="n">index</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">xy</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                        <span class="n">xz</span> <span class="o">=</span> <span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;uparea&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">xy</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()</span>                        
+                        <span class="n">zz</span> <span class="o">=</span> <span class="n">input_basin</span><span class="p">[</span><span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;aggdown&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">input_basin</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">xz</span><span class="p">,</span> <span class="s1">&#39;agg&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">index</span>        
+                        <span class="n">input_basin</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">xz</span><span class="p">],</span> <span class="s1">&#39;agg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">xx</span><span class="p">]</span>
+                        <span class="n">input_basin</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">xz</span><span class="p">],</span> <span class="s1">&#39;aggdown&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;aggdown&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">xx</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">zz</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                            <span class="n">input_basin</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">zz</span><span class="p">,</span> <span class="s1">&#39;aggdown&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_basin</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">xx</span><span class="p">]</span>
+ 
+            <span class="n">agg_basin</span> <span class="o">=</span> <span class="n">input_basin</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;geometry&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;agg&#39;</span><span class="p">,</span> <span class="s1">&#39;aggdown&#39;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;unitarea&#39;</span><span class="p">:</span> <span class="s1">&#39;sum&#39;</span><span class="p">})</span>
+            <span class="n">agg_basin</span> <span class="o">=</span> <span class="n">agg_basin</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;agg&#39;</span><span class="p">:</span> <span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="s1">&#39;aggdown&#39;</span><span class="p">:</span> <span class="s1">&#39;NextDownID&#39;</span><span class="p">})</span>
+            <span class="n">agg_basin</span> <span class="o">=</span> <span class="n">agg_basin</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">input_basin</span><span class="p">[[</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="s1">&#39;uparea&#39;</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+            <span class="n">agg_basin</span> <span class="o">=</span> <span class="n">agg_basin</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;COMID&#39;</span><span class="p">:</span> <span class="s1">&#39;agg&#39;</span><span class="p">,</span> <span class="s1">&#39;NextDownID&#39;</span><span class="p">:</span> <span class="s1">&#39;aggdown&#39;</span><span class="p">})</span>
+            <span class="n">agg_basin</span> <span class="o">=</span> <span class="n">agg_basin</span><span class="p">[</span><span class="o">~</span><span class="p">((</span><span class="n">agg_basin</span><span class="p">[</span><span class="s1">&#39;aggdown&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">agg_basin</span><span class="p">[</span><span class="s1">&#39;uparea&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">min_subarea</span><span class="p">))]</span>
+        <span class="c1"># Break if no small sub-basins are left        </span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">agg_basin</span><span class="p">[</span><span class="n">agg_basin</span><span class="p">[</span><span class="s1">&#39;unitarea&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">min_subarea</span><span class="p">])</span> <span class="o">==</span> <span class="n">NoSubbasin</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">NoSubbasin</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">agg_basin</span><span class="p">[</span><span class="n">agg_basin</span><span class="p">[</span><span class="s1">&#39;unitarea&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">min_subarea</span><span class="p">])</span>
+    <span class="c1"># Final aggregation the sub-basins</span>
+    <span class="n">agg_basin</span> <span class="o">=</span> <span class="n">input_basin</span><span class="o">.</span><span class="n">dissolve</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;agg&#39;</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;unitarea&#39;</span><span class="p">:</span> <span class="s1">&#39;sum&#39;</span><span class="p">},</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;agg&#39;</span><span class="p">:</span> <span class="s1">&#39;COMID&#39;</span><span class="p">})</span>
+    <span class="n">agg_basin</span> <span class="o">=</span> <span class="n">agg_basin</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">input_basin</span><span class="p">[[</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="s1">&#39;aggdown&#39;</span><span class="p">,</span> <span class="s1">&#39;uparea&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;aggdown&#39;</span><span class="p">:</span> <span class="s1">&#39;NextDownID&#39;</span><span class="p">})</span>
+    <span class="c1"># Check for invalid geometries</span>
+<span class="c1">#    invalid_geometries = agg_basin[~agg_basin.is_valid]</span>
+<span class="c1">#    if not invalid_geometries.empty:</span>
+<span class="c1">#        agg_basin = agg_basin.make_valid()</span>
+    <span class="c1"># Aggregating river network based on the aggregated sub-basins    </span>
+    <span class="n">agg_river</span> <span class="o">=</span> <span class="n">input_river</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">input_basin</span><span class="p">[[</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="s1">&#39;agg&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    <span class="n">agg_river</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">agg_river</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+        <span class="n">xx</span> <span class="o">=</span> <span class="n">agg_river</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">agg_river</span><span class="p">[</span><span class="s1">&#39;agg&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">yy</span> <span class="o">=</span> <span class="n">agg_river</span><span class="p">[</span><span class="s1">&#39;uparea&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">xx</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">()</span>
+            <span class="n">agg_river</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">yy</span><span class="p">,</span> <span class="s1">&#39;mask&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">xx</span> <span class="o">=</span> <span class="n">agg_river</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">agg_river</span><span class="p">[</span><span class="s1">&#39;NextDownID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">agg_river</span><span class="p">[</span><span class="s1">&#39;COMID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">yy</span><span class="p">]]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">break</span>
+    <span class="n">agg_river</span> <span class="o">=</span> <span class="n">agg_river</span><span class="p">[</span><span class="n">agg_river</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">agg_river</span><span class="p">[</span><span class="s1">&#39;slope&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">agg_river</span><span class="p">[</span><span class="s1">&#39;slope&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">agg_river</span><span class="p">[</span><span class="s1">&#39;lengthkm&#39;</span><span class="p">]</span>
+    <span class="c1"># Final aggregation the river network</span>
+    <span class="n">agg_river</span> <span class="o">=</span> <span class="n">agg_river</span><span class="o">.</span><span class="n">dissolve</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;agg&#39;</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;lengthkm&#39;</span><span class="p">:</span> <span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;slope&#39;</span><span class="p">:</span> <span class="s1">&#39;sum&#39;</span><span class="p">},</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;agg&#39;</span><span class="p">:</span> <span class="s1">&#39;COMID&#39;</span><span class="p">})</span>
+    <span class="c1"># Computes the weighted slope per length, checking for zero</span>
+    <span class="n">agg_river</span><span class="p">[</span><span class="s1">&#39;slope&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">agg_river</span><span class="p">[</span><span class="s1">&#39;slope&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">agg_river</span><span class="p">[</span><span class="s1">&#39;lengthkm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">agg_river</span> <span class="o">=</span> <span class="n">agg_river</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">agg_basin</span><span class="p">[[</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="s1">&#39;NextDownID&#39;</span><span class="p">,</span> <span class="s1">&#39;uparea&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    <span class="n">agg_river</span> <span class="o">=</span> <span class="n">agg_river</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">input_river</span><span class="p">[[</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="s1">&#39;order&#39;</span><span class="p">,</span> <span class="s1">&#39;hillslope&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    <span class="c1"># Check for invalid geometries</span>
+    <span class="n">invalid_geometries</span> <span class="o">=</span> <span class="n">agg_river</span><span class="p">[</span><span class="o">~</span><span class="n">agg_river</span><span class="o">.</span><span class="n">is_valid</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">invalid_geometries</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="n">agg_river</span> <span class="o">=</span> <span class="n">agg_river</span><span class="o">.</span><span class="n">make_valid</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">agg_basin</span><span class="p">,</span> <span class="n">agg_river</span></div>
+
+ 
+ 
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Fuad Yassin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

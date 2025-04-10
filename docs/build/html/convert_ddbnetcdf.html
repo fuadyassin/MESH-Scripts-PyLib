@@ -1,0 +1,180 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>convert_ddbnetcdf &mdash; MESH-Scripts-PyLib 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="gdf_edit" href="gdf_edit.html" />
+    <link rel="prev" title="Netcdf writer" href="NetCDFWriter.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MESH-Scripts-PyLib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Aggregation_vector.html">Aggregate vector subbasins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NetCDFWriter.html">Netcdf writer</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">convert_ddbnetcdf</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#netcdf-to-csv-shapefile-converter">NetCDF to CSV/Shapefile Converter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-usage">Example Usage:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">Functions:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#MESHpyPreProcessing.convert_ddbnetcdf.convert_netcdf"><code class="docutils literal notranslate"><span class="pre">convert_netcdf()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gdf_edit.html">gdf_edit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gen_streamflow_file.html">gen_streamflow_file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gsde_soil.html">GSDE soil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plt_var_from_vector_ddb_netcdf.html">plt_var_from_vector_ddb_netcdf</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MESH_StreamflowFilePrep.html">MESH Streamflow File Preparation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MESH-Scripts-PyLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">convert_ddbnetcdf</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/fuadyassin/MESH-Scripts-PyLib/blob/main/docs/source/convert_ddbnetcdf.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-MESHpyPreProcessing.convert_ddbnetcdf">
+<span id="convert-ddbnetcdf"></span><h1>convert_ddbnetcdf<a class="headerlink" href="#module-MESHpyPreProcessing.convert_ddbnetcdf" title="Link to this heading"></a></h1>
+<section id="netcdf-to-csv-shapefile-converter">
+<h2>NetCDF to CSV/Shapefile Converter<a class="headerlink" href="#netcdf-to-csv-shapefile-converter" title="Link to this heading"></a></h2>
+<p>This script converts a NetCDF file containing hydrological data into either a CSV file or a Shapefile.</p>
+<p>This script contains a function <cite>convert_netcdf</cite> that converts a NetCDF file into either a CSV file or a Shapefile.</p>
+<section id="example-usage">
+<h3>Example Usage:<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">convert_ddbnetcdf</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_netcdf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">convert_netcdf</span><span class="p">(</span><span class="n">netcdf_file</span><span class="o">=</span><span class="s1">&#39;input.nc&#39;</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s1">&#39;output.csv&#39;</span><span class="p">,</span> <span class="n">conversion_type</span><span class="o">=</span><span class="s1">&#39;csv&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">convert_netcdf</span><span class="p">(</span><span class="n">netcdf_file</span><span class="o">=</span><span class="s1">&#39;input.nc&#39;</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s1">&#39;output.shp&#39;</span><span class="p">,</span> <span class="n">conversion_type</span><span class="o">=</span><span class="s1">&#39;shapefile&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="functions">
+<h3>Functions:<a class="headerlink" href="#functions" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>convert_netcdf: Converts a NetCDF file into either a CSV or a Shapefile.</p></li>
+</ul>
+</section>
+<section id="parameters">
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>netcdf_file (str): Path to the input NetCDF file.</p></li>
+<li><p>output_file (str): Path to the output file (CSV or Shapefile).</p></li>
+<li><p>conversion_type (str): Conversion type, either “csv” or “shapefile”.</p></li>
+</ul>
+</section>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="MESHpyPreProcessing.convert_ddbnetcdf.convert_netcdf">
+<span class="sig-prename descclassname"><span class="pre">MESHpyPreProcessing.convert_ddbnetcdf.</span></span><span class="sig-name descname"><span class="pre">convert_netcdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">netcdf_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conversion_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'csv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/convert_ddbnetcdf.html#convert_netcdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.convert_ddbnetcdf.convert_netcdf" title="Link to this definition"></a></dt>
+<dd><p>Converts a NetCDF file to either a CSV or a Shapefile.</p>
+<section id="id1">
+<h2>Parameters:<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>netcdf_file<span class="classifier">str</span></dt><dd><p>Path to the input NetCDF file.</p>
+</dd>
+<dt>output_file<span class="classifier">str</span></dt><dd><p>Path to the output file (CSV or Shapefile).</p>
+</dd>
+<dt>conversion_type<span class="classifier">str, optional</span></dt><dd><p>Type of conversion (“csv” or “shapefile”), default is “csv”.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h2>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h2>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="NetCDFWriter.html" class="btn btn-neutral float-left" title="Netcdf writer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gdf_edit.html" class="btn btn-neutral float-right" title="gdf_edit" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Fuad Yassin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

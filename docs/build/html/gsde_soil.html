@@ -1,0 +1,247 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GSDE soil &mdash; MESH-Scripts-PyLib 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="generate_mesh_class_ini_from_excel" href="generate_mesh_class_ini_from_excel.html" />
+    <link rel="prev" title="gen_streamflow_file" href="gen_streamflow_file.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MESH-Scripts-PyLib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Aggregation_vector.html">Aggregate vector subbasins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NetCDFWriter.html">Netcdf writer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convert_ddbnetcdf.html">convert_ddbnetcdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gdf_edit.html">gdf_edit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gen_streamflow_file.html">gen_streamflow_file</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">GSDE soil</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#gsde-soil-data-processor">GSDE Soil Data Processor</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-usage">Example Usage:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#classes-functions">Classes &amp; Functions:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#MESHpyPreProcessing.gsde_soil.GSDESoil"><code class="docutils literal notranslate"><span class="pre">GSDESoil</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#MESHpyPreProcessing.gsde_soil.GSDESoil.calculate_mesh_values"><code class="docutils literal notranslate"><span class="pre">GSDESoil.calculate_mesh_values()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#MESHpyPreProcessing.gsde_soil.GSDESoil.calculate_weights"><code class="docutils literal notranslate"><span class="pre">GSDESoil.calculate_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#MESHpyPreProcessing.gsde_soil.GSDESoil.fill_and_clean_data"><code class="docutils literal notranslate"><span class="pre">GSDESoil.fill_and_clean_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#MESHpyPreProcessing.gsde_soil.GSDESoil.load_and_merge_files"><code class="docutils literal notranslate"><span class="pre">GSDESoil.load_and_merge_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#MESHpyPreProcessing.gsde_soil.GSDESoil.load_data"><code class="docutils literal notranslate"><span class="pre">GSDESoil.load_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#MESHpyPreProcessing.gsde_soil.GSDESoil.merge_and_save_shapefile"><code class="docutils literal notranslate"><span class="pre">GSDESoil.merge_and_save_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#MESHpyPreProcessing.gsde_soil.GSDESoil.set_coordinates"><code class="docutils literal notranslate"><span class="pre">GSDESoil.set_coordinates()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plt_var_from_vector_ddb_netcdf.html">plt_var_from_vector_ddb_netcdf</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MESH_StreamflowFilePrep.html">MESH Streamflow File Preparation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MESH-Scripts-PyLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">GSDE soil</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/fuadyassin/MESH-Scripts-PyLib/blob/main/docs/source/gsde_soil.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-MESHpyPreProcessing.gsde_soil">
+<span id="gsde-soil"></span><h1>GSDE soil<a class="headerlink" href="#module-MESHpyPreProcessing.gsde_soil" title="Link to this heading"></a></h1>
+<section id="gsde-soil-data-processor">
+<h2>GSDE Soil Data Processor<a class="headerlink" href="#gsde-soil-data-processor" title="Link to this heading"></a></h2>
+<p>This script contains a class <cite>GSDESoil</cite> that processes soil property data from multiple CSV files,
+merges the data with a given shapefile, and exports the processed data.</p>
+<section id="example-usage">
+<h3>Example Usage:<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">gsde_soil</span><span class="w"> </span><span class="kn">import</span> <span class="n">GSDESoil</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gsde_processor</span> <span class="o">=</span> <span class="n">GSDESoil</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s1">&#39;data/&#39;</span><span class="p">,</span> <span class="n">input_basin</span><span class="o">=</span><span class="s1">&#39;basin.shp&#39;</span><span class="p">,</span> <span class="n">output_shapefile</span><span class="o">=</span><span class="s1">&#39;output.shp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gsde_processor</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">file_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;soil1.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;soil2.csv&#39;</span><span class="p">],</span> <span class="n">search_replace_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">suffix_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gsde_processor</span><span class="o">.</span><span class="n">fill_and_clean_data</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gsde_processor</span><span class="o">.</span><span class="n">calculate_weights</span><span class="p">(</span><span class="n">gsde_intervals</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">)],</span> <span class="n">mesh_intervals</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">15</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gsde_processor</span><span class="o">.</span><span class="n">calculate_mesh_values</span><span class="p">(</span><span class="n">column_names</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;OC&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;OC1&#39;</span><span class="p">,</span> <span class="s1">&#39;OC2&#39;</span><span class="p">],</span> <span class="s1">&#39;Sand&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Sand1&#39;</span><span class="p">,</span> <span class="s1">&#39;Sand2&#39;</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gsde_processor</span><span class="o">.</span><span class="n">merge_and_save_shapefile</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="classes-functions">
+<h3>Classes &amp; Functions:<a class="headerlink" href="#classes-functions" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>GSDESoil: Class that manages soil data loading, processing, and merging.
+- load_data: Loads soil data from CSV files.
+- fill_and_clean_data: Cleans and fills missing values in soil data.
+- calculate_weights: Computes weighted values for soil layers.
+- calculate_mesh_values: Computes interpolated soil properties.
+- merge_and_save_shapefile: Merges processed soil data with a shapefile.
+- set_coordinates: Extracts longitude and latitude values from a NetCDF file.</p></li>
+</ul>
+</section>
+<section id="parameters">
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>directory (str): Directory containing input CSV files.</p></li>
+<li><p>input_basin (str): Path to the input basin shapefile.</p></li>
+<li><p>output_shapefile (str): Path to the output merged shapefile.</p></li>
+</ul>
+</section>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="MESHpyPreProcessing.gsde_soil.GSDESoil">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MESHpyPreProcessing.gsde_soil.</span></span><span class="sig-name descname"><span class="pre">GSDESoil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_basin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_shapefile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/gsde_soil.html#GSDESoil"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.gsde_soil.GSDESoil" title="Link to this definition"></a></dt>
+<dd><p>A class to process and merge soil data from CSV files with a given basin shapefile.</p>
+<section id="attributes">
+<h2>Attributes:<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>directory<span class="classifier">str</span></dt><dd><p>Directory containing soil CSV files.</p>
+</dd>
+<dt>input_basin<span class="classifier">str</span></dt><dd><p>Path to the input basin shapefile.</p>
+</dd>
+<dt>output_shapefile<span class="classifier">str</span></dt><dd><p>Path to the output shapefile with merged data.</p>
+</dd>
+<dt>file_paths<span class="classifier">list</span></dt><dd><p>List of file paths to soil CSV files.</p>
+</dd>
+<dt>gsde_df<span class="classifier">pandas.DataFrame</span></dt><dd><p>DataFrame storing soil property data.</p>
+</dd>
+<dt>merged_gdf<span class="classifier">geopandas.GeoDataFrame</span></dt><dd><p>Merged GeoDataFrame containing the final processed data.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="MESHpyPreProcessing.gsde_soil.GSDESoil.calculate_mesh_values">
+<span class="sig-name descname"><span class="pre">calculate_mesh_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_names</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/gsde_soil.html#GSDESoil.calculate_mesh_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.gsde_soil.GSDESoil.calculate_mesh_values" title="Link to this definition"></a></dt>
+<dd><p>Calculate mesh values by applying weights to soil property columns.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MESHpyPreProcessing.gsde_soil.GSDESoil.calculate_weights">
+<span class="sig-name descname"><span class="pre">calculate_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gsde_intervals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_intervals</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/gsde_soil.html#GSDESoil.calculate_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.gsde_soil.GSDESoil.calculate_weights" title="Link to this definition"></a></dt>
+<dd><p>Calculate weights for different soil intervals.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MESHpyPreProcessing.gsde_soil.GSDESoil.fill_and_clean_data">
+<span class="sig-name descname"><span class="pre">fill_and_clean_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exclude_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['COMID']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_patterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['OC',</span> <span class="pre">'BD',</span> <span class="pre">'BDRICM',</span> <span class="pre">'BDTICM']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/gsde_soil.html#GSDESoil.fill_and_clean_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.gsde_soil.GSDESoil.fill_and_clean_data" title="Link to this definition"></a></dt>
+<dd><p>Fill and clean data, replacing values greater than max_val with NaN and forward/backward filling.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MESHpyPreProcessing.gsde_soil.GSDESoil.load_and_merge_files">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_and_merge_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_replace_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'COMID'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/gsde_soil.html#GSDESoil.load_and_merge_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.gsde_soil.GSDESoil.load_and_merge_files" title="Link to this definition"></a></dt>
+<dd><p>Load and merge multiple CSV files on the specified key.
+Apply renaming/suffixing during the reading of each file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MESHpyPreProcessing.gsde_soil.GSDESoil.load_data">
+<span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_replace_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/gsde_soil.html#GSDESoil.load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.gsde_soil.GSDESoil.load_data" title="Link to this definition"></a></dt>
+<dd><p>Load data from multiple CSV files, apply renaming/suffixing, and merge into a single DataFrame.
+:param - file_names: List of CSV file names to be loaded.
+:param - search_replace_dict: Dictionary with file name as key and (search_list, replace_list) tuple as value.
+:param - suffix_dict: Dictionary with file name as key and suffix as value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MESHpyPreProcessing.gsde_soil.GSDESoil.merge_and_save_shapefile">
+<span class="sig-name descname"><span class="pre">merge_and_save_shapefile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/gsde_soil.html#GSDESoil.merge_and_save_shapefile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.gsde_soil.GSDESoil.merge_and_save_shapefile" title="Link to this definition"></a></dt>
+<dd><p>Merge soil data with a shapefile and save the result.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MESHpyPreProcessing.gsde_soil.GSDESoil.set_coordinates">
+<span class="sig-name descname"><span class="pre">set_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_ddb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/gsde_soil.html#GSDESoil.set_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.gsde_soil.GSDESoil.set_coordinates" title="Link to this definition"></a></dt>
+<dd><p>Set longitude and latitude values from a NetCDF drainage database.</p>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gen_streamflow_file.html" class="btn btn-neutral float-left" title="gen_streamflow_file" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generate_mesh_class_ini_from_excel.html" class="btn btn-neutral float-right" title="generate_mesh_class_ini_from_excel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Fuad Yassin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
