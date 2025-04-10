@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MESHpyPreProcessing.generate_mesh_class_ini_from_excel &mdash; MESH-Scripts-PyLib 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=29a6c3e3"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            MESH-Scripts-PyLib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Aggregation_vector.html">Aggregate vector subbasins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../NetCDFWriter.html">Netcdf writer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../convert_ddbnetcdf.html">convert_ddbnetcdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gdf_edit.html">gdf_edit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gen_streamflow_file.html">gen_streamflow_file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gsde_soil.html">GSDE soil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plt_var_from_vector_ddb_netcdf.html">plt_var_from_vector_ddb_netcdf</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../MESH_StreamflowFilePrep.html">MESH Streamflow File Preparation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MESH-Scripts-PyLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">MESHpyPreProcessing.generate_mesh_class_ini_from_excel</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for MESHpyPreProcessing.generate_mesh_class_ini_from_excel</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<div class="viewcode-block" id="generate_mesh_class_ini_from_excel">
+<a class="viewcode-back" href="../../generate_mesh_class_ini_from_excel.html#MESHpyPreProcessing.generate_mesh_class_ini_from_excel.generate_mesh_class_ini_from_excel">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_mesh_class_ini_from_excel</span><span class="p">(</span><span class="n">excel_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">selected_land_covers</span><span class="p">,</span> <span class="n">num_cels</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    ------------</span>
+<span class="sd">    excel_file : str</span>
+<span class="sd">        Path to the Excel file containing parameter values.</span>
+<span class="sd">    output_file : str</span>
+<span class="sd">        Path to the output `.ini` file where processed values will be written.</span>
+<span class="sd">    num_cels : int</span>
+<span class="sd">        Number of grid cells in the model domain.</span>
+<span class="sd">    lat : float</span>
+<span class="sd">        Latitude of the location.</span>
+<span class="sd">    lon : float</span>
+<span class="sd">        Longitude of the location.</span>
+<span class="sd">    </span>
+<span class="sd">    Overview:</span>
+<span class="sd">    ------------</span>
+<span class="sd">    This function extracts land cover parameter values from an Excel file and writes them into a MESH-compatible `.ini` file. </span>
+<span class="sd">    Only active land covers are included, as indicated by the &#39;status&#39; row in the Excel sheet. </span>
+<span class="sd">    </span>
+<span class="sd">    Processing Steps:</span>
+<span class="sd">        1. Load the Excel file and normalize column names.</span>
+<span class="sd">        2. Identify active land covers (status &gt; 0).</span>
+<span class="sd">        3. Verify required rows such as &#39;colum&#39;.</span>
+<span class="sd">        4. Extract vegetation and land cover parameters.</span>
+<span class="sd">        5. Write formatted values into an `.ini` file with the required MESH structure.</span>
+<span class="sd">    </span>
+<span class="sd">    Output Format:</span>
+<span class="sd">    ------------</span>
+<span class="sd">    </span>
+<span class="sd">    The generated `.ini` file follows MESH parameter conventions with:</span>
+<span class="sd">        - Header defining basin information.</span>
+<span class="sd">        - Land cover-specific vegetation and hydrological parameters.</span>
+<span class="sd">        - Footer containing model time initialization values.</span>
+<span class="sd">    </span>
+<span class="sd">    File Structure:</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    The output file consists of:</span>
+<span class="sd">        1. **Header Information**: Includes metadata such as location, author, and details.</span>
+<span class="sd">        2. **Land Cover Blocks**: Each selected land cover is written separately, including:</span>
+<span class="sd">           - Vegetation parameters (written in pairs)</span>
+<span class="sd">           - One-to-One parameter assignments (written in pairs)</span>
+<span class="sd">           - Multi-value parameter assignments (written in structured format)</span>
+<span class="sd">        3. **Final Footer**: Contains three mandatory lines required for MESH processing.</span>
+<span class="sd">    </span>
+<span class="sd">    Example Usage:</span>
+<span class="sd">    --------------</span>
+<span class="sd">    &gt;&gt;&gt; pip install git+https://github.com/MESH-Model/MESH-Scripts-PyLib.git</span>
+<span class="sd">    &gt;&gt;&gt; generate_mesh_ini_from_excel(&quot;meshparameters.xlsx&quot;, &quot;MESH_output.ini&quot;, [&quot;Forest&quot;, &quot;crop&quot;],num_cels=7408, lat=53.18, lon=-99.25)</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Load Excel file</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_file</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;Sheet1&#39;</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>  <span class="c1"># Normalize column names to lowercase for case insensitivity</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>    <span class="c1"># Normalize parameter names</span>
+
+    <span class="c1"># Define vegetation columns</span>
+    <span class="n">vegetation_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;v_nforest&#39;</span><span class="p">,</span> <span class="s1">&#39;v_bforest&#39;</span><span class="p">,</span> <span class="s1">&#39;v_crop&#39;</span><span class="p">,</span> <span class="s1">&#39;v_grass&#39;</span><span class="p">,</span> <span class="s1">&#39;v_bare&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Parameters that should be replaced with empty space when assign_col == &#39;v_bare&#39;</span>
+    <span class="n">empty_space_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;lamx&#39;</span><span class="p">,</span> <span class="s1">&#39;lamn&#39;</span><span class="p">,</span> <span class="s1">&#39;cmas&#39;</span><span class="p">,</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span> <span class="s1">&#39;qa50&#39;</span><span class="p">,</span> <span class="s1">&#39;vpdp&#39;</span><span class="p">,</span> <span class="s1">&#39;psgb&#39;</span><span class="p">,</span> <span class="s1">&#39;psga&#39;</span><span class="p">,</span> <span class="s1">&#39;vpda&#39;</span><span class="p">,</span> <span class="s1">&#39;rsmn&#39;</span><span class="p">}</span>
+    <span class="n">empty_space</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="mi">8</span>  <span class="c1"># Fixed length of empty space</span>
+
+    <span class="c1"># Ensure &#39;colum&#39; row exists</span>
+    <span class="n">colum_row</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;colum&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">colum_row</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The &#39;colum&#39; row is missing in the provided Excel file.&quot;</span><span class="p">)</span>
+    <span class="c1"># Compute the length dynamically</span>
+    <span class="n">land_cover_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_land_covers</span><span class="p">)</span>
+    <span class="c1">#print(land_cover_count)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="c1"># Write header</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Basin</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Author</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Org</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     </span><span class="si">{</span><span class="n">lat</span><span class="si">}</span><span class="s2">     </span><span class="si">{</span><span class="n">lon</span><span class="si">}</span><span class="s2">     40.00     40.00     50.00   -1.0    1 </span><span class="si">{</span><span class="n">num_cels</span><span class="si">}</span><span class="s2">    </span><span class="si">{</span><span class="n">land_cover_count</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">lc</span> <span class="ow">in</span> <span class="n">selected_land_covers</span><span class="p">:</span>
+            <span class="n">lc_lower</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">lc_lower</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Land cover &#39;</span><span class="si">{</span><span class="n">lc</span><span class="si">}</span><span class="s2">&#39; is not found in the Excel columns.&quot;</span><span class="p">)</span>
+
+            <span class="c1">#f.write(f&quot;# Land Cover: {lc}\n&quot;)</span>
+
+            <span class="c1"># Block 1: Vegetation Parameters</span>
+            <span class="n">vegetation_pairs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="s1">&#39;fcan&#39;</span><span class="p">,</span> <span class="s1">&#39;lamx&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;lnz&#39;</span><span class="p">,</span> <span class="s1">&#39;lamn&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;alvc&#39;</span><span class="p">,</span> <span class="s1">&#39;cmas&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;alir&#39;</span><span class="p">,</span> <span class="s1">&#39;root&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;rsmn&#39;</span><span class="p">,</span> <span class="s1">&#39;qa50&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;vpda&#39;</span><span class="p">,</span> <span class="s1">&#39;vpdp&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;psga&#39;</span><span class="p">,</span> <span class="s1">&#39;psgb&#39;</span><span class="p">)</span>
+            <span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">vegetation_pairs</span><span class="p">:</span>
+                <span class="n">values_pair</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">:</span>
+                    <span class="n">values</span> <span class="o">=</span> <span class="p">{</span><span class="n">col</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mf">0.000</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">vegetation_cols</span><span class="p">}</span>  <span class="c1"># Default is zero</span>
+
+                    <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">empty_space_params</span><span class="p">:</span>
+                            <span class="n">values</span><span class="p">[</span><span class="s1">&#39;v_bare&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">empty_space</span>
+                        <span class="n">assigned_col</span> <span class="o">=</span> <span class="n">colum_row</span><span class="p">[</span><span class="n">lc_lower</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">assigned_col</span> <span class="ow">in</span> <span class="n">vegetation_cols</span><span class="p">:</span>
+                            <span class="c1">#print(assigned_col)</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="n">assigned_col</span> <span class="o">==</span> <span class="s1">&#39;v_bare&#39;</span> <span class="ow">and</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">empty_space_params</span><span class="p">:</span>
+                                   <span class="c1"># values[assigned_col] = empty_space  # Replace with empty space for specific parameters</span>
+                                    <span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;v_bare&#39;</span><span class="p">])</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="n">values</span><span class="p">[</span><span class="n">assigned_col</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">param</span><span class="p">][</span><span class="n">lc_lower</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
+                                <span class="n">values</span><span class="p">[</span><span class="n">assigned_col</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mf">0.000</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="n">values_pair</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+                <span class="c1"># Write both parameters in one line</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  &quot;</span> <span class="o">+</span> <span class="s2">&quot;   &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">values_pair</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pair</span><span class="p">))</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">vegetation_cols</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;  # </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Block 2: One-to-One Parameter Assignments</span>
+            <span class="n">one_to_one_pairs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="s1">&#39;drn&#39;</span><span class="p">,</span> <span class="s1">&#39;sdep&#39;</span><span class="p">,</span> <span class="s1">&#39;fare&#39;</span><span class="p">,</span> <span class="s1">&#39;dden&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;xslp&#39;</span><span class="p">,</span> <span class="s1">&#39;grkf&#39;</span><span class="p">,</span> <span class="s1">&#39;man&#39;</span><span class="p">,</span> <span class="s1">&#39;wfci&#39;</span><span class="p">,</span> <span class="s1">&#39;mid&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">one_to_one_pairs</span><span class="p">:</span>
+                <span class="n">values_pair</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">param</span> <span class="o">==</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span>
+                                <span class="n">param_value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">param</span><span class="p">][</span><span class="n">lc_lower</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">lc_lower</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">else</span> <span class="s2">&quot;N/A&quot;</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">param_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">param</span><span class="p">][</span><span class="n">lc_lower</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">lc_lower</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">else</span> <span class="mf">0.000</span>    
+                        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
+                            <span class="n">param_value</span> <span class="o">=</span> <span class="s2">&quot;N/A&quot;</span> <span class="k">if</span> <span class="n">param</span> <span class="o">==</span> <span class="s2">&quot;name&quot;</span> <span class="k">else</span> <span class="mf">0.000</span>
+                        <span class="n">values_pair</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">param_value</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">param</span> <span class="o">!=</span> <span class="s2">&quot;name&quot;</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">param_value</span><span class="si">:</span><span class="s2">&gt;8</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">values_pair</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mf">0.000</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  &quot;</span> <span class="o">+</span> <span class="s2">&quot;   &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">values_pair</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;  # </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Block 3: Multi-Value Assignments</span>
+            <span class="n">multi_value_pairs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="s1">&#39;sand&#39;</span><span class="p">,),</span>
+                <span class="p">(</span><span class="s1">&#39;clay&#39;</span><span class="p">,),</span>
+                <span class="p">(</span><span class="s1">&#39;org&#39;</span><span class="p">,),</span>
+                <span class="p">(</span><span class="s1">&#39;soit&#39;</span><span class="p">,</span> <span class="s1">&#39;cant&#39;</span><span class="p">,</span> <span class="s1">&#39;snot&#39;</span><span class="p">,</span> <span class="s1">&#39;pndt&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;soiwf&#39;</span><span class="p">,</span> <span class="s1">&#39;soiif&#39;</span><span class="p">,</span> <span class="s1">&#39;pond&#39;</span><span class="p">),</span>
+                <span class="p">(</span><span class="s1">&#39;rcan&#39;</span><span class="p">,</span> <span class="s1">&#39;scan&#39;</span><span class="p">,</span> <span class="s1">&#39;sno&#39;</span><span class="p">,</span> <span class="s1">&#39;albs&#39;</span><span class="p">,</span> <span class="s1">&#39;rho&#39;</span><span class="p">,</span> <span class="s1">&#39;gro&#39;</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">multi_value_pairs</span><span class="p">:</span>
+                <span class="n">values_pair</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+                        <span class="n">raw_value</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">param</span><span class="p">][</span><span class="n">lc_lower</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;{&#39;</span> <span class="ow">in</span> <span class="n">raw_value</span><span class="p">:</span>
+                            <span class="n">values</span> <span class="o">=</span> <span class="n">raw_value</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
+                            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                                <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.000</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>  <span class="c1"># Default in case of parsing error</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">raw_value</span><span class="p">)]</span>
+                            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                                <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.000</span><span class="p">]</span>
+                        <span class="n">values_pair</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;  &quot;</span> <span class="o">+</span> <span class="s2">&quot;   &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">values_pair</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;  &quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mf">0.000</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  &quot;</span> <span class="o">+</span> <span class="s2">&quot;   &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">values_pair</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;  # </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Add a blank line to separate land cover blocks</span>
+
+        <span class="c1"># Footer</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;         0         0         0         0                                  20 (not used, but 4x integer values are required)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;         0         0         0         0                                  21 (not used, but 4x integer values are required)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;         0         0         0         0                                  22 IHOUR/IMINS/IJDAY/IYEAR</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MESH parameter file &#39;</span><span class="si">{</span><span class="n">output_file</span><span class="si">}</span><span class="s2">&#39; created successfully!&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># Example usage , num_cels, lat, lon</span>
+<span class="c1">#generate_mesh_class_ini_from_excel(&quot;/content/drive/MyDrive/ColabNotebook_FY/meshparametersvalues1.xlsx&quot;, &quot;MESH_output.ini&quot;, [&quot;Forest&quot;, &quot;crop&quot;],num_cels=7408, lat=53.18, lon=-99.25)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Fuad Yassin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

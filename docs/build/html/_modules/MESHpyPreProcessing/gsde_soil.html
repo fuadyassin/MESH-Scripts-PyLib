@@ -1,0 +1,327 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MESHpyPreProcessing.gsde_soil &mdash; MESH-Scripts-PyLib 1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=29a6c3e3"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            MESH-Scripts-PyLib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Aggregation_vector.html">Aggregate vector subbasins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../NetCDFWriter.html">Netcdf writer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../convert_ddbnetcdf.html">convert_ddbnetcdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gdf_edit.html">gdf_edit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gen_streamflow_file.html">gen_streamflow_file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gsde_soil.html">GSDE soil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plt_var_from_vector_ddb_netcdf.html">plt_var_from_vector_ddb_netcdf</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../MESH_StreamflowFilePrep.html">MESH Streamflow File Preparation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MESH-Scripts-PyLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">MESHpyPreProcessing.gsde_soil</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for MESHpyPreProcessing.gsde_soil</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">GSDE Soil Data Processor</span>
+<span class="sd">========================</span>
+
+<span class="sd">This script contains a class `GSDESoil` that processes soil property data from multiple CSV files,</span>
+<span class="sd">merges the data with a given shapefile, and exports the processed data.</span>
+
+<span class="sd">Example Usage:</span>
+<span class="sd">--------------</span>
+<span class="sd">&gt;&gt;&gt; from gsde_soil import GSDESoil</span>
+<span class="sd">&gt;&gt;&gt; gsde_processor = GSDESoil(directory=&#39;data/&#39;, input_basin=&#39;basin.shp&#39;, output_shapefile=&#39;output.shp&#39;)</span>
+<span class="sd">&gt;&gt;&gt; gsde_processor.load_data(file_names=[&#39;soil1.csv&#39;, &#39;soil2.csv&#39;], search_replace_dict=None, suffix_dict=None)</span>
+<span class="sd">&gt;&gt;&gt; gsde_processor.fill_and_clean_data()</span>
+<span class="sd">&gt;&gt;&gt; gsde_processor.calculate_weights(gsde_intervals=[(0,10), (10,20)], mesh_intervals=[(0,5), (5,15)])</span>
+<span class="sd">&gt;&gt;&gt; gsde_processor.calculate_mesh_values(column_names={&#39;OC&#39;: [&#39;OC1&#39;, &#39;OC2&#39;], &#39;Sand&#39;: [&#39;Sand1&#39;, &#39;Sand2&#39;]})</span>
+<span class="sd">&gt;&gt;&gt; gsde_processor.merge_and_save_shapefile()</span>
+
+<span class="sd">Classes &amp; Functions:</span>
+<span class="sd">--------------------</span>
+<span class="sd">- GSDESoil: Class that manages soil data loading, processing, and merging.</span>
+<span class="sd">  - load_data: Loads soil data from CSV files.</span>
+<span class="sd">  - fill_and_clean_data: Cleans and fills missing values in soil data.</span>
+<span class="sd">  - calculate_weights: Computes weighted values for soil layers.</span>
+<span class="sd">  - calculate_mesh_values: Computes interpolated soil properties.</span>
+<span class="sd">  - merge_and_save_shapefile: Merges processed soil data with a shapefile.</span>
+<span class="sd">  - set_coordinates: Extracts longitude and latitude values from a NetCDF file.</span>
+
+<span class="sd">Parameters:</span>
+<span class="sd">-----------</span>
+<span class="sd">- directory (str): Directory containing input CSV files.</span>
+<span class="sd">- input_basin (str): Path to the input basin shapefile.</span>
+<span class="sd">- output_shapefile (str): Path to the output merged shapefile.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+
+<div class="viewcode-block" id="GSDESoil">
+<a class="viewcode-back" href="../../gsde_soil.html#MESHpyPreProcessing.gsde_soil.GSDESoil">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GSDESoil</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to process and merge soil data from CSV files with a given basin shapefile.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    directory : str</span>
+<span class="sd">        Directory containing soil CSV files.</span>
+<span class="sd">    input_basin : str</span>
+<span class="sd">        Path to the input basin shapefile.</span>
+<span class="sd">    output_shapefile : str</span>
+<span class="sd">        Path to the output shapefile with merged data.</span>
+<span class="sd">    file_paths : list</span>
+<span class="sd">        List of file paths to soil CSV files.</span>
+<span class="sd">    gsde_df : pandas.DataFrame</span>
+<span class="sd">        DataFrame storing soil property data.</span>
+<span class="sd">    merged_gdf : geopandas.GeoDataFrame</span>
+<span class="sd">        Merged GeoDataFrame containing the final processed data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">input_basin</span><span class="p">,</span> <span class="n">output_shapefile</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_basin</span> <span class="o">=</span> <span class="n">input_basin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_shapefile</span> <span class="o">=</span> <span class="n">output_shapefile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_paths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">merged_gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights_used</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh_intervals</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">segid</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_soil_lyrs</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="GSDESoil.load_data">
+<a class="viewcode-back" href="../../gsde_soil.html#MESHpyPreProcessing.gsde_soil.GSDESoil.load_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_names</span><span class="p">,</span> <span class="n">search_replace_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">suffix_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load data from multiple CSV files, apply renaming/suffixing, and merge into a single DataFrame.</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">            - file_names: List of CSV file names to be loaded.</span>
+<span class="sd">            - search_replace_dict: Dictionary with file name as key and (search_list, replace_list) tuple as value.</span>
+<span class="sd">            - suffix_dict: Dictionary with file name as key and suffix as value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span> <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">file_names</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_and_merge_files</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_paths</span><span class="p">,</span> <span class="n">search_replace_dict</span><span class="p">,</span> <span class="n">suffix_dict</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GSDESoil.load_and_merge_files">
+<a class="viewcode-back" href="../../gsde_soil.html#MESHpyPreProcessing.gsde_soil.GSDESoil.load_and_merge_files">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_and_merge_files</span><span class="p">(</span><span class="n">file_list</span><span class="p">,</span> <span class="n">search_replace_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">suffix_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load and merge multiple CSV files on the specified key.</span>
+<span class="sd">        Apply renaming/suffixing during the reading of each file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dfs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+            
+            <span class="c1"># Apply search and replace for column names if specified</span>
+            <span class="k">if</span> <span class="n">search_replace_dict</span> <span class="ow">and</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">search_replace_dict</span><span class="p">:</span>
+                <span class="n">search_list</span><span class="p">,</span> <span class="n">replace_list</span> <span class="o">=</span> <span class="n">search_replace_dict</span><span class="p">[</span><span class="n">file_name</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">search</span><span class="p">,</span> <span class="n">replace</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">search_list</span><span class="p">,</span> <span class="n">replace_list</span><span class="p">):</span>
+                    <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">search</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">replace</span><span class="p">))</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+            
+            <span class="c1"># Remove periods from column names</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+            
+            <span class="c1"># Optionally append a suffix to the column names</span>
+            <span class="k">if</span> <span class="n">suffix_dict</span> <span class="ow">and</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">suffix_dict</span><span class="p">:</span>
+                <span class="n">suffix</span> <span class="o">=</span> <span class="n">suffix_dict</span><span class="p">[</span><span class="n">file_name</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">suffix</span><span class="p">:</span>  <span class="c1"># Only apply if the suffix is not an empty string</span>
+                    <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="n">key</span> <span class="k">else</span> <span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+            
+            <span class="n">dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+        
+        <span class="c1"># Merge all the dataframes on the specified key</span>
+        <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">),</span> <span class="n">dfs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GSDESoil.fill_and_clean_data">
+<a class="viewcode-back" href="../../gsde_soil.html#MESHpyPreProcessing.gsde_soil.GSDESoil.fill_and_clean_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fill_and_clean_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exclude_cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;COMID&#39;</span><span class="p">],</span> <span class="n">exclude_patterns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;OC&#39;</span><span class="p">,</span> <span class="s1">&#39;BD&#39;</span><span class="p">,</span> <span class="s1">&#39;BDRICM&#39;</span><span class="p">,</span> <span class="s1">&#39;BDTICM&#39;</span><span class="p">],</span> <span class="n">max_val</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fill and clean data, replacing values greater than max_val with NaN and forward/backward filling.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude_cols</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">pattern</span> <span class="ow">in</span> <span class="n">col</span> <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">exclude_patterns</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_val</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            
+            <span class="k">if</span> <span class="s1">&#39;BDRICM&#39;</span> <span class="ow">in</span> <span class="n">col</span> <span class="ow">or</span> <span class="s1">&#39;BDTICM&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">==</span> <span class="mf">9999.0</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">/</span> <span class="mf">100.0</span>
+                <span class="k">if</span> <span class="s1">&#39;BDRICM&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span>
+                <span class="k">if</span> <span class="s1">&#39;BDTICM&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">4.1</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4.1</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span>
+                
+        <span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;ffill&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;bfill&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GSDESoil.calculate_weights">
+<a class="viewcode-back" href="../../gsde_soil.html#MESHpyPreProcessing.gsde_soil.GSDESoil.calculate_weights">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gsde_intervals</span><span class="p">,</span> <span class="n">mesh_intervals</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate weights for different soil intervals.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh_intervals</span> <span class="o">=</span> <span class="n">mesh_intervals</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_soil_lyrs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mesh_intervals</span><span class="p">)</span>
+        <span class="n">weights_used</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">mesh_interval</span> <span class="ow">in</span> <span class="n">mesh_intervals</span><span class="p">:</span>
+            <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">mesh_interval</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">gsde_interval</span> <span class="ow">in</span> <span class="n">gsde_intervals</span><span class="p">:</span>
+                <span class="n">gsde_start</span><span class="p">,</span> <span class="n">gsde_end</span> <span class="o">=</span> <span class="n">gsde_interval</span>
+                <span class="n">overlap_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">gsde_start</span><span class="p">)</span>
+                <span class="n">overlap_end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">gsde_end</span><span class="p">)</span>
+                <span class="n">weight</span> <span class="o">=</span> <span class="p">(</span><span class="n">overlap_end</span> <span class="o">-</span> <span class="n">overlap_start</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="k">if</span> <span class="n">overlap_start</span> <span class="o">&lt;</span> <span class="n">overlap_end</span> <span class="k">else</span> <span class="mi">0</span>
+                <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span>
+            <span class="n">weights_used</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">w</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">weights</span> <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights_used</span> <span class="o">=</span> <span class="n">weights_used</span></div>
+
+
+<div class="viewcode-block" id="GSDESoil.calculate_mesh_values">
+<a class="viewcode-back" href="../../gsde_soil.html#MESHpyPreProcessing.gsde_soil.GSDESoil.calculate_mesh_values">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_mesh_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_names</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate mesh values by applying weights to soil property columns.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">prop</span><span class="p">,</span> <span class="n">cols</span> <span class="ow">in</span> <span class="n">column_names</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">extracted_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+            <span class="n">weights_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights_used</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">mesh_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">extracted_data</span><span class="p">,</span> <span class="n">weights_array</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">prop</span> <span class="o">==</span> <span class="s1">&#39;OC&#39;</span><span class="p">:</span>
+                <span class="n">mesh_values</span> <span class="o">*=</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="mf">1.72</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mesh_col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;mesh</span><span class="si">{</span><span class="n">prop</span><span class="si">}{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh_intervals</span><span class="p">))]):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="p">[</span><span class="n">mesh_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">mesh_values</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="GSDESoil.merge_and_save_shapefile">
+<a class="viewcode-back" href="../../gsde_soil.html#MESHpyPreProcessing.gsde_soil.GSDESoil.merge_and_save_shapefile">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">merge_and_save_shapefile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Merge soil data with a shapefile and save the result.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_basin</span><span class="p">)</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="o">=</span><span class="mi">4326</span><span class="p">)</span>
+        <span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;COMID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;COMID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">merged_gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gsde_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">merged_gdf</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_shapefile</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GSDESoil.set_coordinates">
+<a class="viewcode-back" href="../../gsde_soil.html#MESHpyPreProcessing.gsde_soil.GSDESoil.set_coordinates">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_ddb</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set longitude and latitude values from a NetCDF drainage database.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">input_ddb</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">segid</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;subbasin&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Fuad Yassin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
