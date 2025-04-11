@@ -27,18 +27,31 @@ release = "1"
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.napoleon',
+    'sphinx.ext.mathjax',
     'sphinx_automodapi.automodapi',
     'sphinx_automodapi.smart_resolver',
     'sphinx_rtd_theme',
-    'sphinx.ext.autodoc',  # autodocument
-    'sphinx.ext.viewcode',
-    'sphinx.ext.napoleon',  # google and numpy doc string support
-    'sphinx.ext.mathjax',  # latex rendering of equations using MathJax
-    'nbsphinx',  # for direct embedding of jupyter notebooks into sphinx docs
+    'nbsphinx',
     'sphinx.ext.inheritance_diagram',
     'sphinx.ext.graphviz',
-    'nbsphinx_link'
-    ]
+    'nbsphinx_link',
+]
+
+
+autosummary_generate = True  # Automatically generate .rst files for modules/classes/functions
+
+autodoc_default_options = {
+    'members': True,               # Include class and module members
+    'undoc-members': False,        # Include undocumented members (set True if needed)
+    'private-members': False,      # Include _private members
+    'special-members': False,     # Include __init__, __str__, etc.
+    'inherited-members': False,
+    'show-inheritance': True
+}
 
 # Skip execution of Jupyter notebooks
 nbsphinx_execute = 'never'
