@@ -51,6 +51,7 @@ Contents
    generate_mesh_class_ini_from_excel
    generate_mesh_hydrology_ini_from_excel
    plt_var_from_vector_ddb_netcdf
+   plt_var_vector_setup
 
 Jupyter Notebooks
 -----------------
