@@ -10,24 +10,34 @@ def remap_rdrs_climate_data(input_directory, output_directory, input_basin, inpu
     """
     Remap RDRS climate data to a drainage database (DDB) format for a range of years.
 
-    Parameters:
-        input_directory (str): Path to the directory containing input NetCDF files.
-        output_directory (str): Path to the directory where processed files will be saved.
-        input_basin (str): Path to the basin shapefile.
-        input_ddb (str): Path to the drainage database NetCDF file.
-        start_year (int): Start year of the data to process.
-        end_year (int): End year of the data to process.
+    Parameters
+    ----------
+    input_directory : str
+        Path to the directory containing input NetCDF files.
+    output_directory : str
+        Path to the directory where processed files will be saved.
+    input_basin : str
+        Path to the basin shapefile.
+    input_ddb : str
+        Path to the drainage database NetCDF file.
+    start_year : int
+        Start year of the data to process.
+    end_year : int
+        End year of the data to process.
 
-    Example Usage:
-        remap_rdrs_climate_data(
-            input_directory="path/to/input",
-            output_directory="path/to/output",
-            input_basin="path/to/basin.shp",
-            input_ddb="path/to/ddb.nc",
-            start_year=2000,
-            end_year=2020
-        )
+    Example
+    -------
+    >>> from remap_climate_to_ddb import remap_rdrs_climate_data
+    >>> remap_rdrs_climate_data(
+    ...     input_directory="path/to/input",
+    ...     output_directory="path/to/output",
+    ...     input_basin="path/to/basin.shp",
+    ...     input_ddb="path/to/ddb.nc",
+    ...     start_year=2000,
+    ...     end_year=2020
+    ... )
     """
+    
     os.makedirs(output_directory, exist_ok=True)
 
     # Read basin and drainage database files
@@ -64,43 +74,60 @@ def remap_rdrs_climate_data_single_year(input_directory, output_directory, input
     """
     Remap RDRS climate data to a drainage database (DDB) format for a single year.
 
-    Parameters:
-        input_directory (str): Path to the directory containing input NetCDF files.
-        output_directory (str): Path to the directory where processed files will be saved.
-        input_basin (str): Path to the basin shapefile.
-        input_ddb (str): Path to the drainage database NetCDF file.
-        year (int): Year of the data to process.
+    Parameters
+    ----------
+    input_directory : str
+        Path to the directory containing input NetCDF files.
+    output_directory : str
+        Path to the directory where processed files will be saved.
+    input_basin : str
+        Path to the basin shapefile.
+    input_ddb : str
+        Path to the drainage database NetCDF file.
+    year : int
+        Year of the data to process.
 
-    Example Usage:
-        remap_rdrs_climate_data_single_year(
-            input_directory="path/to/input",
-            output_directory="path/to/output",
-            input_basin="path/to/basin.shp",
-            input_ddb="path/to/ddb.nc",
-            year=2020
-        )
+    Example
+    -------
+    >>> from remap_climate_to_ddb import remap_rdrs_climate_data_single_year
+    >>> remap_rdrs_climate_data_single_year(
+    ...     input_directory="path/to/input",
+    ...     output_directory="path/to/output",
+    ...     input_basin="path/to/basin.shp",
+    ...     input_ddb="path/to/ddb.nc",
+    ...     year=2020
+    ... )
     """
+
     remap_rdrs_climate_data(input_directory, output_directory, input_basin, input_ddb, year, year)
 
 def process_file(file_path, segid, lon, lat, output_directory):
     """
     Process a single NetCDF file and remap its data to the drainage database (DDB) format.
 
-    Parameters:
-        file_path (str): Path to the input NetCDF file.
-        segid (numpy.ndarray): Array of subbasin IDs from the drainage database.
-        lon (numpy.ndarray): Array of longitude values from the drainage database.
-        lat (numpy.ndarray): Array of latitude values from the drainage database.
-        output_directory (str): Path to the directory where the processed file will be saved.
-
-    Example Usage:
-        process_file(
-            file_path="path/to/input.nc",
-            segid=subbasin_ids,
-            lon=longitudes,
-            lat=latitudes,
-            output_directory="path/to/output"
-        )
+    Parameters
+    ----------
+    file_path : str
+        Path to the input NetCDF file.
+    segid : numpy.ndarray
+        Array of subbasin IDs from the drainage database.
+    lon : numpy.ndarray
+        Array of longitude values from the drainage database.
+    lat : numpy.ndarray
+        Array of latitude values from the drainage database.
+    output_directory : str
+        Path to the directory where the processed file will be saved.
+    
+    Example
+    -------
+    >>> from remap_climate_to_ddb import process_file
+    >>> process_file(
+    ...     file_path="path/to/input.nc",
+    ...     segid=subbasin_ids,
+    ...     lon=longitudes,
+    ...     lat=latitudes,
+    ...     output_directory="path/to/output"
+    ... )
     """
     print(f"Started processing file: {file_path}")
     forc = xs.open_dataset(file_path)
