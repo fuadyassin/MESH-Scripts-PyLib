@@ -112,18 +112,17 @@
 </ul>
 </dd>
 </dl>
-<dl>
-<dt>Example Usage:</dt><dd><dl class="simple">
-<dt>process_file(</dt><dd><p>file_path=”path/to/input.nc”,
-segid=subbasin_ids,
-lon=longitudes,
-lat=latitudes,
-output_directory=”path/to/output”</p>
-</dd>
-</dl>
-<p>)</p>
-</dd>
-</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">remap_climate_to_ddb</span><span class="w"> </span><span class="kn">import</span> <span class="n">process_file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">process_file</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;path/to/input.nc&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">segid</span><span class="o">=</span><span class="n">subbasin_ids</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">lon</span><span class="o">=</span><span class="n">longitudes</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">lat</span><span class="o">=</span><span class="n">latitudes</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">output_directory</span><span class="o">=</span><span class="s2">&quot;path/to/output&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -142,19 +141,18 @@ output_directory=”path/to/output”</p>
 </ul>
 </dd>
 </dl>
-<dl>
-<dt>Example Usage:</dt><dd><dl class="simple">
-<dt>remap_rdrs_climate_data(</dt><dd><p>input_directory=”path/to/input”,
-output_directory=”path/to/output”,
-input_basin=”path/to/basin.shp”,
-input_ddb=”path/to/ddb.nc”,
-start_year=2000,
-end_year=2020</p>
-</dd>
-</dl>
-<p>)</p>
-</dd>
-</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">remap_climate_to_ddb</span><span class="w"> </span><span class="kn">import</span> <span class="n">remap_rdrs_climate_data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">remap_rdrs_climate_data</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_directory</span><span class="o">=</span><span class="s2">&quot;path/to/input&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">output_directory</span><span class="o">=</span><span class="s2">&quot;path/to/output&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">input_basin</span><span class="o">=</span><span class="s2">&quot;path/to/basin.shp&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">input_ddb</span><span class="o">=</span><span class="s2">&quot;path/to/ddb.nc&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">start_year</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">end_year</span><span class="o">=</span><span class="mi">2020</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -172,18 +170,17 @@ end_year=2020</p>
 </ul>
 </dd>
 </dl>
-<dl>
-<dt>Example Usage:</dt><dd><dl class="simple">
-<dt>remap_rdrs_climate_data_single_year(</dt><dd><p>input_directory=”path/to/input”,
-output_directory=”path/to/output”,
-input_basin=”path/to/basin.shp”,
-input_ddb=”path/to/ddb.nc”,
-year=2020</p>
-</dd>
-</dl>
-<p>)</p>
-</dd>
-</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">remap_climate_to_ddb</span><span class="w"> </span><span class="kn">import</span> <span class="n">remap_rdrs_climate_data_single_year</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">remap_rdrs_climate_data_single_year</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_directory</span><span class="o">=</span><span class="s2">&quot;path/to/input&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">output_directory</span><span class="o">=</span><span class="s2">&quot;path/to/output&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">input_basin</span><span class="o">=</span><span class="s2">&quot;path/to/basin.shp&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">input_ddb</span><span class="o">=</span><span class="s2">&quot;path/to/ddb.nc&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">year</span><span class="o">=</span><span class="mi">2020</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>

@@ -102,24 +102,34 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Remap RDRS climate data to a drainage database (DDB) format for a range of years.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        input_directory (str): Path to the directory containing input NetCDF files.</span>
-<span class="sd">        output_directory (str): Path to the directory where processed files will be saved.</span>
-<span class="sd">        input_basin (str): Path to the basin shapefile.</span>
-<span class="sd">        input_ddb (str): Path to the drainage database NetCDF file.</span>
-<span class="sd">        start_year (int): Start year of the data to process.</span>
-<span class="sd">        end_year (int): End year of the data to process.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    input_directory : str</span>
+<span class="sd">        Path to the directory containing input NetCDF files.</span>
+<span class="sd">    output_directory : str</span>
+<span class="sd">        Path to the directory where processed files will be saved.</span>
+<span class="sd">    input_basin : str</span>
+<span class="sd">        Path to the basin shapefile.</span>
+<span class="sd">    input_ddb : str</span>
+<span class="sd">        Path to the drainage database NetCDF file.</span>
+<span class="sd">    start_year : int</span>
+<span class="sd">        Start year of the data to process.</span>
+<span class="sd">    end_year : int</span>
+<span class="sd">        End year of the data to process.</span>
 
-<span class="sd">    Example Usage:</span>
-<span class="sd">        remap_rdrs_climate_data(</span>
-<span class="sd">            input_directory=&quot;path/to/input&quot;,</span>
-<span class="sd">            output_directory=&quot;path/to/output&quot;,</span>
-<span class="sd">            input_basin=&quot;path/to/basin.shp&quot;,</span>
-<span class="sd">            input_ddb=&quot;path/to/ddb.nc&quot;,</span>
-<span class="sd">            start_year=2000,</span>
-<span class="sd">            end_year=2020</span>
-<span class="sd">        )</span>
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; from remap_climate_to_ddb import remap_rdrs_climate_data</span>
+<span class="sd">    &gt;&gt;&gt; remap_rdrs_climate_data(</span>
+<span class="sd">    ...     input_directory=&quot;path/to/input&quot;,</span>
+<span class="sd">    ...     output_directory=&quot;path/to/output&quot;,</span>
+<span class="sd">    ...     input_basin=&quot;path/to/basin.shp&quot;,</span>
+<span class="sd">    ...     input_ddb=&quot;path/to/ddb.nc&quot;,</span>
+<span class="sd">    ...     start_year=2000,</span>
+<span class="sd">    ...     end_year=2020</span>
+<span class="sd">    ... )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_directory</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># Read basin and drainage database files</span>
@@ -159,22 +169,31 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Remap RDRS climate data to a drainage database (DDB) format for a single year.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        input_directory (str): Path to the directory containing input NetCDF files.</span>
-<span class="sd">        output_directory (str): Path to the directory where processed files will be saved.</span>
-<span class="sd">        input_basin (str): Path to the basin shapefile.</span>
-<span class="sd">        input_ddb (str): Path to the drainage database NetCDF file.</span>
-<span class="sd">        year (int): Year of the data to process.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    input_directory : str</span>
+<span class="sd">        Path to the directory containing input NetCDF files.</span>
+<span class="sd">    output_directory : str</span>
+<span class="sd">        Path to the directory where processed files will be saved.</span>
+<span class="sd">    input_basin : str</span>
+<span class="sd">        Path to the basin shapefile.</span>
+<span class="sd">    input_ddb : str</span>
+<span class="sd">        Path to the drainage database NetCDF file.</span>
+<span class="sd">    year : int</span>
+<span class="sd">        Year of the data to process.</span>
 
-<span class="sd">    Example Usage:</span>
-<span class="sd">        remap_rdrs_climate_data_single_year(</span>
-<span class="sd">            input_directory=&quot;path/to/input&quot;,</span>
-<span class="sd">            output_directory=&quot;path/to/output&quot;,</span>
-<span class="sd">            input_basin=&quot;path/to/basin.shp&quot;,</span>
-<span class="sd">            input_ddb=&quot;path/to/ddb.nc&quot;,</span>
-<span class="sd">            year=2020</span>
-<span class="sd">        )</span>
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; from remap_climate_to_ddb import remap_rdrs_climate_data_single_year</span>
+<span class="sd">    &gt;&gt;&gt; remap_rdrs_climate_data_single_year(</span>
+<span class="sd">    ...     input_directory=&quot;path/to/input&quot;,</span>
+<span class="sd">    ...     output_directory=&quot;path/to/output&quot;,</span>
+<span class="sd">    ...     input_basin=&quot;path/to/basin.shp&quot;,</span>
+<span class="sd">    ...     input_ddb=&quot;path/to/ddb.nc&quot;,</span>
+<span class="sd">    ...     year=2020</span>
+<span class="sd">    ... )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">remap_rdrs_climate_data</span><span class="p">(</span><span class="n">input_directory</span><span class="p">,</span> <span class="n">output_directory</span><span class="p">,</span> <span class="n">input_basin</span><span class="p">,</span> <span class="n">input_ddb</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span></div>
 
 
@@ -184,21 +203,29 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Process a single NetCDF file and remap its data to the drainage database (DDB) format.</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        file_path (str): Path to the input NetCDF file.</span>
-<span class="sd">        segid (numpy.ndarray): Array of subbasin IDs from the drainage database.</span>
-<span class="sd">        lon (numpy.ndarray): Array of longitude values from the drainage database.</span>
-<span class="sd">        lat (numpy.ndarray): Array of latitude values from the drainage database.</span>
-<span class="sd">        output_directory (str): Path to the directory where the processed file will be saved.</span>
-
-<span class="sd">    Example Usage:</span>
-<span class="sd">        process_file(</span>
-<span class="sd">            file_path=&quot;path/to/input.nc&quot;,</span>
-<span class="sd">            segid=subbasin_ids,</span>
-<span class="sd">            lon=longitudes,</span>
-<span class="sd">            lat=latitudes,</span>
-<span class="sd">            output_directory=&quot;path/to/output&quot;</span>
-<span class="sd">        )</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file_path : str</span>
+<span class="sd">        Path to the input NetCDF file.</span>
+<span class="sd">    segid : numpy.ndarray</span>
+<span class="sd">        Array of subbasin IDs from the drainage database.</span>
+<span class="sd">    lon : numpy.ndarray</span>
+<span class="sd">        Array of longitude values from the drainage database.</span>
+<span class="sd">    lat : numpy.ndarray</span>
+<span class="sd">        Array of latitude values from the drainage database.</span>
+<span class="sd">    output_directory : str</span>
+<span class="sd">        Path to the directory where the processed file will be saved.</span>
+<span class="sd">    </span>
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; from remap_climate_to_ddb import process_file</span>
+<span class="sd">    &gt;&gt;&gt; process_file(</span>
+<span class="sd">    ...     file_path=&quot;path/to/input.nc&quot;,</span>
+<span class="sd">    ...     segid=subbasin_ids,</span>
+<span class="sd">    ...     lon=longitudes,</span>
+<span class="sd">    ...     lat=latitudes,</span>
+<span class="sd">    ...     output_directory=&quot;path/to/output&quot;</span>
+<span class="sd">    ... )</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Started processing file: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">forc</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
