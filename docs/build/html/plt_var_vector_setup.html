@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>plt_var_from_vector_ddb_netcdf &mdash; MESH-Scripts-PyLib 1 documentation</title>
+  <title>plt_var_vector_setup &mdash; MESH-Scripts-PyLib 1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -21,8 +21,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="plt_var_vector_setup" href="plt_var_vector_setup.html" />
-    <link rel="prev" title="generate_mesh_hydrology_ini_from_excel" href="generate_mesh_hydrology_ini_from_excel.html" /> 
+    <link rel="next" title="MESH Streamflow File Preparation" href="MESH_StreamflowFilePrep.html" />
+    <link rel="prev" title="plt_var_from_vector_ddb_netcdf" href="plt_var_from_vector_ddb_netcdf.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,11 +54,16 @@
 <li class="toctree-l1"><a class="reference internal" href="gsde_soil.html">GSDE soil</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">plt_var_from_vector_ddb_netcdf</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#MESHpyPreProcessing.plt_var_from_vector_ddb_netcdf.plt_var_from_vector_ddb_netcdf"><code class="docutils literal notranslate"><span class="pre">plt_var_from_vector_ddb_netcdf()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="plt_var_from_vector_ddb_netcdf.html">plt_var_from_vector_ddb_netcdf</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">plt_var_vector_setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#variable-visualization-from-vector-and-netcdf-data">Variable Visualization from Vector and NetCDF Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-usage">Example Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#function-details">Function Details</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="plt_var_vector_setup.html">plt_var_vector_setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#MESHpyPostProcessing.plt_var_vector_setup.plt_var_from_vector_ddb_netcdf"><code class="docutils literal notranslate"><span class="pre">plt_var_from_vector_ddb_netcdf()</span></code></a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
 <ul>
@@ -79,9 +84,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">plt_var_from_vector_ddb_netcdf</li>
+      <li class="breadcrumb-item active">plt_var_vector_setup</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/fuadyassin/MESH-Scripts-PyLib/blob/main/docs/source/plt_var_from_vector_ddb_netcdf.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/fuadyassin/MESH-Scripts-PyLib/blob/main/docs/source/plt_var_vector_setup.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -89,12 +94,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-MESHpyPreProcessing.plt_var_from_vector_ddb_netcdf">
-<span id="plt-var-from-vector-ddb-netcdf"></span><h1>plt_var_from_vector_ddb_netcdf<a class="headerlink" href="#module-MESHpyPreProcessing.plt_var_from_vector_ddb_netcdf" title="Link to this heading"></a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="MESHpyPreProcessing.plt_var_from_vector_ddb_netcdf.plt_var_from_vector_ddb_netcdf">
-<span class="sig-prename descclassname"><span class="pre">MESHpyPreProcessing.plt_var_from_vector_ddb_netcdf.</span></span><span class="sig-name descname"><span class="pre">plt_var_from_vector_ddb_netcdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_basin_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddbnetcdf_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'plot.png'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.55,</span> <span class="pre">0.95)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cbar_location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.96,</span> <span class="pre">0.15,</span> <span class="pre">0.02,</span> <span class="pre">0.7]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subplot_adjustments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subbasin_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'subbasin'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comid_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'COMID'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">landuse_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grudim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NGRU'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grunames_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LandUse'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">soldim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nsol'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/plt_var_from_vector_ddb_netcdf.html#plt_var_from_vector_ddb_netcdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.plt_var_from_vector_ddb_netcdf.plt_var_from_vector_ddb_netcdf" title="Link to this definition"></a></dt>
-<dd><section id="variable-visualization-from-vector-and-netcdf-data">
+  <section id="module-MESHpyPostProcessing.plt_var_vector_setup">
+<span id="plt-var-vector-setup"></span><h1>plt_var_vector_setup<a class="headerlink" href="#module-MESHpyPostProcessing.plt_var_vector_setup" title="Link to this heading"></a></h1>
+<section id="variable-visualization-from-vector-and-netcdf-data">
 <h2>Variable Visualization from Vector and NetCDF Data<a class="headerlink" href="#variable-visualization-from-vector-and-netcdf-data" title="Link to this heading"></a></h2>
 <p>This module provides a function to visualize spatial variables from a NetCDF file and overlay them on a shapefile.
 It supports single-variable plots, land use-based grouped visualizations, and soil layer-specific representations.</p>
@@ -218,7 +220,10 @@ It supports single-variable plots, land use-based grouped visualizations, and so
 </dl>
 </section>
 </section>
-</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="MESHpyPostProcessing.plt_var_vector_setup.plt_var_from_vector_ddb_netcdf">
+<span class="sig-prename descclassname"><span class="pre">MESHpyPostProcessing.plt_var_vector_setup.</span></span><span class="sig-name descname"><span class="pre">plt_var_from_vector_ddb_netcdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_basin_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddbnetcdf_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'plot.png'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.55,</span> <span class="pre">0.95)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cbar_location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.96,</span> <span class="pre">0.15,</span> <span class="pre">0.02,</span> <span class="pre">0.7]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subplot_adjustments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subbasin_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'subbasin'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comid_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'COMID'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">landuse_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grudim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NGRU'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grunames_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LandUse'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">soldim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nsol'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPostProcessing/plt_var_vector_setup.html#plt_var_from_vector_ddb_netcdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPostProcessing.plt_var_vector_setup.plt_var_from_vector_ddb_netcdf" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 </section>
 
@@ -226,8 +231,8 @@ It supports single-variable plots, land use-based grouped visualizations, and so
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="generate_mesh_hydrology_ini_from_excel.html" class="btn btn-neutral float-left" title="generate_mesh_hydrology_ini_from_excel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="plt_var_vector_setup.html" class="btn btn-neutral float-right" title="plt_var_vector_setup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="plt_var_from_vector_ddb_netcdf.html" class="btn btn-neutral float-left" title="plt_var_from_vector_ddb_netcdf" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="MESH_StreamflowFilePrep.html" class="btn btn-neutral float-right" title="MESH Streamflow File Preparation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
