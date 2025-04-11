@@ -40,18 +40,27 @@ Contents
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: File preparation:
 
-   Aggregation_vector
-   NetCDFWriter
-   convert_ddbnetcdf
-   gdf_edit
-   gen_streamflow_file
-   gsde_soil
-   generate_mesh_class_ini_from_excel
-   generate_mesh_hydrology_ini_from_excel
-   plt_var_from_vector_ddb_netcdf
-   plt_var_vector_setup
+   Aggregation_vector.rst
+   NetCDFWriter.rst
+   convert_ddbnetcdf.rst
+   gdf_edit.rst
+   gen_streamflow_file.rst
+   gsde_soil.rst
+   generate_mesh_class_ini_from_excel.rst
+   generate_mesh_hydrology_ini_from_excel.rst
+   remap_climate_to_ddb.rst
+
+Visualization
+---------------
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Visualization:
+
+   plt_var_from_vector_ddb_netcdf.rst
+   plt_var_vector_setup.rst
 
 Jupyter Notebooks
 -----------------
@@ -60,7 +69,7 @@ Jupyter Notebooks
    :maxdepth: 2
    :caption: Jupyter Notebooks:
 
-   MESH_StreamflowFilePrep
+   MESH_StreamflowFilePrep.rst
 
 Indices and Tables
 ------------------
