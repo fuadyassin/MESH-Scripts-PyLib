@@ -74,7 +74,7 @@ html_context = {
 }
 # Options for inheritance diagrams
 inheritance_graph_attrs = dict(rankdir="LR", size='"6.0, 8.0"', fontsize=12)
-inheritance_node_attrs = dict(shape="ellipse", fontsize=12, color="blue", style="filled", fillcolor="lightgray")
+inheritance_node_attrs = dict(shape="ellipse", fontsize=12, color="red", style="filled", fillcolor="lightgray")
 
 # -- Napoleon autodoc options -------------------------------------------------
 napoleon_numpy_docstring = True
