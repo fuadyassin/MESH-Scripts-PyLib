@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>remap_climate_to_ddb &mdash; MESH-Scripts-PyLib 1.0 documentation</title>
+  <title>Remapping RDRS Climate Data via SLURM Script &mdash; MESH-Scripts-PyLib 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -20,9 +20,7 @@
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="plt_var_from_vector_ddb_netcdf" href="plt_var_from_vector_ddb_netcdf.html" />
-    <link rel="prev" title="generate_mesh_hydrology_ini_from_excel" href="generate_mesh_hydrology_ini_from_excel.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,7 +43,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">File preparation:</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="Aggregation_vector.html">Aggregate vector subbasins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="NetCDFWriter.html">Netcdf writer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="convert_ddbnetcdf.html">convert_ddbnetcdf</a></li>
@@ -54,17 +52,7 @@
 <li class="toctree-l1"><a class="reference internal" href="gsde_soil.html">GSDE soil</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">remap_climate_to_ddb</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#MESHpyPreProcessing.remap_climate_to_ddb.process_file"><code class="docutils literal notranslate"><span class="pre">process_file()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#MESHpyPreProcessing.remap_climate_to_ddb.remap_rdrs_climate_data"><code class="docutils literal notranslate"><span class="pre">remap_rdrs_climate_data()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#MESHpyPreProcessing.remap_climate_to_ddb.remap_rdrs_climate_data_single_year"><code class="docutils literal notranslate"><span class="pre">remap_rdrs_climate_data_single_year()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#slurm-script-usage">SLURM Script Usage</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#typical-usage">Typical Usage</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#slurm-shell-script">SLURM Shell Script</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="remap_climate_to_ddb.html">remap_climate_to_ddb</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
 <ul>
@@ -90,9 +78,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">remap_climate_to_ddb</li>
+      <li class="breadcrumb-item active">Remapping RDRS Climate Data via SLURM Script</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/fuadyassin/MESH-Scripts-PyLib/blob/main/docs/source/remap_climate_to_ddb.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/fuadyassin/MESH-Scripts-PyLib/blob/main/docs/source/remap_rdrs_usage.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -100,111 +88,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-MESHpyPreProcessing.remap_climate_to_ddb">
-<span id="remap-climate-to-ddb"></span><h1>remap_climate_to_ddb<a class="headerlink" href="#module-MESHpyPreProcessing.remap_climate_to_ddb" title="Link to this heading"></a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="MESHpyPreProcessing.remap_climate_to_ddb.process_file">
-<span class="sig-prename descclassname"><span class="pre">MESHpyPreProcessing.remap_climate_to_ddb.</span></span><span class="sig-name descname"><span class="pre">process_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/remap_climate_to_ddb.html#process_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.remap_climate_to_ddb.process_file" title="Link to this definition"></a></dt>
-<dd><p>Process a single NetCDF file and remap its data to the drainage database (DDB) format.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>file_path</strong> (<em>str</em>) – Path to the input NetCDF file.</p></li>
-<li><p><strong>segid</strong> (<em>numpy.ndarray</em>) – Array of subbasin IDs from the drainage database.</p></li>
-<li><p><strong>lon</strong> (<em>numpy.ndarray</em>) – Array of longitude values from the drainage database.</p></li>
-<li><p><strong>lat</strong> (<em>numpy.ndarray</em>) – Array of latitude values from the drainage database.</p></li>
-<li><p><strong>output_directory</strong> (<em>str</em>) – Path to the directory where the processed file will be saved.</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">remap_climate_to_ddb</span><span class="w"> </span><span class="kn">import</span> <span class="n">process_file</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">process_file</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;path/to/input.nc&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">segid</span><span class="o">=</span><span class="n">subbasin_ids</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">lon</span><span class="o">=</span><span class="n">longitudes</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">lat</span><span class="o">=</span><span class="n">latitudes</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">output_directory</span><span class="o">=</span><span class="s2">&quot;path/to/output&quot;</span>
-<span class="gp">... </span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="MESHpyPreProcessing.remap_climate_to_ddb.remap_rdrs_climate_data">
-<span class="sig-prename descclassname"><span class="pre">MESHpyPreProcessing.remap_climate_to_ddb.</span></span><span class="sig-name descname"><span class="pre">remap_rdrs_climate_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_basin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_ddb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/remap_climate_to_ddb.html#remap_rdrs_climate_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.remap_climate_to_ddb.remap_rdrs_climate_data" title="Link to this definition"></a></dt>
-<dd><p>Remap RDRS climate data to a drainage database (DDB) format for a range of years.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>input_directory</strong> (<em>str</em>) – Path to the directory containing input NetCDF files.</p></li>
-<li><p><strong>output_directory</strong> (<em>str</em>) – Path to the directory where processed files will be saved.</p></li>
-<li><p><strong>input_basin</strong> (<em>str</em>) – Path to the basin shapefile.</p></li>
-<li><p><strong>input_ddb</strong> (<em>str</em>) – Path to the drainage database NetCDF file.</p></li>
-<li><p><strong>start_year</strong> (<em>int</em>) – Start year of the data to process.</p></li>
-<li><p><strong>end_year</strong> (<em>int</em>) – End year of the data to process.</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">remap_climate_to_ddb</span><span class="w"> </span><span class="kn">import</span> <span class="n">remap_rdrs_climate_data</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">remap_rdrs_climate_data</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">input_directory</span><span class="o">=</span><span class="s2">&quot;path/to/input&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">output_directory</span><span class="o">=</span><span class="s2">&quot;path/to/output&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">input_basin</span><span class="o">=</span><span class="s2">&quot;path/to/basin.shp&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">input_ddb</span><span class="o">=</span><span class="s2">&quot;path/to/ddb.nc&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">start_year</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">end_year</span><span class="o">=</span><span class="mi">2020</span>
-<span class="gp">... </span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="MESHpyPreProcessing.remap_climate_to_ddb.remap_rdrs_climate_data_single_year">
-<span class="sig-prename descclassname"><span class="pre">MESHpyPreProcessing.remap_climate_to_ddb.</span></span><span class="sig-name descname"><span class="pre">remap_rdrs_climate_data_single_year</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_basin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_ddb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/remap_climate_to_ddb.html#remap_rdrs_climate_data_single_year"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.remap_climate_to_ddb.remap_rdrs_climate_data_single_year" title="Link to this definition"></a></dt>
-<dd><p>Remap RDRS climate data to a drainage database (DDB) format for a single year.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>input_directory</strong> (<em>str</em>) – Path to the directory containing input NetCDF files.</p></li>
-<li><p><strong>output_directory</strong> (<em>str</em>) – Path to the directory where processed files will be saved.</p></li>
-<li><p><strong>input_basin</strong> (<em>str</em>) – Path to the basin shapefile.</p></li>
-<li><p><strong>input_ddb</strong> (<em>str</em>) – Path to the drainage database NetCDF file.</p></li>
-<li><p><strong>year</strong> (<em>int</em>) – Year of the data to process.</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">remap_climate_to_ddb</span><span class="w"> </span><span class="kn">import</span> <span class="n">remap_rdrs_climate_data_single_year</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">remap_rdrs_climate_data_single_year</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">input_directory</span><span class="o">=</span><span class="s2">&quot;path/to/input&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">output_directory</span><span class="o">=</span><span class="s2">&quot;path/to/output&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">input_basin</span><span class="o">=</span><span class="s2">&quot;path/to/basin.shp&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">input_ddb</span><span class="o">=</span><span class="s2">&quot;path/to/ddb.nc&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">year</span><span class="o">=</span><span class="mi">2020</span>
-<span class="gp">... </span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<section id="slurm-script-usage">
-<h2>SLURM Script Usage<a class="headerlink" href="#slurm-script-usage" title="Link to this heading"></a></h2>
-<p>This SLURM script demonstrates how to use the functions
-<code class="docutils literal notranslate"><span class="pre">remap_rdrs_climate_data</span></code> and <code class="docutils literal notranslate"><span class="pre">remap_rdrs_climate_data_single_year</span></code> in an HPC environment.</p>
-<section id="typical-usage">
-<h3>Typical Usage<a class="headerlink" href="#typical-usage" title="Link to this heading"></a></h3>
-<p>Run all sections in a single job:</p>
+  <section id="remapping-rdrs-climate-data-via-slurm-script">
+<h1>Remapping RDRS Climate Data via SLURM Script<a class="headerlink" href="#remapping-rdrs-climate-data-via-slurm-script" title="Link to this heading"></a></h1>
+<p>This SLURM shell script demonstrates how to use the
+<code class="docutils literal notranslate"><span class="pre">remap_rdrs_climate_data</span></code> and <code class="docutils literal notranslate"><span class="pre">remap_rdrs_climate_data_single_year</span></code> functions
+from the <code class="docutils literal notranslate"><span class="pre">MESHpyPreProcessing.remap_rdrs_climate_data</span></code> module to process
+RDRS climate data in a high-performance computing environment.</p>
+<section id="usage-scenarios">
+<h2>Usage Scenarios<a class="headerlink" href="#usage-scenarios" title="Link to this heading"></a></h2>
+<p>To run all sections in a single job:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sbatch<span class="w"> </span>Forcing_RDRS_processingMet3.sh<span class="w"> </span>--section1<span class="w"> </span>--section2<span class="w"> </span>--section3
 </pre></div>
 </div>
-<p>Run each year in parallel using SLURM array jobs:</p>
+<p>To run individual years in parallel using SLURM array jobs:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sbatch<span class="w"> </span>--array<span class="o">=</span><span class="m">0</span>-38<span class="w"> </span>Forcing_RDRS_processingMet3.sh<span class="w"> </span>--section1
 </pre></div>
 </div>
 </section>
-<section id="slurm-shell-script">
-<h3>SLURM Shell Script<a class="headerlink" href="#slurm-shell-script" title="Link to this heading"></a></h3>
+<section id="script-overview">
+<h2>Script Overview<a class="headerlink" href="#script-overview" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Section 1:</strong> Executes the Python script to process RDRS data (single or multiple years)</p></li>
+<li><p><strong>Section 2:</strong> Merges yearly NetCDF files using <cite>cdo mergetime</cite></p></li>
+<li><p><strong>Section 3:</strong> Performs unit conversions with <cite>nco</cite> and <cite>cdo</cite></p></li>
+</ul>
+</section>
+<section id="slurm-script">
+<h2>SLURM Script<a class="headerlink" href="#slurm-script" title="Link to this heading"></a></h2>
+<p>Below is the full SLURM shell script used to drive the workflow.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
 <span class="c1">#SBATCH --account=rpp-kshook</span>
 <span class="c1">#SBATCH --nodes=1</span>
@@ -216,13 +127,19 @@
 <span class="c1">#SBATCH --mail-type=BEGIN,END,FAIL</span>
 
 :<span class="w"> </span><span class="s1">&#39;</span>
+<span class="s1"># Forcing RDRS Processing Script</span>
+
 <span class="s1">This script processes climate forcing data for the vector-based MESH RDRS dataset.</span>
-<span class="s1">Supports array jobs and all-years processing.</span>
+
+<span class="s1">Usage:</span>
+<span class="s1">sbatch --array=0-38 Forcing_RDRS_processingMet3.sh --section1</span>
+<span class="s1">sbatch Forcing_RDRS_processingMet3.sh --section1 --section2 --section3</span>
 <span class="s1">&#39;</span>
 
 module<span class="w"> </span>load<span class="w"> </span>cdo
 module<span class="w"> </span>load<span class="w"> </span>nco
 
+<span class="c1"># Parameters</span>
 <span class="nv">basin</span><span class="o">=</span><span class="s2">&quot;sras&quot;</span>
 <span class="nv">start_year</span><span class="o">=</span><span class="m">1980</span>
 <span class="nv">end_year</span><span class="o">=</span><span class="m">2018</span>
@@ -233,6 +150,7 @@ module<span class="w"> </span>load<span class="w"> </span>nco
 <span class="nv">dir_merged_file</span><span class="o">=</span><span class="s2">&quot;/scratch/fuaday/sras-agg-model/easymore-outputs-merged&quot;</span>
 <span class="nv">merged_file</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">dir_merged_file</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">basin</span><span class="si">}</span><span class="s2">_rdrs_</span><span class="si">${</span><span class="nv">start_year</span><span class="si">}</span><span class="s2">_</span><span class="si">${</span><span class="nv">end_year</span><span class="si">}</span><span class="s2">_v21_allVar.nc&quot;</span>
 
+<span class="c1"># Activate the virtual environment</span>
 <span class="nb">source</span><span class="w"> </span><span class="nv">$HOME</span>/virtual-envs/scienv/bin/activate
 module<span class="w"> </span>load<span class="w"> </span>StdEnv/2020
 module<span class="w"> </span>load<span class="w"> </span>gcc/9.3.0
@@ -242,6 +160,8 @@ module<span class="w"> </span>load<span class="w"> </span>nco
 
 <span class="k">function</span><span class="w"> </span>run_section1_single_year<span class="w"> </span><span class="o">{</span>
 <span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">year</span><span class="o">=</span><span class="nv">$1</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Running Section 1 for year </span><span class="nv">$year</span><span class="s2">&quot;</span>
+
 <span class="w">    </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
 <span class="s2">import sys</span>
 <span class="s2">sys.path.append(&#39;</span><span class="nv">$HOME</span><span class="s2">/virtual-envs/scienv/lib/python3.8/site-packages&#39;)</span>
@@ -314,15 +234,11 @@ module<span class="w"> </span>load<span class="w"> </span>nco
 </div>
 </section>
 </section>
-</section>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="generate_mesh_hydrology_ini_from_excel.html" class="btn btn-neutral float-left" title="generate_mesh_hydrology_ini_from_excel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="plt_var_from_vector_ddb_netcdf.html" class="btn btn-neutral float-right" title="plt_var_from_vector_ddb_netcdf" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

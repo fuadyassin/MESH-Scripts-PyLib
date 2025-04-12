@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GSDE soil &mdash; MESH-Scripts-PyLib 1 documentation</title>
+  <title>GSDE soil &mdash; MESH-Scripts-PyLib 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -150,7 +150,8 @@ merges the data with a given shapefile, and exports the processed data.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="MESHpyPreProcessing.gsde_soil.GSDESoil">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MESHpyPreProcessing.gsde_soil.</span></span><span class="sig-name descname"><span class="pre">GSDESoil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_basin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_shapefile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/gsde_soil.html#GSDESoil"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.gsde_soil.GSDESoil" title="Link to this definition"></a></dt>
-<dd><p>A class to process and merge soil data from CSV files with a given basin shapefile.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to process and merge soil data from CSV files with a given basin shapefile.</p>
 <section id="attributes">
 <h2>Attributes:<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
 <dl class="simple">
@@ -196,9 +197,14 @@ Apply renaming/suffixing during the reading of each file.</p>
 <dt class="sig sig-object py" id="MESHpyPreProcessing.gsde_soil.GSDESoil.load_data">
 <span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_replace_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/gsde_soil.html#GSDESoil.load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.gsde_soil.GSDESoil.load_data" title="Link to this definition"></a></dt>
 <dd><p>Load data from multiple CSV files, apply renaming/suffixing, and merge into a single DataFrame.
-:param - file_names: List of CSV file names to be loaded.
-:param - search_replace_dict: Dictionary with file name as key and (search_list, replace_list) tuple as value.
-:param - suffix_dict: Dictionary with file name as key and suffix as value.</p>
+Parameters:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>file_names: List of CSV file names to be loaded.</p></li>
+<li><p>search_replace_dict: Dictionary with file name as key and (search_list, replace_list) tuple as value.</p></li>
+<li><p>suffix_dict: Dictionary with file name as key and suffix as value.</p></li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
