@@ -1,6 +1,6 @@
 import pandas as pd
 
-def generate_mesh_hydrology_ini_from_excel(excel_file, sheet_name, output_file):
+def generate_mesh_hydrology_ini_from_excel(excel_file, output_file="MeshHydrology.ini", sheet_name="hydrology_ini"):
     """
     ---------------------------------------------------------------------------------
     Description:
@@ -14,6 +14,7 @@ def generate_mesh_hydrology_ini_from_excel(excel_file, sheet_name, output_file):
     ---------------------------------------------------------------------------------
     - excel_file  : str  -> Path to the input Excel file containing parameter values.
     - sheet_name  : str  -> The specific sheet in the Excel file that holds the data.
+                            Default is "hydrology_ini".
     - output_file : str  -> Path to the output `.ini` file.
 
     ---------------------------------------------------------------------------------
@@ -68,12 +69,30 @@ def generate_mesh_hydrology_ini_from_excel(excel_file, sheet_name, output_file):
     - **GRU-Dependent Parameters**: Contains parameters that vary by land category.
 
     ---------------------------------------------------------------------------------
+    GRU-Dependent Parameters Selection and Ordering:
+    ---------------------------------------------------------------------------------
+    - The `GRU_class_dependent_active` row in the Excel sheet is used to determine 
+      which GRU-dependent headers (columns) are active. Each column corresponding 
+      to a GRU class (e.g., Forest, Grass, Wetland) has a value indicating its 
+      active status:
+        - A value > 0 indicates the column is active.
+        - A value <= 0 indicates the column is inactive.
+    - Active columns are sorted in ascending order based on their values in the 
+      `GRU_class_dependent_active` row. This sorted order determines the sequence 
+      in which GRU-dependent parameters are written to the output file.
+    - The sorted active column names are included as a comment in the output file 
+      for reference.
+
+    ---------------------------------------------------------------------------------
     Example Usage:
     ---------------------------------------------------------------------------------
-    >>> excel_file = "/content/drive/MyDrive/ColabNotebook_FY/meshparametersvalues2.xlsx"
-    >>> sheet_name = "hydrology_ini"
-    >>> output_file = "MeshHydrology.ini"
-    >>> generate_mesh_hydrology_ini_from_excel(excel_file, sheet_name, output_file)
+    >>> from MESHpyPreProcessing.generate_mesh_hydrology_ini_from_excel import generate_mesh_hydrology_ini_from_excel
+    >>> gen_hydini = generate_mesh_hydrology_ini_from_excel
+    >>> gen_hydini(
+            sheet_name="hydrology_ini",
+            output_file="MeshHydrology2.ini",
+            excel_file="D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPreProcessing/meshparametersvalues2.xlsx"
+        )
     
     - This will generate a properly formatted `MeshHydrology.ini` file in the specified path.
     """
@@ -173,3 +192,6 @@ def generate_mesh_hydrology_ini_from_excel(excel_file, sheet_name, output_file):
 
     with open(output_file, 'w') as f:
         f.write(content)
+# from MESHpyPreProcessing.generate_mesh_hydrology_ini_from_excel import generate_mesh_hydrology_ini_from_excel
+# gen_hydini(output_file="MeshHydrology2.ini",excel_file="D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPreProcessing/meshparametersvalues2.xlsx")
+#gen_hydini(sheet_name="hydrology_ini",output_file="MeshHydrology2.ini",excel_file="D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPreProcessing/meshparametersvalues2.xlsx")
