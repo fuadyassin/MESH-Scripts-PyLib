@@ -97,8 +97,20 @@
 <span id="generate-mesh-class-ini-from-excel"></span><h1>generate_mesh_class_ini_from_excel<a class="headerlink" href="#module-MESHpyPreProcessing.generate_mesh_class_ini_from_excel" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="MESHpyPreProcessing.generate_mesh_class_ini_from_excel.generate_mesh_class_ini_from_excel">
-<span class="sig-prename descclassname"><span class="pre">MESHpyPreProcessing.generate_mesh_class_ini_from_excel.</span></span><span class="sig-name descname"><span class="pre">generate_mesh_class_ini_from_excel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">excel_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_land_covers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/generate_mesh_class_ini_from_excel.html#generate_mesh_class_ini_from_excel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.generate_mesh_class_ini_from_excel.generate_mesh_class_ini_from_excel" title="Link to this definition"></a></dt>
-<dd><section id="parameters">
+<span class="sig-prename descclassname"><span class="pre">MESHpyPreProcessing.generate_mesh_class_ini_from_excel.</span></span><span class="sig-name descname"><span class="pre">generate_mesh_class_ini_from_excel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">excel_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MESH_class_output.ini'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'class_ini'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/generate_mesh_class_ini_from_excel.html#generate_mesh_class_ini_from_excel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.generate_mesh_class_ini_from_excel.generate_mesh_class_ini_from_excel" title="Link to this definition"></a></dt>
+<dd><section id="description">
+<h2>Description:<a class="headerlink" href="#description" title="Link to this heading"></a></h2>
+<p>This function processes an Excel file containing land cover parameter values and
+generates a MESH-compatible <cite>.ini</cite> file. The function is designed to extract,
+format, and write the required parameters for active land covers into the
+output file, ensuring compatibility with the MESH hydrological model.
+The function includes detailed steps for processing the Excel file,
+extracting relevant data, and formatting it into the required structure for MESH.
+It also validates the input data and ensures that all necessary parameters are present.
+The existing description below provides further details about the function’s
+parameters, processing steps, and output format.</p>
+</section>
+<section id="parameters">
 <h2>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
 <dl class="simple">
 <dt>excel_file<span class="classifier">str</span></dt><dd><p>Path to the Excel file containing parameter values.</p>
@@ -112,37 +124,43 @@
 <dt>lon<span class="classifier">float</span></dt><dd><p>Longitude of the location.</p>
 </dd>
 </dl>
-</section>
 <section id="overview">
-<h2>Overview:<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
-<p>This function extracts land cover parameter values from an Excel file and writes them into a MESH-compatible <cite>.ini</cite> file.
-Only active land covers are included, as indicated by the ‘status’ row in the Excel sheet.</p>
-<dl class="simple">
-<dt>Processing Steps:</dt><dd><ol class="arabic simple">
-<li><p>Load the Excel file and normalize column names.</p></li>
-<li><p>Identify active land covers (status &gt; 0).</p></li>
+<h3>Overview:<a class="headerlink" href="#overview" title="Link to this heading"></a></h3>
+<p>This function extracts land cover parameter values from an Excel file and
+writes them into a MESH-compatible <cite>.ini</cite> file. Only active land covers are
+included, as indicated by the ‘status’ row in the Excel sheet.</p>
+</section>
+<section id="processing-steps">
+<h3>Processing Steps:<a class="headerlink" href="#processing-steps" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>Load the Excel file and normalize column names.</dt><dd><ul class="simple">
+<li><p>The function reads the Excel file using <cite>pandas</cite> and converts all column names to lowercase for consistency.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Identify active land covers (status &gt; 0):
+- The function identifies the row labeled ‘status’ in the Excel file, which contains numerical values for each land cover column.
+- These numerical values indicate the activation status of each land cover. A value greater than 0 signifies that the land cover is active.
+- The function filters out inactive land covers (status &lt;= 0) and retains only the active ones.
+- The active land covers are then sorted in ascending order based on their status values to ensure a consistent and logical ordering in the output file.</p></li>
 <li><p>Verify required rows such as ‘colum’.</p></li>
 <li><p>Extract vegetation and land cover parameters.</p></li>
 <li><p>Write formatted values into an <cite>.ini</cite> file with the required MESH structure.</p></li>
 </ol>
-</dd>
-</dl>
 </section>
 <section id="output-format">
-<h2>Output Format:<a class="headerlink" href="#output-format" title="Link to this heading"></a></h2>
-<dl class="simple">
-<dt>The generated <cite>.ini</cite> file follows MESH parameter conventions with:</dt><dd><ul class="simple">
-<li><p>Header defining basin information.</p></li>
-<li><p>Land cover-specific vegetation and hydrological parameters.</p></li>
-<li><p>Footer containing model time initialization values.</p></li>
-</ul>
-</dd>
-</dl>
+<h3>Output Format:<a class="headerlink" href="#output-format" title="Link to this heading"></a></h3>
+<p>The output file is structured to be compatible with MESH, including:
+- Header defining basin information.
+- Land cover-specific vegetation and hydrological parameters.
+- Footer containing model time initialization values.</p>
 </section>
 <section id="file-structure">
-<h2>File Structure:<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h2>
-<dl class="simple">
-<dt>The output file consists of:</dt><dd><ol class="arabic simple">
+<h3>File Structure:<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<p>The output file consists of:</p>
+<ol class="arabic simple">
 <li><p><strong>Header Information</strong>: Includes metadata such as location, author, and details.</p></li>
 <li><p><strong>Land Cover Blocks</strong>: Each selected land cover is written separately, including:
 - Vegetation parameters (written in pairs)
@@ -150,15 +168,131 @@ Only active land covers are included, as indicated by the ‘status’ row in th
 - Multi-value parameter assignments (written in structured format)</p></li>
 <li><p><strong>Final Footer</strong>: Contains three mandatory lines required for MESH processing.</p></li>
 </ol>
-</dd>
-</dl>
 </section>
 <section id="example-usage">
-<h2>Example Usage:<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h2>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">MESH</span><span class="o">-</span><span class="n">Model</span><span class="o">/</span><span class="n">MESH</span><span class="o">-</span><span class="n">Scripts</span><span class="o">-</span><span class="n">PyLib</span><span class="o">.</span><span class="n">git</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_mesh_ini_from_excel</span><span class="p">(</span><span class="s2">&quot;meshparameters.xlsx&quot;</span><span class="p">,</span> <span class="s2">&quot;MESH_output.ini&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Forest&quot;</span><span class="p">,</span> <span class="s2">&quot;crop&quot;</span><span class="p">],</span><span class="n">num_cels</span><span class="o">=</span><span class="mi">7408</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="mf">53.18</span><span class="p">,</span> <span class="n">lon</span><span class="o">=-</span><span class="mf">99.25</span><span class="p">)</span>
+<h3>Example Usage:<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># The excel database can be found in the MESHpyPreProcessing folder.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Directly dowolnload the excel file from the MESHpyPreProcessing folder.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/MESH-Scripts-PyLib/MESH-Scripts-PyLib/main/MESHpyPreProcessing/meshparametersvalues2.xlsx&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Local path to save the file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">local_path</span> <span class="o">=</span> <span class="s2">&quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPreProcessing/meshparametersvalues2.xlsx&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Send a GET request to download the file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Check if the request was successful (status code 200)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># Write the content to a local file</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File downloaded successfully and saved to </span><span class="si">{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to download file. Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example usage of the function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">MESHpyPreProcessing.generate_mesh_class_ini_from_excel</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_mesh_class_ini_from_excel</span> <span class="k">as</span> <span class="n">gen_classini</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gen_classini</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">excel_file</span><span class="o">=</span><span class="s2">&quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPreProcessing/meshparametersvalues2.xlsx&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;MESH_output2.ini&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">num_cels</span><span class="o">=</span><span class="mi">7408</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">lat</span><span class="o">=</span><span class="mf">53.18</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">lon</span><span class="o">=-</span><span class="mf">99.25</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-output">
+<h3>Example Output:<a class="headerlink" href="#example-output" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Basin
+Author
+Org
+53.18     -99.25     40.00     40.00     50.00   -1.0    1 7408    5
+0.000      0.000      0.000      0.000      1.000      0.000      0.000      0.000      0.000             # fcan, lamx
+0.000      0.000      0.000      0.000     -5.352      0.000      0.000      0.000      0.000             # lnz, lamn
+0.000      0.000      0.000      0.000      0.400      0.000      0.000      0.000      0.000             # alvc, cmas
+0.000      0.000      0.000      0.000      0.250      0.000      0.000      0.000      0.000             # alir, root
+0.000      0.000      0.000      0.000                 0.000      0.000      0.000      0.000             # rsmn, qa50
+0.000      0.000      0.000      0.000                 0.000      0.000      0.000      0.000             # vpda, vpdp
+0.000      0.000      0.000      0.000                 0.000      0.000      0.000      0.000             # psga, psgb
+1.000      2.000      1.000     50.000  # drn, sdep, fare, dden
+0.100      0.100      0.388      0.070      8.000     Barren  # xslp, grkf, man, wfci, mid, name
+73.000     45.000     66.000  # sand
+6.400     29.600     20.440  # clay
+7.400      0.000      0.000  # org
+4.000      2.000      1.000        4.000        0.000        4.000  # soit, cant, snot, pndt
+0.250      0.250      0.250        0.000      0.000      0.000        0.000  # soiwf, soiif, pond
+0.000        0.000        0.000        0.500      100.000        1.000  # rcan, scan, sno, albs, rho, gro
+
+0.000      1.000      0.000      0.000      0.000      0.000      4.148      0.000      0.000             # fcan, lamx
+0.000      0.475      0.000      0.000      0.000      0.000      0.512      0.000      0.000             # lnz, lamn
+0.000      0.049      0.000      0.000      0.000      0.000     23.583      0.000      0.000             # alvc, cmas
+0.000      0.257      0.000      0.000      0.000      0.000      1.249      0.000      0.000             # alir, root
+0.000    110.930      0.000      0.000                 0.000     37.506      0.000      0.000             # rsmn, qa50
+0.000      0.427      0.000      0.000                 0.000      0.765      0.000      0.000             # vpda, vpdp
+0.000    100.000      0.000      0.000                 0.000      5.000      0.000      0.000             # psga, psgb
+1.000      2.000      1.000     50.000  # drn, sdep, fare, dden
+0.040      0.100      0.119      0.100      2.000   MixedForest  # xslp, grkf, man, wfci, mid, name
+75.000     66.000     66.000  # sand
+5.000     30.000     17.000  # clay
+5.000      0.000      0.000  # org
+4.000      2.000      1.000        4.000        0.000        4.000  # soit, cant, snot, pndt
+0.250      0.250      0.250        0.000      0.000      0.000        0.000  # soiwf, soiif, pond
+0.000        0.000        0.000        0.500      100.000        1.000  # rcan, scan, sno, albs, rho, gro
+
+1.000      0.000      0.000      0.000      0.000      1.162      0.000      0.000      0.000             # fcan, lamx
+-0.187      0.000      0.000      0.000      0.000      0.509      0.000      0.000      0.000             # lnz, lamn
+0.046      0.000      0.000      0.000      0.000     13.624      0.000      0.000      0.000             # alvc, cmas
+0.154      0.000      0.000      0.000      0.000      1.768      0.000      0.000      0.000             # alir, root
+236.390      0.000      0.000      0.000                27.913      0.000      0.000      0.000             # rsmn, qa50
+0.502      0.000      0.000      0.000                 0.812      0.000      0.000      0.000             # vpda, vpdp
+100.000      0.000      0.000      0.000                 5.000      0.000      0.000      0.000             # psga, psgb
+1.000      2.000      1.000     50.000  # drn, sdep, fare, dden
+0.040      0.122      0.151      1.380      1.000     Forest  # xslp, grkf, man, wfci, mid, name
+73.200     43.300     72.903  # sand
+5.200     29.100     21.362  # clay
+5.000      0.000      0.000  # org
+4.000      2.000      1.000        4.000        0.000        4.000  # soit, cant, snot, pndt
+0.250      0.250      0.250        0.000      0.000      0.000        0.000  # soiwf, soiif, pond
+0.000        0.000        0.000        0.500      100.000        1.000  # rcan, scan, sno, albs, rho, gro
+
+0.000      0.000      1.000      0.000      0.000      0.000      0.000      5.807      0.000             # fcan, lamx
+0.000      0.000     -2.541      0.000      0.000      0.000      0.000      0.000      0.000             # lnz, lamn
+0.000      0.000      0.061      0.000      0.000      0.000      0.000      1.923      0.000             # alvc, cmas
+0.000      0.000      0.298      0.000      0.000      0.000      0.000      1.200      0.000             # alir, root
+0.000      0.000     63.107      0.000                 0.000      0.000     22.541      0.000             # rsmn, qa50
+0.000      0.000      0.568      0.000                 0.000      0.000      0.804      0.000             # vpda, vpdp
+0.000      0.000    100.000      0.000                 0.000      0.000      5.000      0.000             # psga, psgb
+1.000      2.000      1.000     40.000  # drn, sdep, fare, dden
+0.010      0.503      0.164      1.432      4.000       Crop  # xslp, grkf, man, wfci, mid, name
+50.000     55.000     60.000  # sand
+35.000     35.000     35.000  # clay
+15.000     10.000      5.000  # org
+4.000      2.000      1.000        4.000        0.000        4.000  # soit, cant, snot, pndt
+0.250      0.250      0.250        0.000      0.000      0.000        0.000  # soiwf, soiif, pond
+0.000        0.000        0.000        0.500      100.000        1.000  # rcan, scan, sno, albs, rho, gro
+
+0.000      0.000      0.000      1.000      0.000      0.000      0.000      0.000      2.000             # fcan, lamx
+0.000      0.000      0.000     -2.806      0.000      0.000      0.000      0.000      0.500             # lnz, lamn
+0.000      0.000      0.000      0.050      0.000      0.000      0.000      0.000      1.200             # alvc, cmas
+0.000      0.000      0.000      0.340      0.000      0.000      0.000      0.000      1.200             # alir, root
+0.000      0.000      0.000    100.000                 0.000      0.000      0.000     30.000             # rsmn, qa50
+0.000      0.000      0.000      0.500                 0.000      0.000      0.000      1.000             # vpda, vpdp
+0.000      0.000      0.000    100.000                 0.000      0.000      0.000      5.000             # psga, psgb
+1.000      2.000      1.000     50.000  # drn, sdep, fare, dden
+0.010      0.200      0.233      0.100      5.000      Grass  # xslp, grkf, man, wfci, mid, name
+72.100     49.700     70.020  # sand
+5.000     21.400     23.682  # clay
+7.800      0.000      0.000  # org
+4.000      2.000      1.000        4.000        0.000        4.000  # soit, cant, snot, pndt
+0.250      0.250      0.250        0.000      0.000      0.000        0.000  # soiwf, soiif, pond
+0.000        0.000        0.000        0.500      100.000        1.000  # rcan, scan, sno, albs, rho, gro
+
+    0         0         0         0                                  20
+    0         0         0         0                                  21
+    0         0         0         0                                  22 IHOUR/IMINS/IJDAY/IYEAR
+</pre></div>
+</div>
+</section>
 </section>
 </dd></dl>
 

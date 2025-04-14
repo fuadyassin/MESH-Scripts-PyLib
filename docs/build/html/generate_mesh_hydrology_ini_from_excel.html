@@ -97,7 +97,7 @@
 <span id="generate-mesh-hydrology-ini-from-excel"></span><h1>generate_mesh_hydrology_ini_from_excel<a class="headerlink" href="#module-MESHpyPreProcessing.generate_mesh_hydrology_ini_from_excel" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="MESHpyPreProcessing.generate_mesh_hydrology_ini_from_excel.generate_mesh_hydrology_ini_from_excel">
-<span class="sig-prename descclassname"><span class="pre">MESHpyPreProcessing.generate_mesh_hydrology_ini_from_excel.</span></span><span class="sig-name descname"><span class="pre">generate_mesh_hydrology_ini_from_excel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">excel_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/generate_mesh_hydrology_ini_from_excel.html#generate_mesh_hydrology_ini_from_excel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.generate_mesh_hydrology_ini_from_excel.generate_mesh_hydrology_ini_from_excel" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">MESHpyPreProcessing.generate_mesh_hydrology_ini_from_excel.</span></span><span class="sig-name descname"><span class="pre">generate_mesh_hydrology_ini_from_excel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">excel_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MeshHydrology.ini'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hydrology_ini'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPreProcessing/generate_mesh_hydrology_ini_from_excel.html#generate_mesh_hydrology_ini_from_excel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPreProcessing.generate_mesh_hydrology_ini_from_excel.generate_mesh_hydrology_ini_from_excel" title="Link to this definition"></a></dt>
 <dd><section id="description">
 <h2>Description:<a class="headerlink" href="#description" title="Link to this heading"></a></h2>
 <p>This function reads hydrology parameter values from an Excel file and generates
@@ -108,7 +108,11 @@ various parameter categories with appropriate headers, formatting, and spacing.<
 <h2>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>excel_file  : str  -&gt; Path to the input Excel file containing parameter values.</p></li>
-<li><p>sheet_name  : str  -&gt; The specific sheet in the Excel file that holds the data.</p></li>
+<li><dl class="simple">
+<dt>sheet_name<span class="classifier">str  -&gt; The specific sheet in the Excel file that holds the data.</span></dt><dd><p>Default is “hydrology_ini”.</p>
+</dd>
+</dl>
+</li>
 <li><p>output_file : str  -&gt; Path to the output <cite>.ini</cite> file.</p></li>
 </ul>
 </section>
@@ -126,33 +130,65 @@ various parameter categories with appropriate headers, formatting, and spacing.<
 <li><p>Writes the output <cite>.ini</cite> file with section headers, formatted values,
 and comments where necessary.</p></li>
 </ol>
+<section id="example-hydrology-input-file-version-2-0">
+<h3>Example Hydrology Input File (Version 2.0):<a class="headerlink" href="#example-hydrology-input-file-version-2-0" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>2.0: MESH Hydrology parameters input file (Version 2.0)
+!&gt; Any line leading with &#39;!&#39; is ignored
+!&gt; Spacing, whether by tabs or spaces doesn&#39;t matter
+!&gt; Parameter/field names are not case sensitive
+
+##### Option Flags #####
+----#
+    0 # Number of option flags
+
+##### Channel routing parameters #####
+-----#
+4           # Number of channel routing parameters
+R2N              0.100     0.045     0.049     0.013     0.050     0.150     0.141     0.150     0.135     0.314
+R1N              0.200     0.167     0.156     0.049     0.064     0.596     0.514     0.422     0.171     0.544
+FLZ              0.000     0.000     0.000     0.000     0.000     0.000     0.000     0.000     0.000     0.000
+PWR              1.618     2.570     2.721     2.993     2.823     1.361     1.361     1.361     1.361     1.361
+
+##### GRU-independent parameters #####
+-------#
+5           # Number of GRU independent hydrologic parameters
+SOIL_POR_MAX     0.200
+SOIL_DEPTH           4
+S0                   1
+T_ICE_LENS         -10
+t0_ACC               0         0         0         0         0
+
+##### GRU-dependent parameters #####
+-------#
+!&gt; Active headers in sorted order: Forest, BroadLeafForest, MixedForest, wetland, water, Shrub
+24          # Number of GRU-dependent parameters
+IWF                  1         1         1         1         1         1
+ZSNL             0.173     0.393     0.393     0.083     0.110     0.268
+ZPLS             0.023     0.097     0.097     0.090     0.090     0.149
+ZPLG             0.190     0.282     0.282     0.260     0.090     0.045
+FREZTH               0         0         0         0         0         0
+SWELIM               0         0         0         0         0         0
+SNDENLIM             0         0         0         0         0         0
+fetch              300       300       300       300       300       600
+Ht                   3         4         4     1.500     0.030     1.200
+N_S                  1         1         1         1         1         1
+A_S                  1         1         1         1         1         1
+Distrib              6         6         6         0         0         1
+CMAX             1.500     1.500     1.500     1.500     1.500     1.500
+CMIN                 0         0         0         0         0         0
+B                    3         3         3         3         3         3
+K1                   0         0         0         0         0         0
+K2                   0         0         0         0         0         0
+irflg                0         0         0         0         0         0
+irthlmin         0.500     0.500     0.500     0.500     0.500     0.500
+irignd               0         0         0         0         0         0
+irt1                 6         6         6         6         6         6
+irt2                10        10        10        10        10        10
+irijday1             0         0         0         0         0         0
+irijday2             0         0         0         0         0         0
+</pre></div>
+</div>
 </section>
-<section id="output-format">
-<h2>Output Format:<a class="headerlink" href="#output-format" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p><strong>Channel Routing Parameters</strong>:
-<code class="docutils literal notranslate"><span class="pre">`</span>
-<span class="pre">#####</span> <span class="pre">Channel</span> <span class="pre">routing</span> <span class="pre">parameters</span> <span class="pre">#####</span>
-<span class="pre">-----#</span>
-<span class="pre">3</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">#</span> <span class="pre">Number</span> <span class="pre">of</span> <span class="pre">channel</span> <span class="pre">routing</span> <span class="pre">parameters</span>
-<span class="pre">R2N</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">0.250</span>&#160;&#160;&#160;&#160; <span class="pre">0.250</span>&#160;&#160;&#160;&#160; <span class="pre">0.250</span>
-<span class="pre">`</span></code></p></li>
-<li><p><strong>GRU-Independent Parameters</strong>:
-<code class="docutils literal notranslate"><span class="pre">`</span>
-<span class="pre">#####</span> <span class="pre">GRU-independent</span> <span class="pre">parameters</span> <span class="pre">#####</span>
-<span class="pre">-------#</span>
-<span class="pre">5</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">#</span> <span class="pre">Number</span> <span class="pre">of</span> <span class="pre">GRU</span> <span class="pre">independent</span> <span class="pre">hydrologic</span> <span class="pre">parameters</span>
-<span class="pre">SOIL_DEPTH</span>&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">4</span>
-<span class="pre">`</span></code></p></li>
-<li><p><strong>GRU-Dependent Parameters</strong>:
-<code class="docutils literal notranslate"><span class="pre">`</span>
-<span class="pre">#####</span> <span class="pre">GRU-dependent</span> <span class="pre">parameters</span> <span class="pre">#####</span>
-<span class="pre">-------#</span>
-<span class="pre">!&gt;</span> <span class="pre">Active</span> <span class="pre">headers</span> <span class="pre">in</span> <span class="pre">sorted</span> <span class="pre">order:</span> <span class="pre">Forest,</span> <span class="pre">Grass,</span> <span class="pre">Wetland</span>
-<span class="pre">4</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">#</span> <span class="pre">Number</span> <span class="pre">of</span> <span class="pre">GRU-dependent</span> <span class="pre">parameters</span>
-<span class="pre">ZSNL</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">0.100</span>&#160;&#160;&#160;&#160; <span class="pre">0.200</span>&#160;&#160;&#160;&#160; <span class="pre">0.300</span>
-<span class="pre">`</span></code></p></li>
-</ul>
 </section>
 <section id="file-structure">
 <h2>File Structure:<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h2>
@@ -164,12 +200,49 @@ and comments where necessary.</p></li>
 <li><p><strong>GRU-Dependent Parameters</strong>: Contains parameters that vary by land category.</p></li>
 </ul>
 </section>
+<section id="gru-dependent-parameters-selection-and-ordering">
+<h2>GRU-Dependent Parameters Selection and Ordering:<a class="headerlink" href="#gru-dependent-parameters-selection-and-ordering" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>The <cite>GRU_class_dependent_active</cite> row in the Excel sheet is used to determine
+which GRU-dependent headers (columns) are active. Each column corresponding
+to a GRU class (e.g., Forest, Grass, Wetland) has a value indicating its
+active status:</p></li>
+<li><p>A value &gt; 0 indicates the column is active.</p></li>
+<li><p>A value &lt;= 0 indicates the column is inactive.</p></li>
+<li><p>Active columns are sorted in ascending order based on their values in the
+<cite>GRU_class_dependent_active</cite> row. This sorted order determines the sequence
+in which GRU-dependent parameters are written to the output file.</p></li>
+<li><p>The sorted active column names are included as a comment in the output file
+for reference.</p></li>
+</ul>
+</section>
 <section id="example-usage">
 <h2>Example Usage:<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h2>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">excel_file</span> <span class="o">=</span> <span class="s2">&quot;/content/drive/MyDrive/ColabNotebook_FY/meshparametersvalues2.xlsx&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sheet_name</span> <span class="o">=</span> <span class="s2">&quot;hydrology_ini&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">output_file</span> <span class="o">=</span> <span class="s2">&quot;MeshHydrology.ini&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_mesh_hydrology_ini_from_excel</span><span class="p">(</span><span class="n">excel_file</span><span class="p">,</span> <span class="n">sheet_name</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># The excel database can be found in the MESHpyPreProcessing folder.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Directly dowolnload the excel file from the MESHpyPreProcessing folder.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/MESH-Scripts-PyLib/MESH-Scripts-PyLib/main/MESHpyPreProcessing/meshparametersvalues2.xlsx&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Local path to save the file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">local_path</span> <span class="o">=</span> <span class="s2">&quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPreProcessing/meshparametersvalues2.xlsx&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Send a GET request to download the file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Check if the request was successful (status code 200)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># Write the content to a local file</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File downloaded successfully and saved to </span><span class="si">{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to download file. Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">MESHpyPreProcessing.generate_mesh_hydrology_ini_from_excel</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_mesh_hydrology_ini_from_excel</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gen_hydini</span> <span class="o">=</span> <span class="n">generate_mesh_hydrology_ini_from_excel</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gen_hydini</span><span class="p">(</span>
+<span class="go">        sheet_name=&quot;hydrology_ini&quot;,</span>
+<span class="go">        output_file=&quot;MeshHydrology2.ini&quot;,</span>
+<span class="go">        excel_file=&quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPreProcessing/meshparametersvalues2.xlsx&quot;</span>
+<span class="go">    )</span>
 </pre></div>
 </div>
 <ul class="simple">

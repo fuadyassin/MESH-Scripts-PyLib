@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MESHpyPreProcessing.generate_mesh_hydrology_ini_from_excel &mdash; MESH-Scripts-PyLib 1 documentation</title>
+  <title>MESHpyPreProcessing.generate_mesh_hydrology_ini_from_excel &mdash; MESH-Scripts-PyLib 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=29a6c3e3"></script>
+      <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -41,7 +41,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">File preparation:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../Aggregation_vector.html">Aggregate vector subbasins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../NetCDFWriter.html">Netcdf writer</a></li>
@@ -51,8 +51,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../gsde_soil.html">GSDE soil</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../remap_climate_to_ddb.html">remap_climate_to_ddb</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../plt_var_from_vector_ddb_netcdf.html">plt_var_from_vector_ddb_netcdf</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../plt_var_vector_setup.html">plt_var_from_vector_ddb_netcdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plt_var_vector_setup.html">plt_var_vector_setup</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
 <ul>
@@ -88,7 +92,7 @@
 
 <div class="viewcode-block" id="generate_mesh_hydrology_ini_from_excel">
 <a class="viewcode-back" href="../../generate_mesh_hydrology_ini_from_excel.html#MESHpyPreProcessing.generate_mesh_hydrology_ini_from_excel.generate_mesh_hydrology_ini_from_excel">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">generate_mesh_hydrology_ini_from_excel</span><span class="p">(</span><span class="n">excel_file</span><span class="p">,</span> <span class="n">sheet_name</span><span class="p">,</span> <span class="n">output_file</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_mesh_hydrology_ini_from_excel</span><span class="p">(</span><span class="n">excel_file</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;MeshHydrology.ini&quot;</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;hydrology_ini&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ---------------------------------------------------------------------------------</span>
 <span class="sd">    Description:</span>
@@ -102,6 +106,7 @@
 <span class="sd">    ---------------------------------------------------------------------------------</span>
 <span class="sd">    - excel_file  : str  -&gt; Path to the input Excel file containing parameter values.</span>
 <span class="sd">    - sheet_name  : str  -&gt; The specific sheet in the Excel file that holds the data.</span>
+<span class="sd">                            Default is &quot;hydrology_ini&quot;.</span>
 <span class="sd">    - output_file : str  -&gt; Path to the output `.ini` file.</span>
 
 <span class="sd">    ---------------------------------------------------------------------------------</span>
@@ -118,33 +123,65 @@
 <span class="sd">    4. Writes the output `.ini` file with section headers, formatted values, </span>
 <span class="sd">       and comments where necessary.</span>
 
-<span class="sd">    ---------------------------------------------------------------------------------</span>
-<span class="sd">    Output Format:</span>
-<span class="sd">    ---------------------------------------------------------------------------------</span>
-<span class="sd">    - **Channel Routing Parameters**:</span>
-<span class="sd">      ```</span>
-<span class="sd">      ##### Channel routing parameters #####</span>
-<span class="sd">      -----#</span>
-<span class="sd">      3           # Number of channel routing parameters</span>
-<span class="sd">      R2N          0.250     0.250     0.250</span>
-<span class="sd">      ```</span>
+<span class="sd">    Example Hydrology Input File (Version 2.0):</span>
+<span class="sd">    ----------------------------------------------------------------</span>
 
-<span class="sd">    - **GRU-Independent Parameters**:</span>
-<span class="sd">      ```</span>
-<span class="sd">      ##### GRU-independent parameters #####</span>
-<span class="sd">      -------#</span>
-<span class="sd">      5           # Number of GRU independent hydrologic parameters</span>
-<span class="sd">      SOIL_DEPTH       4</span>
-<span class="sd">      ```</span>
+<span class="sd">    .. code-block:: text</span>
 
-<span class="sd">    - **GRU-Dependent Parameters**:</span>
-<span class="sd">      ```</span>
-<span class="sd">      ##### GRU-dependent parameters #####</span>
-<span class="sd">      -------#</span>
-<span class="sd">      !&gt; Active headers in sorted order: Forest, Grass, Wetland</span>
-<span class="sd">      4           # Number of GRU-dependent parameters</span>
-<span class="sd">      ZSNL         0.100     0.200     0.300</span>
-<span class="sd">      ```</span>
+<span class="sd">        2.0: MESH Hydrology parameters input file (Version 2.0)</span>
+<span class="sd">        !&gt; Any line leading with &#39;!&#39; is ignored</span>
+<span class="sd">        !&gt; Spacing, whether by tabs or spaces doesn&#39;t matter</span>
+<span class="sd">        !&gt; Parameter/field names are not case sensitive</span>
+
+<span class="sd">        ##### Option Flags #####</span>
+<span class="sd">        ----#</span>
+<span class="sd">            0 # Number of option flags</span>
+
+<span class="sd">        ##### Channel routing parameters #####</span>
+<span class="sd">        -----#</span>
+<span class="sd">        4           # Number of channel routing parameters</span>
+<span class="sd">        R2N              0.100     0.045     0.049     0.013     0.050     0.150     0.141     0.150     0.135     0.314</span>
+<span class="sd">        R1N              0.200     0.167     0.156     0.049     0.064     0.596     0.514     0.422     0.171     0.544</span>
+<span class="sd">        FLZ              0.000     0.000     0.000     0.000     0.000     0.000     0.000     0.000     0.000     0.000</span>
+<span class="sd">        PWR              1.618     2.570     2.721     2.993     2.823     1.361     1.361     1.361     1.361     1.361</span>
+
+<span class="sd">        ##### GRU-independent parameters #####</span>
+<span class="sd">        -------#</span>
+<span class="sd">        5           # Number of GRU independent hydrologic parameters</span>
+<span class="sd">        SOIL_POR_MAX     0.200</span>
+<span class="sd">        SOIL_DEPTH           4</span>
+<span class="sd">        S0                   1</span>
+<span class="sd">        T_ICE_LENS         -10</span>
+<span class="sd">        t0_ACC               0         0         0         0         0</span>
+
+<span class="sd">        ##### GRU-dependent parameters #####</span>
+<span class="sd">        -------#</span>
+<span class="sd">        !&gt; Active headers in sorted order: Forest, BroadLeafForest, MixedForest, wetland, water, Shrub</span>
+<span class="sd">        24          # Number of GRU-dependent parameters</span>
+<span class="sd">        IWF                  1         1         1         1         1         1</span>
+<span class="sd">        ZSNL             0.173     0.393     0.393     0.083     0.110     0.268</span>
+<span class="sd">        ZPLS             0.023     0.097     0.097     0.090     0.090     0.149</span>
+<span class="sd">        ZPLG             0.190     0.282     0.282     0.260     0.090     0.045</span>
+<span class="sd">        FREZTH               0         0         0         0         0         0</span>
+<span class="sd">        SWELIM               0         0         0         0         0         0</span>
+<span class="sd">        SNDENLIM             0         0         0         0         0         0</span>
+<span class="sd">        fetch              300       300       300       300       300       600</span>
+<span class="sd">        Ht                   3         4         4     1.500     0.030     1.200</span>
+<span class="sd">        N_S                  1         1         1         1         1         1</span>
+<span class="sd">        A_S                  1         1         1         1         1         1</span>
+<span class="sd">        Distrib              6         6         6         0         0         1</span>
+<span class="sd">        CMAX             1.500     1.500     1.500     1.500     1.500     1.500</span>
+<span class="sd">        CMIN                 0         0         0         0         0         0</span>
+<span class="sd">        B                    3         3         3         3         3         3</span>
+<span class="sd">        K1                   0         0         0         0         0         0</span>
+<span class="sd">        K2                   0         0         0         0         0         0</span>
+<span class="sd">        irflg                0         0         0         0         0         0</span>
+<span class="sd">        irthlmin         0.500     0.500     0.500     0.500     0.500     0.500</span>
+<span class="sd">        irignd               0         0         0         0         0         0</span>
+<span class="sd">        irt1                 6         6         6         6         6         6</span>
+<span class="sd">        irt2                10        10        10        10        10        10</span>
+<span class="sd">        irijday1             0         0         0         0         0         0</span>
+<span class="sd">        irijday2             0         0         0         0         0         0</span>
 
 <span class="sd">    ---------------------------------------------------------------------------------</span>
 <span class="sd">    File Structure:</span>
@@ -156,12 +193,47 @@
 <span class="sd">    - **GRU-Dependent Parameters**: Contains parameters that vary by land category.</span>
 
 <span class="sd">    ---------------------------------------------------------------------------------</span>
+<span class="sd">    GRU-Dependent Parameters Selection and Ordering:</span>
+<span class="sd">    ---------------------------------------------------------------------------------</span>
+<span class="sd">    - The `GRU_class_dependent_active` row in the Excel sheet is used to determine </span>
+<span class="sd">      which GRU-dependent headers (columns) are active. Each column corresponding </span>
+<span class="sd">      to a GRU class (e.g., Forest, Grass, Wetland) has a value indicating its </span>
+<span class="sd">      active status:</span>
+<span class="sd">    - A value &gt; 0 indicates the column is active.</span>
+<span class="sd">    - A value &lt;= 0 indicates the column is inactive.</span>
+<span class="sd">    - Active columns are sorted in ascending order based on their values in the </span>
+<span class="sd">      `GRU_class_dependent_active` row. This sorted order determines the sequence </span>
+<span class="sd">      in which GRU-dependent parameters are written to the output file.</span>
+<span class="sd">    - The sorted active column names are included as a comment in the output file </span>
+<span class="sd">      for reference.</span>
+
+<span class="sd">    ---------------------------------------------------------------------------------</span>
 <span class="sd">    Example Usage:</span>
 <span class="sd">    ---------------------------------------------------------------------------------</span>
-<span class="sd">    &gt;&gt;&gt; excel_file = &quot;/content/drive/MyDrive/ColabNotebook_FY/meshparametersvalues2.xlsx&quot;</span>
-<span class="sd">    &gt;&gt;&gt; sheet_name = &quot;hydrology_ini&quot;</span>
-<span class="sd">    &gt;&gt;&gt; output_file = &quot;MeshHydrology.ini&quot;</span>
-<span class="sd">    &gt;&gt;&gt; generate_mesh_hydrology_ini_from_excel(excel_file, sheet_name, output_file)</span>
+<span class="sd">    &gt;&gt;&gt; # The excel database can be found in the MESHpyPreProcessing folder.</span>
+<span class="sd">    &gt;&gt;&gt; # Directly dowolnload the excel file from the MESHpyPreProcessing folder.</span>
+<span class="sd">    &gt;&gt;&gt; import requests</span>
+<span class="sd">    &gt;&gt;&gt; url = &quot;https://raw.githubusercontent.com/MESH-Scripts-PyLib/MESH-Scripts-PyLib/main/MESHpyPreProcessing/meshparametersvalues2.xlsx&quot;</span>
+<span class="sd">    &gt;&gt;&gt; # Local path to save the file</span>
+<span class="sd">    &gt;&gt;&gt; local_path = &quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPreProcessing/meshparametersvalues2.xlsx&quot;</span>
+<span class="sd">    &gt;&gt;&gt; # Send a GET request to download the file</span>
+<span class="sd">    &gt;&gt;&gt; response = requests.get(url)</span>
+<span class="sd">    &gt;&gt;&gt; # Check if the request was successful (status code 200)</span>
+<span class="sd">    &gt;&gt;&gt; if response.status_code == 200: </span>
+<span class="sd">    &gt;&gt;&gt;     # Write the content to a local file</span>
+<span class="sd">    &gt;&gt;&gt;     with open(local_path, &#39;wb&#39;) as file:</span>
+<span class="sd">    &gt;&gt;&gt;         file.write(response.content)</span>
+<span class="sd">    &gt;&gt;&gt;     print(f&quot;File downloaded successfully and saved to {local_path}&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; else:</span>
+<span class="sd">    &gt;&gt;&gt;     print(f&quot;Failed to download file. Status code: {response.status_code}&quot;)</span>
+
+<span class="sd">    &gt;&gt;&gt; from MESHpyPreProcessing.generate_mesh_hydrology_ini_from_excel import generate_mesh_hydrology_ini_from_excel</span>
+<span class="sd">    &gt;&gt;&gt; gen_hydini = generate_mesh_hydrology_ini_from_excel</span>
+<span class="sd">    &gt;&gt;&gt; gen_hydini(</span>
+<span class="sd">            sheet_name=&quot;hydrology_ini&quot;,</span>
+<span class="sd">            output_file=&quot;MeshHydrology2.ini&quot;,</span>
+<span class="sd">            excel_file=&quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPreProcessing/meshparametersvalues2.xlsx&quot;</span>
+<span class="sd">        )</span>
 <span class="sd">    </span>
 <span class="sd">    - This will generate a properly formatted `MeshHydrology.ini` file in the specified path.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -262,6 +334,9 @@
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span></div>
 
+<span class="c1"># from MESHpyPreProcessing.generate_mesh_hydrology_ini_from_excel import generate_mesh_hydrology_ini_from_excel</span>
+<span class="c1"># gen_hydini(output_file=&quot;MeshHydrology2.ini&quot;,excel_file=&quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPreProcessing/meshparametersvalues2.xlsx&quot;)</span>
+<span class="c1">#gen_hydini(sheet_name=&quot;hydrology_ini&quot;,output_file=&quot;MeshHydrology2.ini&quot;,excel_file=&quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPreProcessing/meshparametersvalues2.xlsx&quot;)</span>
 </pre></div>
 
            </div>

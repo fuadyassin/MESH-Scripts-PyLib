@@ -31,33 +31,65 @@ def generate_mesh_hydrology_ini_from_excel(excel_file, output_file="MeshHydrolog
     4. Writes the output `.ini` file with section headers, formatted values, 
        and comments where necessary.
 
-    ---------------------------------------------------------------------------------
-    Output Format:
-    ---------------------------------------------------------------------------------
-    - **Channel Routing Parameters**:
-      ```
-      ##### Channel routing parameters #####
-      -----#
-      3           # Number of channel routing parameters
-      R2N          0.250     0.250     0.250
-      ```
+    Example Hydrology Input File (Version 2.0):
+    ----------------------------------------------------------------
 
-    - **GRU-Independent Parameters**:
-      ```
-      ##### GRU-independent parameters #####
-      -------#
-      5           # Number of GRU independent hydrologic parameters
-      SOIL_DEPTH       4
-      ```
+    .. code-block:: text
 
-    - **GRU-Dependent Parameters**:
-      ```
-      ##### GRU-dependent parameters #####
-      -------#
-      !> Active headers in sorted order: Forest, Grass, Wetland
-      4           # Number of GRU-dependent parameters
-      ZSNL         0.100     0.200     0.300
-      ```
+        2.0: MESH Hydrology parameters input file (Version 2.0)
+        !> Any line leading with '!' is ignored
+        !> Spacing, whether by tabs or spaces doesn't matter
+        !> Parameter/field names are not case sensitive
+
+        ##### Option Flags #####
+        ----#
+            0 # Number of option flags
+
+        ##### Channel routing parameters #####
+        -----#
+        4           # Number of channel routing parameters
+        R2N              0.100     0.045     0.049     0.013     0.050     0.150     0.141     0.150     0.135     0.314
+        R1N              0.200     0.167     0.156     0.049     0.064     0.596     0.514     0.422     0.171     0.544
+        FLZ              0.000     0.000     0.000     0.000     0.000     0.000     0.000     0.000     0.000     0.000
+        PWR              1.618     2.570     2.721     2.993     2.823     1.361     1.361     1.361     1.361     1.361
+
+        ##### GRU-independent parameters #####
+        -------#
+        5           # Number of GRU independent hydrologic parameters
+        SOIL_POR_MAX     0.200
+        SOIL_DEPTH           4
+        S0                   1
+        T_ICE_LENS         -10
+        t0_ACC               0         0         0         0         0
+
+        ##### GRU-dependent parameters #####
+        -------#
+        !> Active headers in sorted order: Forest, BroadLeafForest, MixedForest, wetland, water, Shrub
+        24          # Number of GRU-dependent parameters
+        IWF                  1         1         1         1         1         1
+        ZSNL             0.173     0.393     0.393     0.083     0.110     0.268
+        ZPLS             0.023     0.097     0.097     0.090     0.090     0.149
+        ZPLG             0.190     0.282     0.282     0.260     0.090     0.045
+        FREZTH               0         0         0         0         0         0
+        SWELIM               0         0         0         0         0         0
+        SNDENLIM             0         0         0         0         0         0
+        fetch              300       300       300       300       300       600
+        Ht                   3         4         4     1.500     0.030     1.200
+        N_S                  1         1         1         1         1         1
+        A_S                  1         1         1         1         1         1
+        Distrib              6         6         6         0         0         1
+        CMAX             1.500     1.500     1.500     1.500     1.500     1.500
+        CMIN                 0         0         0         0         0         0
+        B                    3         3         3         3         3         3
+        K1                   0         0         0         0         0         0
+        K2                   0         0         0         0         0         0
+        irflg                0         0         0         0         0         0
+        irthlmin         0.500     0.500     0.500     0.500     0.500     0.500
+        irignd               0         0         0         0         0         0
+        irt1                 6         6         6         6         6         6
+        irt2                10        10        10        10        10        10
+        irijday1             0         0         0         0         0         0
+        irijday2             0         0         0         0         0         0
 
     ---------------------------------------------------------------------------------
     File Structure:
@@ -75,8 +107,8 @@ def generate_mesh_hydrology_ini_from_excel(excel_file, output_file="MeshHydrolog
       which GRU-dependent headers (columns) are active. Each column corresponding 
       to a GRU class (e.g., Forest, Grass, Wetland) has a value indicating its 
       active status:
-        - A value > 0 indicates the column is active.
-        - A value <= 0 indicates the column is inactive.
+    - A value > 0 indicates the column is active.
+    - A value <= 0 indicates the column is inactive.
     - Active columns are sorted in ascending order based on their values in the 
       `GRU_class_dependent_active` row. This sorted order determines the sequence 
       in which GRU-dependent parameters are written to the output file.
@@ -86,6 +118,23 @@ def generate_mesh_hydrology_ini_from_excel(excel_file, output_file="MeshHydrolog
     ---------------------------------------------------------------------------------
     Example Usage:
     ---------------------------------------------------------------------------------
+    >>> # The excel database can be found in the MESHpyPreProcessing folder.
+    >>> # Directly dowolnload the excel file from the MESHpyPreProcessing folder.
+    >>> import requests
+    >>> url = "https://raw.githubusercontent.com/MESH-Scripts-PyLib/MESH-Scripts-PyLib/main/MESHpyPreProcessing/meshparametersvalues2.xlsx"
+    >>> # Local path to save the file
+    >>> local_path = "D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPreProcessing/meshparametersvalues2.xlsx"
+    >>> # Send a GET request to download the file
+    >>> response = requests.get(url)
+    >>> # Check if the request was successful (status code 200)
+    >>> if response.status_code == 200: 
+    >>>     # Write the content to a local file
+    >>>     with open(local_path, 'wb') as file:
+    >>>         file.write(response.content)
+    >>>     print(f"File downloaded successfully and saved to {local_path}")
+    >>> else:
+    >>>     print(f"Failed to download file. Status code: {response.status_code}")
+
     >>> from MESHpyPreProcessing.generate_mesh_hydrology_ini_from_excel import generate_mesh_hydrology_ini_from_excel
     >>> gen_hydini = generate_mesh_hydrology_ini_from_excel
     >>> gen_hydini(

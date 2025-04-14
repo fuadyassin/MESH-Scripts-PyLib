@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MESHpyPreProcessing.generate_mesh_class_ini_from_excel &mdash; MESH-Scripts-PyLib 1 documentation</title>
+  <title>MESHpyPreProcessing.generate_mesh_class_ini_from_excel &mdash; MESH-Scripts-PyLib 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=29a6c3e3"></script>
+      <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -41,7 +41,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">File preparation:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../Aggregation_vector.html">Aggregate vector subbasins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../NetCDFWriter.html">Netcdf writer</a></li>
@@ -51,8 +51,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../gsde_soil.html">GSDE soil</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../remap_climate_to_ddb.html">remap_climate_to_ddb</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../plt_var_from_vector_ddb_netcdf.html">plt_var_from_vector_ddb_netcdf</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../plt_var_vector_setup.html">plt_var_from_vector_ddb_netcdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plt_var_vector_setup.html">plt_var_vector_setup</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
 <ul>
@@ -86,11 +90,24 @@
   <h1>Source code for MESHpyPreProcessing.generate_mesh_class_ini_from_excel</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-
 <div class="viewcode-block" id="generate_mesh_class_ini_from_excel">
 <a class="viewcode-back" href="../../generate_mesh_class_ini_from_excel.html#MESHpyPreProcessing.generate_mesh_class_ini_from_excel.generate_mesh_class_ini_from_excel">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">generate_mesh_class_ini_from_excel</span><span class="p">(</span><span class="n">excel_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">selected_land_covers</span><span class="p">,</span> <span class="n">num_cels</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_mesh_class_ini_from_excel</span><span class="p">(</span><span class="n">excel_file</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;MESH_class_output.ini&quot;</span><span class="p">,</span> <span class="n">num_cels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;class_ini&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    -----------------------------------------------------------------------------------------</span>
+<span class="sd">    Description:</span>
+<span class="sd">    -----------------------------------------------------------------------------------------</span>
+<span class="sd">    This function processes an Excel file containing land cover parameter values and </span>
+<span class="sd">    generates a MESH-compatible `.ini` file. The function is designed to extract, </span>
+<span class="sd">    format, and write the required parameters for active land covers into the </span>
+<span class="sd">    output file, ensuring compatibility with the MESH hydrological model.</span>
+<span class="sd">    The function includes detailed steps for processing the Excel file, </span>
+<span class="sd">    extracting relevant data, and formatting it into the required structure for MESH. </span>
+<span class="sd">    It also validates the input data and ensures that all necessary parameters are present.</span>
+<span class="sd">    The existing description below provides further details about the function&#39;s </span>
+<span class="sd">    parameters, processing steps, and output format.</span>
+
+<span class="sd">    ------------</span>
 <span class="sd">    Parameters:</span>
 <span class="sd">    ------------</span>
 <span class="sd">    excel_file : str</span>
@@ -103,62 +120,196 @@
 <span class="sd">        Latitude of the location.</span>
 <span class="sd">    lon : float</span>
 <span class="sd">        Longitude of the location.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Overview:</span>
 <span class="sd">    ------------</span>
-<span class="sd">    This function extracts land cover parameter values from an Excel file and writes them into a MESH-compatible `.ini` file. </span>
-<span class="sd">    Only active land covers are included, as indicated by the &#39;status&#39; row in the Excel sheet. </span>
-<span class="sd">    </span>
+<span class="sd">    This function extracts land cover parameter values from an Excel file and </span>
+<span class="sd">    writes them into a MESH-compatible `.ini` file. Only active land covers are </span>
+<span class="sd">    included, as indicated by the &#39;status&#39; row in the Excel sheet.</span>
+
 <span class="sd">    Processing Steps:</span>
-<span class="sd">        1. Load the Excel file and normalize column names.</span>
-<span class="sd">        2. Identify active land covers (status &gt; 0).</span>
-<span class="sd">        3. Verify required rows such as &#39;colum&#39;.</span>
-<span class="sd">        4. Extract vegetation and land cover parameters.</span>
-<span class="sd">        5. Write formatted values into an `.ini` file with the required MESH structure.</span>
-<span class="sd">    </span>
+<span class="sd">    -----------------</span>
+<span class="sd">    1. Load the Excel file and normalize column names.</span>
+<span class="sd">         - The function reads the Excel file using `pandas` and converts all column names to lowercase for consistency.</span>
+
+<span class="sd">    2. Identify active land covers (status &gt; 0):</span>
+<span class="sd">       - The function identifies the row labeled &#39;status&#39; in the Excel file, which contains numerical values for each land cover column.</span>
+<span class="sd">       - These numerical values indicate the activation status of each land cover. A value greater than 0 signifies that the land cover is active.</span>
+<span class="sd">       - The function filters out inactive land covers (status &lt;= 0) and retains only the active ones.</span>
+<span class="sd">       - The active land covers are then sorted in ascending order based on their status values to ensure a consistent and logical ordering in the output file.</span>
+
+<span class="sd">    3. Verify required rows such as &#39;colum&#39;.</span>
+
+<span class="sd">    4. Extract vegetation and land cover parameters.</span>
+
+<span class="sd">    5. Write formatted values into an `.ini` file with the required MESH structure.</span>
+
 <span class="sd">    Output Format:</span>
-<span class="sd">    ---------------</span>
-<span class="sd">    </span>
-<span class="sd">    The generated `.ini` file follows MESH parameter conventions with:</span>
-<span class="sd">        - Header defining basin information.</span>
-<span class="sd">        - Land cover-specific vegetation and hydrological parameters.</span>
-<span class="sd">        - Footer containing model time initialization values.</span>
-<span class="sd">    </span>
+<span class="sd">    --------------</span>
+<span class="sd">    The output file is structured to be compatible with MESH, including:</span>
+<span class="sd">    - Header defining basin information.</span>
+<span class="sd">    - Land cover-specific vegetation and hydrological parameters.</span>
+<span class="sd">    - Footer containing model time initialization values.</span>
+
 <span class="sd">    File Structure:</span>
 <span class="sd">    ----------------</span>
 <span class="sd">    The output file consists of:</span>
-<span class="sd">        1. **Header Information**: Includes metadata such as location, author, and details.</span>
-<span class="sd">        2. **Land Cover Blocks**: Each selected land cover is written separately, including:</span>
-<span class="sd">           - Vegetation parameters (written in pairs)</span>
-<span class="sd">           - One-to-One parameter assignments (written in pairs)</span>
-<span class="sd">           - Multi-value parameter assignments (written in structured format)</span>
-<span class="sd">        3. **Final Footer**: Contains three mandatory lines required for MESH processing.</span>
-<span class="sd">    </span>
+
+<span class="sd">    1. **Header Information**: Includes metadata such as location, author, and details.</span>
+
+<span class="sd">    2. **Land Cover Blocks**: Each selected land cover is written separately, including:</span>
+<span class="sd">       - Vegetation parameters (written in pairs)</span>
+<span class="sd">       - One-to-One parameter assignments (written in pairs)</span>
+<span class="sd">       - Multi-value parameter assignments (written in structured format)</span>
+<span class="sd">       </span>
+<span class="sd">    3. **Final Footer**: Contains three mandatory lines required for MESH processing.</span>
+
 <span class="sd">    Example Usage:</span>
-<span class="sd">    --------------</span>
-<span class="sd">    &gt;&gt;&gt; pip install git+https://github.com/MESH-Model/MESH-Scripts-PyLib.git</span>
-<span class="sd">    &gt;&gt;&gt; generate_mesh_ini_from_excel(&quot;meshparameters.xlsx&quot;, &quot;MESH_output.ini&quot;, [&quot;Forest&quot;, &quot;crop&quot;],num_cels=7408, lat=53.18, lon=-99.25)</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    &gt;&gt;&gt; # The excel database can be found in the MESHpyPreProcessing folder.</span>
+<span class="sd">    &gt;&gt;&gt; # Directly dowolnload the excel file from the MESHpyPreProcessing folder.</span>
+<span class="sd">    &gt;&gt;&gt; import requests</span>
+<span class="sd">    &gt;&gt;&gt; url = &quot;https://raw.githubusercontent.com/MESH-Scripts-PyLib/MESH-Scripts-PyLib/main/MESHpyPreProcessing/meshparametersvalues2.xlsx&quot;</span>
+<span class="sd">    &gt;&gt;&gt; # Local path to save the file</span>
+<span class="sd">    &gt;&gt;&gt; local_path = &quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPreProcessing/meshparametersvalues2.xlsx&quot;</span>
+<span class="sd">    &gt;&gt;&gt; # Send a GET request to download the file</span>
+<span class="sd">    &gt;&gt;&gt; response = requests.get(url)</span>
+<span class="sd">    &gt;&gt;&gt; # Check if the request was successful (status code 200)</span>
+<span class="sd">    &gt;&gt;&gt; if response.status_code == 200: </span>
+<span class="sd">    &gt;&gt;&gt;     # Write the content to a local file</span>
+<span class="sd">    &gt;&gt;&gt;     with open(local_path, &#39;wb&#39;) as file:</span>
+<span class="sd">    &gt;&gt;&gt;         file.write(response.content)</span>
+<span class="sd">    &gt;&gt;&gt;     print(f&quot;File downloaded successfully and saved to {local_path}&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; else:</span>
+<span class="sd">    &gt;&gt;&gt;     print(f&quot;Failed to download file. Status code: {response.status_code}&quot;)</span>
+
+<span class="sd">    &gt;&gt;&gt; # Example usage of the function</span>
+<span class="sd">    &gt;&gt;&gt; from MESHpyPreProcessing.generate_mesh_class_ini_from_excel import generate_mesh_class_ini_from_excel as gen_classini</span>
+<span class="sd">    &gt;&gt;&gt; gen_classini(</span>
+<span class="sd">    ...     excel_file=&quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPreProcessing/meshparametersvalues2.xlsx&quot;,</span>
+<span class="sd">    ...     output_file=&quot;MESH_output2.ini&quot;,</span>
+<span class="sd">    ...     num_cels=7408,</span>
+<span class="sd">    ...     lat=53.18,</span>
+<span class="sd">    ...     lon=-99.25</span>
+<span class="sd">    ... )</span>
+
+<span class="sd">    Example Output:</span>
+<span class="sd">    ----------------</span>
+
+<span class="sd">    .. code-block::  text</span>
 <span class="sd">    </span>
+<span class="sd">        Basin</span>
+<span class="sd">        Author</span>
+<span class="sd">        Org</span>
+<span class="sd">        53.18     -99.25     40.00     40.00     50.00   -1.0    1 7408    5</span>
+<span class="sd">        0.000      0.000      0.000      0.000      1.000      0.000      0.000      0.000      0.000             # fcan, lamx</span>
+<span class="sd">        0.000      0.000      0.000      0.000     -5.352      0.000      0.000      0.000      0.000             # lnz, lamn</span>
+<span class="sd">        0.000      0.000      0.000      0.000      0.400      0.000      0.000      0.000      0.000             # alvc, cmas</span>
+<span class="sd">        0.000      0.000      0.000      0.000      0.250      0.000      0.000      0.000      0.000             # alir, root</span>
+<span class="sd">        0.000      0.000      0.000      0.000                 0.000      0.000      0.000      0.000             # rsmn, qa50</span>
+<span class="sd">        0.000      0.000      0.000      0.000                 0.000      0.000      0.000      0.000             # vpda, vpdp</span>
+<span class="sd">        0.000      0.000      0.000      0.000                 0.000      0.000      0.000      0.000             # psga, psgb</span>
+<span class="sd">        1.000      2.000      1.000     50.000  # drn, sdep, fare, dden</span>
+<span class="sd">        0.100      0.100      0.388      0.070      8.000     Barren  # xslp, grkf, man, wfci, mid, name</span>
+<span class="sd">        73.000     45.000     66.000  # sand</span>
+<span class="sd">        6.400     29.600     20.440  # clay</span>
+<span class="sd">        7.400      0.000      0.000  # org</span>
+<span class="sd">        4.000      2.000      1.000        4.000        0.000        4.000  # soit, cant, snot, pndt</span>
+<span class="sd">        0.250      0.250      0.250        0.000      0.000      0.000        0.000  # soiwf, soiif, pond</span>
+<span class="sd">        0.000        0.000        0.000        0.500      100.000        1.000  # rcan, scan, sno, albs, rho, gro</span>
+
+<span class="sd">        0.000      1.000      0.000      0.000      0.000      0.000      4.148      0.000      0.000             # fcan, lamx</span>
+<span class="sd">        0.000      0.475      0.000      0.000      0.000      0.000      0.512      0.000      0.000             # lnz, lamn</span>
+<span class="sd">        0.000      0.049      0.000      0.000      0.000      0.000     23.583      0.000      0.000             # alvc, cmas</span>
+<span class="sd">        0.000      0.257      0.000      0.000      0.000      0.000      1.249      0.000      0.000             # alir, root</span>
+<span class="sd">        0.000    110.930      0.000      0.000                 0.000     37.506      0.000      0.000             # rsmn, qa50</span>
+<span class="sd">        0.000      0.427      0.000      0.000                 0.000      0.765      0.000      0.000             # vpda, vpdp</span>
+<span class="sd">        0.000    100.000      0.000      0.000                 0.000      5.000      0.000      0.000             # psga, psgb</span>
+<span class="sd">        1.000      2.000      1.000     50.000  # drn, sdep, fare, dden</span>
+<span class="sd">        0.040      0.100      0.119      0.100      2.000   MixedForest  # xslp, grkf, man, wfci, mid, name</span>
+<span class="sd">        75.000     66.000     66.000  # sand</span>
+<span class="sd">        5.000     30.000     17.000  # clay</span>
+<span class="sd">        5.000      0.000      0.000  # org</span>
+<span class="sd">        4.000      2.000      1.000        4.000        0.000        4.000  # soit, cant, snot, pndt</span>
+<span class="sd">        0.250      0.250      0.250        0.000      0.000      0.000        0.000  # soiwf, soiif, pond</span>
+<span class="sd">        0.000        0.000        0.000        0.500      100.000        1.000  # rcan, scan, sno, albs, rho, gro</span>
+
+<span class="sd">        1.000      0.000      0.000      0.000      0.000      1.162      0.000      0.000      0.000             # fcan, lamx</span>
+<span class="sd">        -0.187      0.000      0.000      0.000      0.000      0.509      0.000      0.000      0.000             # lnz, lamn</span>
+<span class="sd">        0.046      0.000      0.000      0.000      0.000     13.624      0.000      0.000      0.000             # alvc, cmas</span>
+<span class="sd">        0.154      0.000      0.000      0.000      0.000      1.768      0.000      0.000      0.000             # alir, root</span>
+<span class="sd">        236.390      0.000      0.000      0.000                27.913      0.000      0.000      0.000             # rsmn, qa50</span>
+<span class="sd">        0.502      0.000      0.000      0.000                 0.812      0.000      0.000      0.000             # vpda, vpdp</span>
+<span class="sd">        100.000      0.000      0.000      0.000                 5.000      0.000      0.000      0.000             # psga, psgb</span>
+<span class="sd">        1.000      2.000      1.000     50.000  # drn, sdep, fare, dden</span>
+<span class="sd">        0.040      0.122      0.151      1.380      1.000     Forest  # xslp, grkf, man, wfci, mid, name</span>
+<span class="sd">        73.200     43.300     72.903  # sand</span>
+<span class="sd">        5.200     29.100     21.362  # clay</span>
+<span class="sd">        5.000      0.000      0.000  # org</span>
+<span class="sd">        4.000      2.000      1.000        4.000        0.000        4.000  # soit, cant, snot, pndt</span>
+<span class="sd">        0.250      0.250      0.250        0.000      0.000      0.000        0.000  # soiwf, soiif, pond</span>
+<span class="sd">        0.000        0.000        0.000        0.500      100.000        1.000  # rcan, scan, sno, albs, rho, gro</span>
+
+<span class="sd">        0.000      0.000      1.000      0.000      0.000      0.000      0.000      5.807      0.000             # fcan, lamx</span>
+<span class="sd">        0.000      0.000     -2.541      0.000      0.000      0.000      0.000      0.000      0.000             # lnz, lamn</span>
+<span class="sd">        0.000      0.000      0.061      0.000      0.000      0.000      0.000      1.923      0.000             # alvc, cmas</span>
+<span class="sd">        0.000      0.000      0.298      0.000      0.000      0.000      0.000      1.200      0.000             # alir, root</span>
+<span class="sd">        0.000      0.000     63.107      0.000                 0.000      0.000     22.541      0.000             # rsmn, qa50</span>
+<span class="sd">        0.000      0.000      0.568      0.000                 0.000      0.000      0.804      0.000             # vpda, vpdp</span>
+<span class="sd">        0.000      0.000    100.000      0.000                 0.000      0.000      5.000      0.000             # psga, psgb</span>
+<span class="sd">        1.000      2.000      1.000     40.000  # drn, sdep, fare, dden</span>
+<span class="sd">        0.010      0.503      0.164      1.432      4.000       Crop  # xslp, grkf, man, wfci, mid, name</span>
+<span class="sd">        50.000     55.000     60.000  # sand</span>
+<span class="sd">        35.000     35.000     35.000  # clay</span>
+<span class="sd">        15.000     10.000      5.000  # org</span>
+<span class="sd">        4.000      2.000      1.000        4.000        0.000        4.000  # soit, cant, snot, pndt</span>
+<span class="sd">        0.250      0.250      0.250        0.000      0.000      0.000        0.000  # soiwf, soiif, pond</span>
+<span class="sd">        0.000        0.000        0.000        0.500      100.000        1.000  # rcan, scan, sno, albs, rho, gro</span>
+
+<span class="sd">        0.000      0.000      0.000      1.000      0.000      0.000      0.000      0.000      2.000             # fcan, lamx</span>
+<span class="sd">        0.000      0.000      0.000     -2.806      0.000      0.000      0.000      0.000      0.500             # lnz, lamn</span>
+<span class="sd">        0.000      0.000      0.000      0.050      0.000      0.000      0.000      0.000      1.200             # alvc, cmas</span>
+<span class="sd">        0.000      0.000      0.000      0.340      0.000      0.000      0.000      0.000      1.200             # alir, root</span>
+<span class="sd">        0.000      0.000      0.000    100.000                 0.000      0.000      0.000     30.000             # rsmn, qa50</span>
+<span class="sd">        0.000      0.000      0.000      0.500                 0.000      0.000      0.000      1.000             # vpda, vpdp</span>
+<span class="sd">        0.000      0.000      0.000    100.000                 0.000      0.000      0.000      5.000             # psga, psgb</span>
+<span class="sd">        1.000      2.000      1.000     50.000  # drn, sdep, fare, dden</span>
+<span class="sd">        0.010      0.200      0.233      0.100      5.000      Grass  # xslp, grkf, man, wfci, mid, name</span>
+<span class="sd">        72.100     49.700     70.020  # sand</span>
+<span class="sd">        5.000     21.400     23.682  # clay</span>
+<span class="sd">        7.800      0.000      0.000  # org</span>
+<span class="sd">        4.000      2.000      1.000        4.000        0.000        4.000  # soit, cant, snot, pndt</span>
+<span class="sd">        0.250      0.250      0.250        0.000      0.000      0.000        0.000  # soiwf, soiif, pond</span>
+<span class="sd">        0.000        0.000        0.000        0.500      100.000        1.000  # rcan, scan, sno, albs, rho, gro</span>
+
+<span class="sd">            0         0         0         0                                  20</span>
+<span class="sd">            0         0         0         0                                  21</span>
+<span class="sd">            0         0         0         0                                  22 IHOUR/IMINS/IJDAY/IYEAR</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">excel_file</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Excel file not found: </span><span class="si">{</span><span class="n">excel_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="n">num_cels</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">]):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;You must provide values for num_cels, lat, and lon.&quot;</span><span class="p">)</span>
+
     <span class="c1"># Load Excel file</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_file</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;Sheet1&#39;</span><span class="p">)</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>  <span class="c1"># Normalize column names to lowercase for case insensitivity</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excel_file</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="n">sheet_name</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>  <span class="c1"># Normalize column names</span>
     <span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>    <span class="c1"># Normalize parameter names</span>
 
-    <span class="c1"># Define vegetation columns</span>
-    <span class="n">vegetation_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;v_nforest&#39;</span><span class="p">,</span> <span class="s1">&#39;v_bforest&#39;</span><span class="p">,</span> <span class="s1">&#39;v_crop&#39;</span><span class="p">,</span> <span class="s1">&#39;v_grass&#39;</span><span class="p">,</span> <span class="s1">&#39;v_bare&#39;</span><span class="p">]</span>
-
-    <span class="c1"># Parameters that should be replaced with empty space when assign_col == &#39;v_bare&#39;</span>
-    <span class="n">empty_space_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;lamx&#39;</span><span class="p">,</span> <span class="s1">&#39;lamn&#39;</span><span class="p">,</span> <span class="s1">&#39;cmas&#39;</span><span class="p">,</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span> <span class="s1">&#39;qa50&#39;</span><span class="p">,</span> <span class="s1">&#39;vpdp&#39;</span><span class="p">,</span> <span class="s1">&#39;psgb&#39;</span><span class="p">,</span> <span class="s1">&#39;psga&#39;</span><span class="p">,</span> <span class="s1">&#39;vpda&#39;</span><span class="p">,</span> <span class="s1">&#39;rsmn&#39;</span><span class="p">}</span>
-    <span class="n">empty_space</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="mi">8</span>  <span class="c1"># Fixed length of empty space</span>
+    <span class="c1"># Extract and sort active land covers based on status</span>
+    <span class="n">status_row</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;status&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+    <span class="n">status_row</span> <span class="o">=</span> <span class="n">status_row</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+    <span class="n">active_land_covers</span> <span class="o">=</span> <span class="n">status_row</span><span class="p">[</span><span class="n">status_row</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
     <span class="c1"># Ensure &#39;colum&#39; row exists</span>
     <span class="n">colum_row</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;colum&#39;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">colum_row</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The &#39;colum&#39; row is missing in the provided Excel file.&quot;</span><span class="p">)</span>
-    <span class="c1"># Compute the length dynamically</span>
-    <span class="n">land_cover_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_land_covers</span><span class="p">)</span>
-    <span class="c1">#print(land_cover_count)</span>
+
+    <span class="n">land_cover_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">active_land_covers</span><span class="p">)</span>
+
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="c1"># Write header</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Basin</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -166,12 +317,15 @@
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Org</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     </span><span class="si">{</span><span class="n">lat</span><span class="si">}</span><span class="s2">     </span><span class="si">{</span><span class="n">lon</span><span class="si">}</span><span class="s2">     40.00     40.00     50.00   -1.0    1 </span><span class="si">{</span><span class="n">num_cels</span><span class="si">}</span><span class="s2">    </span><span class="si">{</span><span class="n">land_cover_count</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">lc</span> <span class="ow">in</span> <span class="n">selected_land_covers</span><span class="p">:</span>
+        <span class="c1"># Define vegetation columns</span>
+        <span class="n">vegetation_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;v_nforest&#39;</span><span class="p">,</span> <span class="s1">&#39;v_bforest&#39;</span><span class="p">,</span> <span class="s1">&#39;v_crop&#39;</span><span class="p">,</span> <span class="s1">&#39;v_grass&#39;</span><span class="p">,</span> <span class="s1">&#39;v_bare&#39;</span><span class="p">]</span>
+        <span class="n">empty_space_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;lamx&#39;</span><span class="p">,</span> <span class="s1">&#39;lamn&#39;</span><span class="p">,</span> <span class="s1">&#39;cmas&#39;</span><span class="p">,</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span> <span class="s1">&#39;qa50&#39;</span><span class="p">,</span> <span class="s1">&#39;vpdp&#39;</span><span class="p">,</span> <span class="s1">&#39;psgb&#39;</span><span class="p">,</span> <span class="s1">&#39;psga&#39;</span><span class="p">,</span> <span class="s1">&#39;vpda&#39;</span><span class="p">,</span> <span class="s1">&#39;rsmn&#39;</span><span class="p">}</span>
+        <span class="n">empty_space</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="mi">8</span>  <span class="c1"># Fixed length of empty space</span>
+
+        <span class="k">for</span> <span class="n">lc</span> <span class="ow">in</span> <span class="n">active_land_covers</span><span class="p">:</span>
             <span class="n">lc_lower</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">lc_lower</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Land cover &#39;</span><span class="si">{</span><span class="n">lc</span><span class="si">}</span><span class="s2">&#39; is not found in the Excel columns.&quot;</span><span class="p">)</span>
-
-            <span class="c1">#f.write(f&quot;# Land Cover: {lc}\n&quot;)</span>
 
             <span class="c1"># Block 1: Vegetation Parameters</span>
             <span class="n">vegetation_pairs</span> <span class="o">=</span> <span class="p">[</span>
@@ -194,10 +348,8 @@
                             <span class="n">values</span><span class="p">[</span><span class="s1">&#39;v_bare&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">empty_space</span>
                         <span class="n">assigned_col</span> <span class="o">=</span> <span class="n">colum_row</span><span class="p">[</span><span class="n">lc_lower</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
                         <span class="k">if</span> <span class="n">assigned_col</span> <span class="ow">in</span> <span class="n">vegetation_cols</span><span class="p">:</span>
-                            <span class="c1">#print(assigned_col)</span>
                             <span class="k">try</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="n">assigned_col</span> <span class="o">==</span> <span class="s1">&#39;v_bare&#39;</span> <span class="ow">and</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">empty_space_params</span><span class="p">:</span>
-                                   <span class="c1"># values[assigned_col] = empty_space  # Replace with empty space for specific parameters</span>
                                     <span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="s1">&#39;v_bare&#39;</span><span class="p">])</span>
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="n">values</span><span class="p">[</span><span class="n">assigned_col</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">param</span><span class="p">][</span><span class="n">lc_lower</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -205,7 +357,6 @@
                                 <span class="n">values</span><span class="p">[</span><span class="n">assigned_col</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mf">0.000</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="n">values_pair</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
 
-                <span class="c1"># Write both parameters in one line</span>
                 <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  &quot;</span> <span class="o">+</span> <span class="s2">&quot;   &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">values_pair</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pair</span><span class="p">))</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">vegetation_cols</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;  # </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="c1"># Block 2: One-to-One Parameter Assignments</span>
@@ -221,13 +372,15 @@
                             <span class="k">if</span> <span class="n">param</span> <span class="o">==</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span>
                                 <span class="n">param_value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">param</span><span class="p">][</span><span class="n">lc_lower</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">lc_lower</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">else</span> <span class="s2">&quot;N/A&quot;</span>
                             <span class="k">else</span><span class="p">:</span>
-                                <span class="n">param_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">param</span><span class="p">][</span><span class="n">lc_lower</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">lc_lower</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">else</span> <span class="mf">0.000</span>    
+                                <span class="n">param_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">param</span><span class="p">][</span><span class="n">lc_lower</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">lc_lower</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">else</span> <span class="mf">0.000</span>
                         <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
                             <span class="n">param_value</span> <span class="o">=</span> <span class="s2">&quot;N/A&quot;</span> <span class="k">if</span> <span class="n">param</span> <span class="o">==</span> <span class="s2">&quot;name&quot;</span> <span class="k">else</span> <span class="mf">0.000</span>
                         <span class="n">values_pair</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">param_value</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">param</span> <span class="o">!=</span> <span class="s2">&quot;name&quot;</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">param_value</span><span class="si">:</span><span class="s2">&gt;8</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">values_pair</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mf">0.000</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  &quot;</span> <span class="o">+</span> <span class="s2">&quot;   &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">values_pair</span><span class="p">)</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;  # </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Add a blank line to separate land cover blocks</span>
 
             <span class="c1"># Block 3: Multi-Value Assignments</span>
             <span class="n">multi_value_pairs</span> <span class="o">=</span> <span class="p">[</span>
@@ -262,15 +415,24 @@
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Add a blank line to separate land cover blocks</span>
 
         <span class="c1"># Footer</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;         0         0         0         0                                  20 (not used, but 4x integer values are required)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;         0         0         0         0                                  21 (not used, but 4x integer values are required)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;         0         0         0         0                                  20</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;         0         0         0         0                                  21</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;         0         0         0         0                                  22 IHOUR/IMINS/IJDAY/IYEAR</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MESH parameter file &#39;</span><span class="si">{</span><span class="n">output_file</span><span class="si">}</span><span class="s2">&#39; created successfully!&quot;</span><span class="p">)</span></div>
 
 
-<span class="c1"># Example usage , num_cels, lat, lon</span>
-<span class="c1">#generate_mesh_class_ini_from_excel(&quot;/content/drive/MyDrive/ColabNotebook_FY/meshparametersvalues1.xlsx&quot;, &quot;MESH_output.ini&quot;, [&quot;Forest&quot;, &quot;crop&quot;],num_cels=7408, lat=53.18, lon=-99.25)</span>
+<span class="c1"># Example usage</span>
+<span class="c1">#from MESHpyPreProcessing.generate_mesh_class_ini_from_excel import generate_mesh_class_ini_from_excel as gen_classini</span>
+<span class="c1">#gen_classini(excel_file=&quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPreProcessing/meshparametersvalues2.xlsx&quot;, output_file=&quot;MESH_output2.ini&quot;, num_cels=7408, lat=53.18, lon=-99.25, sheet_name=&#39;class_ini&#39;)</span>
+<span class="c1"># generate_mesh_class_ini_from_excel(</span>
+<span class="c1">#     excel_file=&quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPreProcessing/meshparametersvalues2.xlsx&quot;,</span>
+<span class="c1">#     output_file=&quot;MESH_output2.ini&quot;,</span>
+<span class="c1">#     num_cels=7408,</span>
+<span class="c1">#     lat=53.18,</span>
+<span class="c1">#     lon=-99.25</span>
+<span class="c1">#     sheet_name=&#39;class_ini&#39;</span>
+<span class="c1"># )</span>
 </pre></div>
 
            </div>
