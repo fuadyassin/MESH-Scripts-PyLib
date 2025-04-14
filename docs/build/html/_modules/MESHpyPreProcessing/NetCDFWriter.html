@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MESHpyPreProcessing.NetCDFWriter &mdash; MESH-Scripts-PyLib 1 documentation</title>
+  <title>MESHpyPreProcessing.NetCDFWriter &mdash; MESH-Scripts-PyLib 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -13,7 +13,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=29a6c3e3"></script>
+      <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -41,7 +41,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">File preparation:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../Aggregation_vector.html">Aggregate vector subbasins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../NetCDFWriter.html">Netcdf writer</a></li>
@@ -51,7 +51,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../gsde_soil.html">GSDE soil</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../remap_climate_to_ddb.html">remap_climate_to_ddb</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../plt_var_from_vector_ddb_netcdf.html">plt_var_from_vector_ddb_netcdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plt_var_vector_setup.html">plt_var_vector_setup</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
 <ul>
@@ -84,28 +89,111 @@
              
   <h1>Source code for MESHpyPreProcessing.NetCDFWriter</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">NetCDF File Generation</span>
-<span class="sd">======================</span>
+<span class="sd">Overview</span>
+<span class="sd">========</span>
 
-<span class="sd">NetCDFWriter.py contains a class NetCDFWriter that creates NetCDF files with processed soil data merged from shapefiles and NetCDF drainage databases.</span>
+<span class="sd">The ``NetCDFWriter`` class is designed to generate model-ready NetCDF files (e.g., MESH_parameters.nc) containing </span>
+<span class="sd">soil and other geophysical subbasin data integrated from a vector shapefile and a NetCDF drainage database. </span>
+<span class="sd">This class is typically used in workflows that prepare input parameters for land surface models like MESH.</span>
 
-<span class="sd">Example Usage:</span>
-<span class="sd">--------------</span>
-<span class="sd">&gt;&gt;&gt; from MESHpyPreProcessing.NetCDFWriter import NetCDFWriter</span>
-<span class="sd">&gt;&gt;&gt; writer = NetCDFWriter(nc_filename=&#39;output.nc&#39;, shapefile_path=&#39;path/to/shapefile.shp&#39;, input_ddb_path=&#39;path/to/input_ddb.nc&#39;)</span>
-<span class="sd">&gt;&gt;&gt; writer.read_shapefile()</span>
-<span class="sd">&gt;&gt;&gt; writer.set_coordinates()</span>
-<span class="sd">&gt;&gt;&gt; writer.set_num_soil_layers(3)</span>
-<span class="sd">&gt;&gt;&gt; properties = {&#39;layer_dependent&#39;: [&#39;OC&#39;, &#39;Sand&#39;], &#39;layer_independent&#39;: [&#39;Drainage_Area&#39;]}</span>
-<span class="sd">&gt;&gt;&gt; variable_info = {&#39;OC&#39;: (&#39;OrganicCarbon&#39;, &#39;f4&#39;, &#39;kg/m^2&#39;), &#39;Sand&#39;: (&#39;SandContent&#39;, &#39;f4&#39;, &#39;%&#39;), &#39;Drainage_Area&#39;: (&#39;DrainageArea&#39;, &#39;f4&#39;, &#39;km^2&#39;)}</span>
-<span class="sd">&gt;&gt;&gt; writer.write_netcdf(properties, variable_info)</span>
+<span class="sd">It supports flexible handling of both **layer-dependent** (e.g., soil properties per depth layer) and </span>
+<span class="sd">**layer-independent** (e.g., slope, contributing area) variables. The output conforms to CF conventions </span>
+<span class="sd">and includes appropriate coordinate reference metadata for spatial consistency.</span>
 
-<span class="sd">Functions:</span>
-<span class="sd">----------</span>
-<span class="sd">- read_shapefile: Reads the shapefile and prepares the GeoDataFrame.</span>
-<span class="sd">- set_coordinates: Extracts longitude and latitude from the NetCDF drainage database.</span>
-<span class="sd">- set_num_soil_layers: Sets the number of soil layers for the NetCDF file.</span>
-<span class="sd">- write_netcdf: Writes processed data to a NetCDF file.</span>
+<span class="sd">Function Descriptions</span>
+<span class="sd">=====================</span>
+
+<span class="sd">.. py:class:: NetCDFWriter(nc_filename, shapefile_path, input_ddb_path)</span>
+
+<span class="sd">   Initializes the NetCDF writer with paths to the output file, input shapefile, and NetCDF drainage database.</span>
+
+<span class="sd">   :param nc_filename: Path to the NetCDF output file to be created.</span>
+<span class="sd">   :type nc_filename: str</span>
+<span class="sd">   :param shapefile_path: Path to the input shapefile containing the attributes.</span>
+<span class="sd">   :type shapefile_path: str</span>
+<span class="sd">   :param input_ddb_path: Path to the NetCDF drainage database used to extract coordinates.</span>
+<span class="sd">   :type input_ddb_path: str</span>
+
+<span class="sd">.. py:method:: read_shapefile()</span>
+
+<span class="sd">   Reads the input shapefile and converts it into a GeoDataFrame. The file is automatically reprojected to EPSG:4326 (WGS 84).</span>
+
+<span class="sd">.. py:method:: set_coordinates()</span>
+
+<span class="sd">   Extracts `lon`, `lat`, and `subbasin` values from the NetCDF drainage database file. These values serve as the spatial base for NetCDF output.</span>
+
+<span class="sd">.. py:method:: set_num_soil_layers(num_layers)</span>
+
+<span class="sd">   Sets the number of vertical soil layers that will be written into the NetCDF file.</span>
+
+<span class="sd">   :param num_layers: The number of soil layers (e.g., 4 for a 4-layer soil profile).</span>
+<span class="sd">   :type num_layers: int</span>
+
+<span class="sd">.. py:method:: add_var_attrs(var, attrs)</span>
+
+<span class="sd">   Adds metadata attributes to a NetCDF variable, such as units, standard name, and axis designation.</span>
+
+<span class="sd">   :param var: The NetCDF variable to modify.</span>
+<span class="sd">   :type var: netCDF4.Variable</span>
+<span class="sd">   :param attrs: Dictionary of attributes to apply.</span>
+<span class="sd">   :type attrs: dict</span>
+
+<span class="sd">.. py:method:: write_netcdf(properties, variable_info)</span>
+
+<span class="sd">   Writes the actual NetCDF file using the specified properties and metadata.</span>
+
+<span class="sd">   :param properties: Dictionary specifying which variables are layer-dependent vs. layer-independent.</span>
+<span class="sd">   :type properties: dict</span>
+<span class="sd">   :param variable_info: Dictionary mapping each variable to a tuple of (NetCDF name, data type, unit).</span>
+<span class="sd">   :type variable_info: dict</span>
+
+<span class="sd">Example Usage</span>
+<span class="sd">=============</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    from MESHpyPreProcessing.NetCDFWriter import NetCDFWriter</span>
+
+<span class="sd">    # Paths for NetCDFWriter</span>
+<span class="sd">    nc_filename = &#39;MESH_parameters3.nc&#39;</span>
+<span class="sd">    output_shapefile = &#39;merged_soil_data_shapefile4.shp&#39;</span>
+<span class="sd">    input_ddb = &#39;/scratch/fuaday/sras-agg-model/MESH-sras-agg/MESH_drainage_database.nc&#39;</span>
+<span class="sd">    mesh_intervals = [(0, 0.1), (0.1, 0.35), (0.35, 1.2), (1.2, 4.1)]</span>
+
+<span class="sd">    # Initialize NetCDFWriter with the necessary paths</span>
+<span class="sd">    nc_writer = NetCDFWriter(</span>
+<span class="sd">        nc_filename=nc_filename,</span>
+<span class="sd">        shapefile_path=output_shapefile,</span>
+<span class="sd">        input_ddb_path=input_ddb</span>
+<span class="sd">    )</span>
+
+<span class="sd">    # Step 1: Read the attribute shapefile and extract spatial coordinates from the drainage database</span>
+<span class="sd">    nc_writer.read_shapefile()</span>
+<span class="sd">    nc_writer.set_coordinates()</span>
+
+<span class="sd">    # Step 2: Specify the number of vertical soil layers to include in the output</span>
+<span class="sd">    nc_writer.set_num_soil_layers(num_layers=len(mesh_intervals))</span>
+
+<span class="sd">    # Step 3: Define which variables are layer-dependent vs. layer-independent</span>
+<span class="sd">    properties = {</span>
+<span class="sd">        &#39;layer_dependent&#39;: [&#39;CLAY&#39;, &#39;SAND&#39;, &#39;OC&#39;],  # Varies by soil layer and subbasin</span>
+<span class="sd">        &#39;layer_independent&#39;: [&#39;ncontr&#39;, &#39;meanBDRICM&#39;, &#39;meanBDTICM&#39;, &#39;xslp&#39;, &#39;dd&#39;]  # Varies only by subbasin</span>
+<span class="sd">    }</span>
+
+<span class="sd">    # Step 4: Provide metadata for each variable to be written to NetCDF</span>
+<span class="sd">    variable_info = {</span>
+<span class="sd">        &#39;CLAY&#39;: (&#39;CLAY&#39;, &#39;f4&#39;, &#39;Percentage&#39;),</span>
+<span class="sd">        &#39;SAND&#39;: (&#39;SAND&#39;, &#39;f4&#39;, &#39;Percentage&#39;),</span>
+<span class="sd">        &#39;OC&#39;: (&#39;ORGM&#39;, &#39;f4&#39;, &#39;Percentage&#39;),</span>
+<span class="sd">        &#39;ncontr&#39;: (&#39;IWF&#39;, &#39;i4&#39;, &#39;1&#39;),</span>
+<span class="sd">        &#39;meanBDRICM&#39;: (&#39;BDRICM&#39;, &#39;f4&#39;, &#39;Meters&#39;),</span>
+<span class="sd">        &#39;meanBDTICM&#39;: (&#39;BDTICM&#39;, &#39;f4&#39;, &#39;Meters&#39;),</span>
+<span class="sd">        &#39;xslp&#39;: (&#39;xslp&#39;, &#39;f4&#39;, &#39;degree&#39;),</span>
+<span class="sd">        &#39;dd&#39;: (&#39;dd&#39;, &#39;f4&#39;, &#39;m_per_km2&#39;)</span>
+<span class="sd">    }</span>
+
+<span class="sd">    # Step 5: Write the final NetCDF file with structured metadata and spatial consistency</span>
+<span class="sd">    nc_writer.write_netcdf(properties=properties, variable_info=variable_info)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -260,140 +348,6 @@
 </div>
 
 
-
-<span class="c1"># import os</span>
-<span class="c1"># import numpy as np</span>
-<span class="c1"># import geopandas as gpd</span>
-<span class="c1"># import netCDF4 as nc</span>
-<span class="c1"># from datetime import datetime</span>
-<span class="c1"># import tempfile</span>
-<span class="c1"># import xarray as xs</span>
-
-<span class="c1"># class NetCDFWriter:</span>
-<span class="c1">#     def __init__(self, nc_filename, shapefile_path, input_ddb_path):</span>
-<span class="c1">#         self.nc_filename = nc_filename</span>
-<span class="c1">#         self.shapefile_path = shapefile_path</span>
-<span class="c1">#         self.input_ddb_path = input_ddb_path</span>
-<span class="c1">#         self.merged_gdf = gpd.GeoDataFrame()</span>
-<span class="c1">#         self.lon = []</span>
-<span class="c1">#         self.lat = []</span>
-<span class="c1">#         self.segid = []</span>
-<span class="c1">#         self.num_soil_lyrs = 0</span>
-
-<span class="c1">#     def read_shapefile(self):</span>
-<span class="c1">#         &quot;&quot;&quot;</span>
-<span class="c1">#         Read the shapefile and set the merged GeoDataFrame.</span>
-<span class="c1">#         &quot;&quot;&quot;</span>
-<span class="c1">#         self.merged_gdf = gpd.read_file(self.shapefile_path).to_crs(epsg=4326)</span>
-
-<span class="c1">#     def set_coordinates(self):</span>
-<span class="c1">#         &quot;&quot;&quot;</span>
-<span class="c1">#         Set longitude and latitude values from a NetCDF drainage database.</span>
-<span class="c1">#         &quot;&quot;&quot;</span>
-<span class="c1">#         db = xs.open_dataset(self.input_ddb_path)</span>
-<span class="c1">#         self.lon = db.variables[&#39;lon&#39;].values</span>
-<span class="c1">#         self.lat = db.variables[&#39;lat&#39;].values</span>
-<span class="c1">#         self.segid = db.variables[&#39;subbasin&#39;].values</span>
-<span class="c1">#         db.close()</span>
-
-<span class="c1">#     def set_num_soil_layers(self, num_layers):</span>
-<span class="c1">#         &quot;&quot;&quot;</span>
-<span class="c1">#         Set the number of soil layers.</span>
-<span class="c1">#         &quot;&quot;&quot;</span>
-<span class="c1">#         self.num_soil_lyrs = num_layers</span>
-
-<span class="c1">#     def add_var_attrs(self, var, attrs):</span>
-<span class="c1">#         &quot;&quot;&quot;</span>
-<span class="c1">#         Add attributes to a variable.</span>
-<span class="c1">#         &quot;&quot;&quot;</span>
-<span class="c1">#         for attr, value in attrs.items():</span>
-<span class="c1">#             var.setncattr(attr, value)</span>
-
-<span class="c1">#     def write_netcdf(self, properties, variable_info):</span>
-<span class="c1">#         &quot;&quot;&quot;</span>
-<span class="c1">#         Create a NetCDF file with the processed soil data.</span>
-<span class="c1">#         properties: dict</span>
-<span class="c1">#             A dictionary with two keys:</span>
-<span class="c1">#             - &#39;layer_dependent&#39;: List of property names tied to the number of soil layers.</span>
-<span class="c1">#             - &#39;layer_independent&#39;: List of property names dependent only on the subbasin.</span>
-<span class="c1">#         variable_info: dict</span>
-<span class="c1">#             A dictionary with keys as property names and values as tuples containing </span>
-<span class="c1">#             (new variable name in NetCDF, data type code).</span>
-<span class="c1">#         &quot;&quot;&quot;</span>
-<span class="c1">#         try:</span>
-<span class="c1">#             rootgrp = nc.Dataset(self.nc_filename, &quot;w&quot;, format=&quot;NETCDF4&quot;)</span>
-<span class="c1">#         except PermissionError:</span>
-<span class="c1">#             temp_dir = tempfile.gettempdir()</span>
-<span class="c1">#             self.nc_filename = os.path.join(temp_dir, f&quot;MESH_parameters.nc&quot;)</span>
-<span class="c1">#             rootgrp = nc.Dataset(self.nc_filename, &quot;w&quot;, format=&quot;NETCDF4&quot;)</span>
-
-<span class="c1">#         # Calculate the indices of the matching COMID values</span>
-<span class="c1">#         ind = []</span>
-<span class="c1">#         for i in range(len(self.segid)):</span>
-<span class="c1">#             fid = np.where(np.int32(self.merged_gdf[&#39;COMID&#39;].values) == self.segid[i])[0]</span>
-<span class="c1">#             ind = np.append(ind, fid)</span>
-<span class="c1">#         ind = np.int32(ind)</span>
-
-<span class="c1">#         subbasin_dim = rootgrp.createDimension(&quot;subbasin&quot;, len(self.lon))</span>
-<span class="c1">#         nsol_dim = rootgrp.createDimension(&quot;nsol&quot;, self.num_soil_lyrs)</span>
-
-<span class="c1">#         lon_var = rootgrp.createVariable(&quot;lon&quot;, &quot;f4&quot;, (&quot;subbasin&quot;,), fill_value=-1.0)</span>
-<span class="c1">#         lat_var = rootgrp.createVariable(&quot;lat&quot;, &quot;f4&quot;, (&quot;subbasin&quot;,), fill_value=-1.0)</span>
-<span class="c1">#         time_var = rootgrp.createVariable(&quot;time&quot;, &quot;f4&quot;, (&quot;subbasin&quot;,), fill_value=-1.0)</span>
-<span class="c1">#         subbasin_var = rootgrp.createVariable(&quot;subbasin&quot;, &quot;i4&quot;, (&quot;subbasin&quot;,))</span>
-
-<span class="c1">#         lon_var.units = &quot;degrees_east&quot;</span>
-<span class="c1">#         lat_var.units = &quot;degrees_north&quot;</span>
-<span class="c1">#         time_var.units = &quot;days since 1980-10-01 00:00:00.0 -0:00&quot;</span>
-
-<span class="c1">#         lon_var[:] = np.array(self.lon)</span>
-<span class="c1">#         lat_var[:] = np.array(self.lat)</span>
-<span class="c1">#         time_var[:] = np.zeros(len(self.lon))</span>
-<span class="c1">#         subbasin_var[:] = np.array(self.segid, dtype=np.int32)</span>
-
-<span class="c1">#         # Set variable attributes</span>
-<span class="c1">#         self.add_var_attrs(lon_var, {&quot;standard_name&quot;: &quot;longitude&quot;, &quot;axis&quot;: &quot;X&quot;, &quot;grid_mapping&quot;: &quot;crs&quot;})</span>
-<span class="c1">#         self.add_var_attrs(lat_var, {&quot;standard_name&quot;: &quot;latitude&quot;, &quot;axis&quot;: &quot;Y&quot;, &quot;grid_mapping&quot;: &quot;crs&quot;})</span>
-<span class="c1">#         self.add_var_attrs(time_var, {&quot;standard_name&quot;: &quot;time&quot;, &quot;axis&quot;: &quot;T&quot;, &quot;grid_mapping&quot;: &quot;crs&quot;})</span>
-<span class="c1">#         self.add_var_attrs(subbasin_var, {&quot;standard_name&quot;: &quot;subbasin_id&quot;, &quot;long_name&quot;: &quot;Subbasin ID&quot;})</span>
-
-<span class="c1">#         # Handle properties tied to number of soil layers</span>
-<span class="c1">#         if &#39;layer_dependent&#39; in properties:</span>
-<span class="c1">#             for prop in properties[&#39;layer_dependent&#39;]:</span>
-<span class="c1">#                 new_name, dtype = variable_info[prop]</span>
-<span class="c1">#                 data_var = rootgrp.createVariable(new_name, dtype, (&quot;subbasin&quot;, &quot;nsol&quot;), fill_value=-1.0)</span>
-<span class="c1">#                 data_var.long_name = f&quot;{prop} Content of Soil Layer&quot;</span>
-<span class="c1">#                 self.add_var_attrs(data_var, {&quot;grid_mapping&quot;: &quot;crs&quot;, &quot;standard_name&quot;: prop.lower(), &quot;coordinates&quot;: &quot;lat lon time&quot;})</span>
-<span class="c1">#                 for i in range(self.num_soil_lyrs):</span>
-<span class="c1">#                     data_var[:, i] = np.array(self.merged_gdf[f&#39;mesh{prop}{i+1}&#39;].values[ind])</span>
-
-<span class="c1">#         # Handle properties dependent only on subbasin</span>
-<span class="c1">#         if &#39;layer_independent&#39; in properties:</span>
-<span class="c1">#             for prop in properties[&#39;layer_independent&#39;]:</span>
-<span class="c1">#                 new_name, dtype = variable_info[prop]</span>
-<span class="c1">#                 data_var = rootgrp.createVariable(new_name, dtype, (&quot;subbasin&quot;,), fill_value=-1.0)</span>
-<span class="c1">#                 data_var.long_name = f&quot;{prop} Content per Subbasin&quot;</span>
-<span class="c1">#                 self.add_var_attrs(data_var, {&quot;grid_mapping&quot;: &quot;crs&quot;, &quot;standard_name&quot;: prop.lower(), &quot;coordinates&quot;: &quot;lat lon time&quot;})</span>
-<span class="c1">#                 data_var[:] = np.array(self.merged_gdf[prop].values[ind])</span>
-
-<span class="c1">#         # Global attributes</span>
-<span class="c1">#         rootgrp.setncattr(&quot;Conventions&quot;, &quot;CF-1.0&quot;)</span>
-<span class="c1">#         rootgrp.setncattr(&quot;source&quot;, &quot;MERIT geogabrics and GSDE soil&quot;)</span>
-<span class="c1">#         rootgrp.setncattr(&quot;institution&quot;, &quot;ECCC&quot;)</span>
-<span class="c1">#         rootgrp.setncattr(&quot;references&quot;, &quot;xx et al. (xxxx) journal xx:xx-xx&quot;)</span>
-<span class="c1">#         rootgrp.setncattr(&quot;history&quot;, f&quot;Fuad Yassin, {datetime.now().strftime(&#39;%Y-%m-%d&#39;)}&quot;)</span>
-<span class="c1">#         rootgrp.setncattr(&quot;featureType&quot;, &quot;point&quot;)</span>
-
-<span class="c1">#         # CRS variable</span>
-<span class="c1">#         proj = rootgrp.createVariable(&quot;crs&quot;, &quot;i4&quot;, ())</span>
-<span class="c1">#         self.add_var_attrs(proj, {</span>
-<span class="c1">#             &quot;grid_mapping_name&quot;: &quot;latitude_longitude&quot;,</span>
-<span class="c1">#             &quot;longitude_of_prime_meridian&quot;: 0,</span>
-<span class="c1">#             &quot;semi_major_axis&quot;: 6378137.0,</span>
-<span class="c1">#             &quot;inverse_flattening&quot;: 298.257223563</span>
-<span class="c1">#         })</span>
-
-<span class="c1">#         rootgrp.close()</span>
 </pre></div>
 
            </div>

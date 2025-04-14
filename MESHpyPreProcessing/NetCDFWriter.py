@@ -1,26 +1,109 @@
 """
-NetCDF File Generation
-======================
+Overview
+========
 
-NetCDFWriter.py contains a class NetCDFWriter that creates NetCDF files with processed soil data merged from shapefiles and NetCDF drainage databases.
+The ``NetCDFWriter`` class is designed to generate model-ready NetCDF files (e.g., MESH_parameters.nc) containing 
+soil and other geophysical subbasin data integrated from a vector shapefile and a NetCDF drainage database. 
+This class is typically used in workflows that prepare input parameters for land surface models like MESH.
 
-Example Usage:
---------------
->>> from MESHpyPreProcessing.NetCDFWriter import NetCDFWriter
->>> writer = NetCDFWriter(nc_filename='output.nc', shapefile_path='path/to/shapefile.shp', input_ddb_path='path/to/input_ddb.nc')
->>> writer.read_shapefile()
->>> writer.set_coordinates()
->>> writer.set_num_soil_layers(3)
->>> properties = {'layer_dependent': ['OC', 'Sand'], 'layer_independent': ['Drainage_Area']}
->>> variable_info = {'OC': ('OrganicCarbon', 'f4', 'kg/m^2'), 'Sand': ('SandContent', 'f4', '%'), 'Drainage_Area': ('DrainageArea', 'f4', 'km^2')}
->>> writer.write_netcdf(properties, variable_info)
+It supports flexible handling of both **layer-dependent** (e.g., soil properties per depth layer) and 
+**layer-independent** (e.g., slope, contributing area) variables. The output conforms to CF conventions 
+and includes appropriate coordinate reference metadata for spatial consistency.
 
-Functions:
-----------
-- read_shapefile: Reads the shapefile and prepares the GeoDataFrame.
-- set_coordinates: Extracts longitude and latitude from the NetCDF drainage database.
-- set_num_soil_layers: Sets the number of soil layers for the NetCDF file.
-- write_netcdf: Writes processed data to a NetCDF file.
+Function Descriptions
+=====================
+
+.. py:class:: NetCDFWriter(nc_filename, shapefile_path, input_ddb_path)
+
+   Initializes the NetCDF writer with paths to the output file, input shapefile, and NetCDF drainage database.
+
+   :param nc_filename: Path to the NetCDF output file to be created.
+   :type nc_filename: str
+   :param shapefile_path: Path to the input shapefile containing the attributes.
+   :type shapefile_path: str
+   :param input_ddb_path: Path to the NetCDF drainage database used to extract coordinates.
+   :type input_ddb_path: str
+
+.. py:method:: read_shapefile()
+
+   Reads the input shapefile and converts it into a GeoDataFrame. The file is automatically reprojected to EPSG:4326 (WGS 84).
+
+.. py:method:: set_coordinates()
+
+   Extracts `lon`, `lat`, and `subbasin` values from the NetCDF drainage database file. These values serve as the spatial base for NetCDF output.
+
+.. py:method:: set_num_soil_layers(num_layers)
+
+   Sets the number of vertical soil layers that will be written into the NetCDF file.
+
+   :param num_layers: The number of soil layers (e.g., 4 for a 4-layer soil profile).
+   :type num_layers: int
+
+.. py:method:: add_var_attrs(var, attrs)
+
+   Adds metadata attributes to a NetCDF variable, such as units, standard name, and axis designation.
+
+   :param var: The NetCDF variable to modify.
+   :type var: netCDF4.Variable
+   :param attrs: Dictionary of attributes to apply.
+   :type attrs: dict
+
+.. py:method:: write_netcdf(properties, variable_info)
+
+   Writes the actual NetCDF file using the specified properties and metadata.
+
+   :param properties: Dictionary specifying which variables are layer-dependent vs. layer-independent.
+   :type properties: dict
+   :param variable_info: Dictionary mapping each variable to a tuple of (NetCDF name, data type, unit).
+   :type variable_info: dict
+
+Example Usage
+=============
+
+.. code-block:: python
+
+    from MESHpyPreProcessing.NetCDFWriter import NetCDFWriter
+
+    # Paths for NetCDFWriter
+    nc_filename = 'MESH_parameters3.nc'
+    output_shapefile = 'merged_soil_data_shapefile4.shp'
+    input_ddb = '/scratch/fuaday/sras-agg-model/MESH-sras-agg/MESH_drainage_database.nc'
+    mesh_intervals = [(0, 0.1), (0.1, 0.35), (0.35, 1.2), (1.2, 4.1)]
+
+    # Initialize NetCDFWriter with the necessary paths
+    nc_writer = NetCDFWriter(
+        nc_filename=nc_filename,
+        shapefile_path=output_shapefile,
+        input_ddb_path=input_ddb
+    )
+
+    # Step 1: Read the attribute shapefile and extract spatial coordinates from the drainage database
+    nc_writer.read_shapefile()
+    nc_writer.set_coordinates()
+
+    # Step 2: Specify the number of vertical soil layers to include in the output
+    nc_writer.set_num_soil_layers(num_layers=len(mesh_intervals))
+
+    # Step 3: Define which variables are layer-dependent vs. layer-independent
+    properties = {
+        'layer_dependent': ['CLAY', 'SAND', 'OC'],  # Varies by soil layer and subbasin
+        'layer_independent': ['ncontr', 'meanBDRICM', 'meanBDTICM', 'xslp', 'dd']  # Varies only by subbasin
+    }
+
+    # Step 4: Provide metadata for each variable to be written to NetCDF
+    variable_info = {
+        'CLAY': ('CLAY', 'f4', 'Percentage'),
+        'SAND': ('SAND', 'f4', 'Percentage'),
+        'OC': ('ORGM', 'f4', 'Percentage'),
+        'ncontr': ('IWF', 'i4', '1'),
+        'meanBDRICM': ('BDRICM', 'f4', 'Meters'),
+        'meanBDTICM': ('BDTICM', 'f4', 'Meters'),
+        'xslp': ('xslp', 'f4', 'degree'),
+        'dd': ('dd', 'f4', 'm_per_km2')
+    }
+
+    # Step 5: Write the final NetCDF file with structured metadata and spatial consistency
+    nc_writer.write_netcdf(properties=properties, variable_info=variable_info)
 """
 import os
 import numpy as np
@@ -157,137 +240,3 @@ class NetCDFWriter:
 
         rootgrp.close()
 
-
-# import os
-# import numpy as np
-# import geopandas as gpd
-# import netCDF4 as nc
-# from datetime import datetime
-# import tempfile
-# import xarray as xs
-
-# class NetCDFWriter:
-#     def __init__(self, nc_filename, shapefile_path, input_ddb_path):
-#         self.nc_filename = nc_filename
-#         self.shapefile_path = shapefile_path
-#         self.input_ddb_path = input_ddb_path
-#         self.merged_gdf = gpd.GeoDataFrame()
-#         self.lon = []
-#         self.lat = []
-#         self.segid = []
-#         self.num_soil_lyrs = 0
-
-#     def read_shapefile(self):
-#         """
-#         Read the shapefile and set the merged GeoDataFrame.
-#         """
-#         self.merged_gdf = gpd.read_file(self.shapefile_path).to_crs(epsg=4326)
-
-#     def set_coordinates(self):
-#         """
-#         Set longitude and latitude values from a NetCDF drainage database.
-#         """
-#         db = xs.open_dataset(self.input_ddb_path)
-#         self.lon = db.variables['lon'].values
-#         self.lat = db.variables['lat'].values
-#         self.segid = db.variables['subbasin'].values
-#         db.close()
-
-#     def set_num_soil_layers(self, num_layers):
-#         """
-#         Set the number of soil layers.
-#         """
-#         self.num_soil_lyrs = num_layers
-
-#     def add_var_attrs(self, var, attrs):
-#         """
-#         Add attributes to a variable.
-#         """
-#         for attr, value in attrs.items():
-#             var.setncattr(attr, value)
-
-#     def write_netcdf(self, properties, variable_info):
-#         """
-#         Create a NetCDF file with the processed soil data.
-#         properties: dict
-#             A dictionary with two keys:
-#             - 'layer_dependent': List of property names tied to the number of soil layers.
-#             - 'layer_independent': List of property names dependent only on the subbasin.
-#         variable_info: dict
-#             A dictionary with keys as property names and values as tuples containing 
-#             (new variable name in NetCDF, data type code).
-#         """
-#         try:
-#             rootgrp = nc.Dataset(self.nc_filename, "w", format="NETCDF4")
-#         except PermissionError:
-#             temp_dir = tempfile.gettempdir()
-#             self.nc_filename = os.path.join(temp_dir, f"MESH_parameters.nc")
-#             rootgrp = nc.Dataset(self.nc_filename, "w", format="NETCDF4")
-
-#         # Calculate the indices of the matching COMID values
-#         ind = []
-#         for i in range(len(self.segid)):
-#             fid = np.where(np.int32(self.merged_gdf['COMID'].values) == self.segid[i])[0]
-#             ind = np.append(ind, fid)
-#         ind = np.int32(ind)
-
-#         subbasin_dim = rootgrp.createDimension("subbasin", len(self.lon))
-#         nsol_dim = rootgrp.createDimension("nsol", self.num_soil_lyrs)
-
-#         lon_var = rootgrp.createVariable("lon", "f4", ("subbasin",), fill_value=-1.0)
-#         lat_var = rootgrp.createVariable("lat", "f4", ("subbasin",), fill_value=-1.0)
-#         time_var = rootgrp.createVariable("time", "f4", ("subbasin",), fill_value=-1.0)
-#         subbasin_var = rootgrp.createVariable("subbasin", "i4", ("subbasin",))
-
-#         lon_var.units = "degrees_east"
-#         lat_var.units = "degrees_north"
-#         time_var.units = "days since 1980-10-01 00:00:00.0 -0:00"
-
-#         lon_var[:] = np.array(self.lon)
-#         lat_var[:] = np.array(self.lat)
-#         time_var[:] = np.zeros(len(self.lon))
-#         subbasin_var[:] = np.array(self.segid, dtype=np.int32)
-
-#         # Set variable attributes
-#         self.add_var_attrs(lon_var, {"standard_name": "longitude", "axis": "X", "grid_mapping": "crs"})
-#         self.add_var_attrs(lat_var, {"standard_name": "latitude", "axis": "Y", "grid_mapping": "crs"})
-#         self.add_var_attrs(time_var, {"standard_name": "time", "axis": "T", "grid_mapping": "crs"})
-#         self.add_var_attrs(subbasin_var, {"standard_name": "subbasin_id", "long_name": "Subbasin ID"})
-
-#         # Handle properties tied to number of soil layers
-#         if 'layer_dependent' in properties:
-#             for prop in properties['layer_dependent']:
-#                 new_name, dtype = variable_info[prop]
-#                 data_var = rootgrp.createVariable(new_name, dtype, ("subbasin", "nsol"), fill_value=-1.0)
-#                 data_var.long_name = f"{prop} Content of Soil Layer"
-#                 self.add_var_attrs(data_var, {"grid_mapping": "crs", "standard_name": prop.lower(), "coordinates": "lat lon time"})
-#                 for i in range(self.num_soil_lyrs):
-#                     data_var[:, i] = np.array(self.merged_gdf[f'mesh{prop}{i+1}'].values[ind])
-
-#         # Handle properties dependent only on subbasin
-#         if 'layer_independent' in properties:
-#             for prop in properties['layer_independent']:
-#                 new_name, dtype = variable_info[prop]
-#                 data_var = rootgrp.createVariable(new_name, dtype, ("subbasin",), fill_value=-1.0)
-#                 data_var.long_name = f"{prop} Content per Subbasin"
-#                 self.add_var_attrs(data_var, {"grid_mapping": "crs", "standard_name": prop.lower(), "coordinates": "lat lon time"})
-#                 data_var[:] = np.array(self.merged_gdf[prop].values[ind])
-
-#         # Global attributes
-#         rootgrp.setncattr("Conventions", "CF-1.0")
-#         rootgrp.setncattr("source", "MERIT geogabrics and GSDE soil")
-#         rootgrp.setncattr("institution", "ECCC")
-#         rootgrp.setncattr("references", "xx et al. (xxxx) journal xx:xx-xx")
-#         rootgrp.setncattr("history", f"Fuad Yassin, {datetime.now().strftime('%Y-%m-%d')}")
-#         rootgrp.setncattr("featureType", "point")
-
-#         # CRS variable
-#         proj = rootgrp.createVariable("crs", "i4", ())
-#         self.add_var_attrs(proj, {
-#             "grid_mapping_name": "latitude_longitude",
-#             "longitude_of_prime_meridian": 0,
-#             "semi_major_axis": 6378137.0,
-#             "inverse_flattening": 298.257223563
-#         })
-
-#         rootgrp.close()

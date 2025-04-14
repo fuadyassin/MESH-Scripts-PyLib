@@ -1,35 +1,144 @@
 """
-GSDE Soil Data Processor
-========================
+Overview
+========
 
-This script contains a class `GSDESoil` that processes soil property data from multiple CSV files,
-merges the data with a given shapefile, and exports the processed data.
+The ``GSDESoil`` class provides a pipeline to process, clean, interpolate, and integrate soil property data
+into hydrological model inputs, such as those required by MESH. It is designed to handle GSDE-derived statistics
+stored in CSV files, convert them to model-ready format using weighted depth-averaging, and merge them into a 
+basin shapefile based on unique identifiers (e.g., ``COMID``).
 
-Example Usage:
---------------
->>> from gsde_soil import GSDESoil
->>> gsde_processor = GSDESoil(directory='data/', input_basin='basin.shp', output_shapefile='output.shp')
->>> gsde_processor.load_data(file_names=['soil1.csv', 'soil2.csv'], search_replace_dict=None, suffix_dict=None)
->>> gsde_processor.fill_and_clean_data()
->>> gsde_processor.calculate_weights(gsde_intervals=[(0,10), (10,20)], mesh_intervals=[(0,5), (5,15)])
->>> gsde_processor.calculate_mesh_values(column_names={'OC': ['OC1', 'OC2'], 'Sand': ['Sand1', 'Sand2']})
->>> gsde_processor.merge_and_save_shapefile()
+Function Descriptions
+=====================
 
-Classes & Functions:
---------------------
-- GSDESoil: Class that manages soil data loading, processing, and merging.
-  - load_data: Loads soil data from CSV files.
-  - fill_and_clean_data: Cleans and fills missing values in soil data.
-  - calculate_weights: Computes weighted values for soil layers.
-  - calculate_mesh_values: Computes interpolated soil properties.
-  - merge_and_save_shapefile: Merges processed soil data with a shapefile.
-  - set_coordinates: Extracts longitude and latitude values from a NetCDF file.
+.. py:class:: GSDESoil(directory, input_basin, output_shapefile)
 
-Parameters:
------------
-- directory (str): Directory containing input CSV files.
-- input_basin (str): Path to the input basin shapefile.
-- output_shapefile (str): Path to the output merged shapefile.
+   Initializes the processor with input/output paths.
+
+   :param directory: Directory containing input CSV files.
+   :type directory: str
+   :param input_basin: Path to the input shapefile with a COMID field.
+   :type input_basin: str
+   :param output_shapefile: Path where the merged shapefile will be saved.
+   :type output_shapefile: str
+
+.. py:method:: load_data(file_names, search_replace_dict=None, suffix_dict=None)
+
+   Loads and merges soil data from multiple CSV files. Columns can be renamed using 
+   search/replace rules and optionally suffixed to avoid name collisions.
+
+   :param file_names: List of CSV file names.
+   :type file_names: list
+   :param search_replace_dict: Dictionary with filename as key and (search_list, replace_list) as value.
+   :type search_replace_dict: dict, optional
+   :param suffix_dict: Dictionary with filename as key and string suffix as value.
+   :type suffix_dict: dict, optional
+
+.. py:method:: fill_and_clean_data(exclude_cols=['COMID'], exclude_patterns=['OC', 'BD', 'BDRICM', 'BDTICM'], max_val=100)
+
+   Cleans soil data by removing outliers, rescaling BDRICM/BDTICM, and filling missing values via forward/backward fill.
+
+   :param exclude_cols: Columns to ignore during cleaning.
+   :type exclude_cols: list
+   :param exclude_patterns: Substrings used to skip certain columns during range checks.
+   :type exclude_patterns: list
+   :param max_val: Maximum threshold for valid data (values above this become NaN).
+   :type max_val: float
+
+.. py:method:: calculate_weights(gsde_intervals, mesh_intervals)
+
+   Computes weights to map GSDE soil depth intervals to model mesh layers.
+
+   :param gsde_intervals: List of tuples representing GSDE depth layers (e.g., [(0, 0.045), ...]).
+   :type gsde_intervals: list of tuple
+   :param mesh_intervals: List of tuples representing target model layer depths.
+   :type mesh_intervals: list of tuple
+
+.. py:method:: calculate_mesh_values(column_names)
+
+   Applies weights to calculate layer-averaged MESH-compatible soil properties.
+
+   :param column_names: Dictionary mapping each property (e.g., "CLAY", "OC") to its source columns.
+   :type column_names: dict
+
+.. py:method:: merge_and_save_shapefile()
+
+   Merges the processed soil data with the input basin shapefile using ``COMID`` and saves the final output.
+
+.. py:method:: set_coordinates(input_ddb)
+
+   Optionally reads spatial reference (lon, lat, subbasin) from a NetCDF drainage database.
+
+   :param input_ddb: Path to the NetCDF drainage database file.
+   :type input_ddb: str
+
+Example Usage
+=============
+
+.. code-block:: python
+
+    from gsde_soil import GSDESoil
+
+    # Step 1: Initialize the soil processor with paths to your directories and files
+    gsde = GSDESoil(
+        directory='/home/fuaday/scratch/sras-agg-model/gistool-outputs',
+        input_basin='/home/fuaday/scratch/sras-agg-model/geofabric-outputs/sras_subbasins_MAF_Agg2.shp',
+        output_shapefile='merged_soil_data_shapefile4.shp'
+    )
+
+    # Step 2: Define the list of input CSV files
+    file_names = [
+        'sras_model_stats_CLAY1.csv', 'sras_model_stats_CLAY2.csv',
+        'sras_model_stats_SAND1.csv', 'sras_model_stats_SAND2.csv',
+        'sras_model_stats_OC1.csv',   'sras_model_stats_OC2.csv',
+        'sras_model_stats_BDRICM_M_250m_ll.csv',
+        'sras_model_stats_BDTICM_M_250m_ll.csv',
+        'sras_model_slope_degree.csv', 'sras_model_riv_0p1_2.csv'
+    ]
+
+    # Step 3: Prepare renaming instructions for each file (search/replace patterns)
+    search_replace_dict = {
+        'sras_model_stats_CLAY1.csv': (['.CLAY_depth=4.5', '.CLAY_depth=9.1000004', '.CLAY_depth=16.6', '.CLAY_depth=28.9'], ['CLAY1', 'CLAY2', 'CLAY3', 'CLAY4']),
+        'sras_model_stats_CLAY2.csv': (['.CLAY_depth=49.299999', '.CLAY_depth=82.900002', '.CLAY_depth=138.3', '.CLAY_depth=229.60001'], ['CLAY5', 'CLAY6', 'CLAY7', 'CLAY8']),
+        'sras_model_stats_SAND1.csv': (['.SAND_depth=4.5', '.SAND_depth=9.1000004', '.SAND_depth=16.6', '.SAND_depth=28.9'], ['SAND1', 'SAND2', 'SAND3', 'SAND4']),
+        'sras_model_stats_SAND2.csv': (['.SAND_depth=49.299999', '.SAND_depth=82.900002', '.SAND_depth=138.3', '.SAND_depth=229.60001'], ['SAND5', 'SAND6', 'SAND7', 'SAND8']),
+        'sras_model_stats_OC1.csv': (['.OC_depth=4.5', '.OC_depth=9.1000004', '.OC_depth=16.6', '.OC_depth=28.9'], ['OC1', 'OC2', 'OC3', 'OC4']),
+        'sras_model_stats_OC2.csv': (['.OC_depth=49.299999', '.OC_depth=82.900002', '.OC_depth=138.3', '.OC_depth=229.60001'], ['OC5', 'OC6', 'OC7', 'OC8'])
+    }
+
+    # Step 4: Optionally specify suffixes to distinguish overlapping columns
+    suffix_dict = {
+        'sras_model_stats_BDRICM_M_250m_ll.csv': 'BDRICM',
+        'sras_model_stats_BDTICM_M_250m_ll.csv': 'BDTICM'
+    }
+
+    # Step 5: Load the data, applying renaming and suffixes
+    gsde.load_data(
+        file_names=file_names,
+        search_replace_dict=search_replace_dict,
+        suffix_dict=suffix_dict
+    )
+
+    # Step 6: Clean and prepare the soil data (e.g., remove outliers, fill NaNs)
+    gsde.fill_and_clean_data()
+
+    # Step 7: Define soil profile intervals for GSDE and MESH (depths in meters)
+    gsde_intervals = [(0, 0.045), (0.045, 0.091), (0.091, 0.166), (0.166, 0.289),
+                      (0.289, 0.493), (0.493, 0.829), (0.829, 1.383), (1.383, 2.296)]
+
+    mesh_intervals = [(0, 0.1), (0.1, 0.35), (0.35, 1.2), (1.2, 4.1)]
+
+    gsde.calculate_weights(gsde_intervals, mesh_intervals)
+
+    # Step 8: Compute mesh-compatible weighted averages of soil properties
+    column_names = {
+        'CLAY': ['CLAY1', 'CLAY2', 'CLAY3', 'CLAY4', 'CLAY5', 'CLAY6', 'CLAY7', 'CLAY8'],
+        'SAND': ['SAND1', 'SAND2', 'SAND3', 'SAND4', 'SAND5', 'SAND6', 'SAND7', 'SAND8'],
+        'OC':   ['OC1', 'OC2', 'OC3', 'OC4', 'OC5', 'OC6', 'OC7', 'OC8']
+    }
+    gsde.calculate_mesh_values(column_names)
+
+    # Step 9: Merge processed soil data into the basin shapefile and save output
+    gsde.merge_and_save_shapefile()
 """
 import os
 import numpy as np
@@ -40,22 +149,35 @@ import xarray as xr
 
 class GSDESoil:
     """
-    A class to process and merge soil data from CSV files with a given basin shapefile.
+    A class to process, clean, interpolate, and merge soil property data from CSV files
+    with a given basin shapefile, producing model-ready soil inputs.
 
-    Attributes:
-    -----------
+    Attributes
+    ----------
     directory : str
-        Directory containing soil CSV files.
+        Directory containing input CSV files with soil properties.
     input_basin : str
-        Path to the input basin shapefile.
+        Path to the input basin shapefile with a 'COMID' identifier.
     output_shapefile : str
-        Path to the output shapefile with merged data.
+        Path to the output shapefile with processed soil attributes.
     file_paths : list
-        List of file paths to soil CSV files.
+        List of full file paths for input CSVs.
     gsde_df : pandas.DataFrame
-        DataFrame storing soil property data.
+        Combined soil property table after processing.
     merged_gdf : geopandas.GeoDataFrame
-        Merged GeoDataFrame containing the final processed data.
+        Final spatial dataset with soil properties merged to polygons.
+    weights_used : list of list
+        Weights used to interpolate soil layers into mesh layers.
+    mesh_intervals : list of tuple
+        Target depth intervals used for model input (e.g., MESH layers).
+    lon : ndarray
+        Longitude values loaded from a NetCDF drainage database.
+    lat : ndarray
+        Latitude values loaded from a NetCDF drainage database.
+    segid : ndarray
+        Segment IDs (e.g., subbasin or COMID) from a drainage database.
+    num_soil_lyrs : int
+        Number of output mesh layers.
     """
     def __init__(self, directory, input_basin, output_shapefile):
         self.directory = directory
@@ -73,11 +195,19 @@ class GSDESoil:
 
     def load_data(self, file_names, search_replace_dict=None, suffix_dict=None):
         """
-        Load data from multiple CSV files, apply renaming/suffixing, and merge into a single DataFrame.
-        Parameters:
-            - file_names: List of CSV file names to be loaded.
-            - search_replace_dict: Dictionary with file name as key and (search_list, replace_list) tuple as value.
-            - suffix_dict: Dictionary with file name as key and suffix as value.
+        Load and merge multiple CSV files into a single DataFrame. Optionally apply
+        search-and-replace logic and suffixes to column names to ensure compatibility.
+
+        Parameters
+        ----------
+        file_names : list of str
+            List of filenames to load from the given directory.
+        search_replace_dict : dict, optional
+            Dictionary where keys are filenames and values are (search_list, replace_list) tuples
+            used to rename columns (e.g., depth labels to CLAY1, CLAY2, etc.).
+        suffix_dict : dict, optional
+            Dictionary where keys are filenames and values are suffix strings
+            to append to column names (useful for distinguishing overlapping variables).
         """
         self.file_paths = [os.path.join(self.directory, filename) for filename in file_names]
         self.gsde_df = self.load_and_merge_files(self.file_paths, search_replace_dict, suffix_dict)
@@ -85,8 +215,24 @@ class GSDESoil:
     @staticmethod
     def load_and_merge_files(file_list, search_replace_dict=None, suffix_dict=None, key='COMID'):
         """
-        Load and merge multiple CSV files on the specified key.
-        Apply renaming/suffixing during the reading of each file.
+        Load multiple CSV files and merge them on a common key. Renames and suffixes
+        column names as needed during the loading process.
+
+        Parameters
+        ----------
+        file_list : list of str
+            List of full CSV file paths.
+        search_replace_dict : dict, optional
+            Column renaming instructions for each file.
+        suffix_dict : dict, optional
+            Suffix strings to append to column names by file.
+        key : str
+            Primary key used to merge all data files (default is 'COMID').
+
+        Returns
+        -------
+        pandas.DataFrame
+            Merged DataFrame containing columns from all input files.
         """
         dfs = []
         for fp in file_list:
@@ -115,7 +261,19 @@ class GSDESoil:
 
     def fill_and_clean_data(self, exclude_cols=['COMID'], exclude_patterns=['OC', 'BD', 'BDRICM', 'BDTICM'], max_val=100):
         """
-        Fill and clean data, replacing values greater than max_val with NaN and forward/backward filling.
+        Clean the soil data by:
+        - Replacing extreme values with NaN (based on max_val).
+        - Normalizing and capping specific fields (e.g., BDRICM/BDTICM).
+        - Filling missing values using forward and backward fill.
+
+        Parameters
+        ----------
+        exclude_cols : list of str
+            Columns to exclude from NaN replacement.
+        exclude_patterns : list of str
+            Column name substrings to skip when applying value caps.
+        max_val : float
+            Maximum valid threshold for general soil values.
         """
         for col in self.gsde_df.columns:
             if col not in exclude_cols:
@@ -138,7 +296,15 @@ class GSDESoil:
 
     def calculate_weights(self, gsde_intervals, mesh_intervals):
         """
-        Calculate weights for different soil intervals.
+        Calculate the contribution weights from each GSDE layer to each model-defined
+        mesh layer based on depth intervals.
+
+        Parameters:
+        -----------
+        gsde_intervals : list of tuple
+            List of tuples representing GSDE depth layers (e.g., [(0, 0.045), ...]).
+        mesh_intervals : list of tuple
+            Target model layer depths (e.g., [(0, 0.1), (0.1, 0.35), ...]).
         """
         self.mesh_intervals = mesh_intervals
         self.num_soil_lyrs = len(mesh_intervals)
@@ -157,7 +323,14 @@ class GSDESoil:
 
     def calculate_mesh_values(self, column_names):
         """
-        Calculate mesh values by applying weights to soil property columns.
+        Apply the calculated weights to soil property columns and generate
+        epth-integrated values for each mesh layer.
+
+        Parameters:
+        -----------
+        column_names : dict
+            Dictionary mapping each property (e.g., "CLAY", "OC") to its source columns.
+            Example: {'CLAY': ['CLAY1', 'CLAY2', ...], 'OC': ['OC1', 'OC2', ...]}
         """
         for prop, cols in column_names.items():
             extracted_data = self.gsde_df[cols]
@@ -170,7 +343,8 @@ class GSDESoil:
 
     def merge_and_save_shapefile(self):
         """
-        Merge soil data with a shapefile and save the result.
+         Merge the processed soil data (via COMID) into the input shapefile and save the result.
+         Output is a GeoDataFrame with mesh values appended as new attributes.
         """
         gdf = gpd.read_file(self.input_basin).to_crs(epsg=4326)
         gdf['COMID'] = gdf['COMID'].astype(int)
@@ -180,6 +354,11 @@ class GSDESoil:
     def set_coordinates(self, input_ddb):
         """
         Set longitude and latitude values from a NetCDF drainage database.
+        
+        Parameters: 
+        -----------
+        input_ddb : str
+            Path to the NetCDF drainage database file.
         """
         db = xr.open_dataset(input_ddb)
         self.lon = db.variables['lon'].values
