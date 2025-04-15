@@ -94,7 +94,6 @@ Example Usage:
 ...     'Sub-polar or polar grassland-lichen-moss', 'Wetland', 'Cropland',
 ...     'Barren lands', 'Urban', 'Water', 'Dump'
 ... ]
-
 >>> plt_var_from_vector_ddb_netcdf(
 ...     output_basin_path=shapefile_path,
 ...     ddbnetcdf_path=netcdf_path,
@@ -112,7 +111,7 @@ Example Usage:
 ...     grunames_var='LandUse'
 ... )
 
-.. image:: /_static/GRU.png
+.. image:: Figures/GRU.png
    :width: 600
    :alt: GRU Output Plot
    :align: center
@@ -120,7 +119,6 @@ Example Usage:
 >>> # Example 2: Soil Variable Visualization (e.g., SAND across layers)
 >>> netcdf_path = os.path.join(base_dir, 'MESH_parameters.nc')
 >>> output_path = os.path.join(base_dir, 'Outputs', 'SAND.png')
-
 >>> plt_var_from_vector_ddb_netcdf(
 ...     output_basin_path=shapefile_path,
 ...     ddbnetcdf_path=netcdf_path,
@@ -135,10 +133,11 @@ Example Usage:
 ...     comid_var='COMID'
 ... )
 
-.. image:: /_static/SAND.png
+.. image:: Figures/SAND.png
    :width: 600
    :alt: SAND Layer Output Plot
    :align: center
+
 
 Notes:
 -------

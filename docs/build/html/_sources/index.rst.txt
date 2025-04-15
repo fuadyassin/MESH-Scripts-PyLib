@@ -60,6 +60,7 @@ Visualization
    :caption: Visualization:
    
    plt_var_vector_setup.rst
+   animate_var_vector_setup.rst
 
 Jupyter Notebooks
 -----------------

@@ -56,6 +56,7 @@
 <p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../plt_var_vector_setup.html">plt_var_vector_setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../animate_var_vector_setup.html">animate_var_vector_setup</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
 <ul>
@@ -183,7 +184,6 @@
 <span class="sd">...     &#39;Sub-polar or polar grassland-lichen-moss&#39;, &#39;Wetland&#39;, &#39;Cropland&#39;,</span>
 <span class="sd">...     &#39;Barren lands&#39;, &#39;Urban&#39;, &#39;Water&#39;, &#39;Dump&#39;</span>
 <span class="sd">... ]</span>
-
 <span class="sd">&gt;&gt;&gt; plt_var_from_vector_ddb_netcdf(</span>
 <span class="sd">...     output_basin_path=shapefile_path,</span>
 <span class="sd">...     ddbnetcdf_path=netcdf_path,</span>
@@ -201,7 +201,7 @@
 <span class="sd">...     grunames_var=&#39;LandUse&#39;</span>
 <span class="sd">... )</span>
 
-<span class="sd">.. image:: /_static/GRU.png</span>
+<span class="sd">.. image:: Figures/GRU.png</span>
 <span class="sd">   :width: 600</span>
 <span class="sd">   :alt: GRU Output Plot</span>
 <span class="sd">   :align: center</span>
@@ -209,7 +209,6 @@
 <span class="sd">&gt;&gt;&gt; # Example 2: Soil Variable Visualization (e.g., SAND across layers)</span>
 <span class="sd">&gt;&gt;&gt; netcdf_path = os.path.join(base_dir, &#39;MESH_parameters.nc&#39;)</span>
 <span class="sd">&gt;&gt;&gt; output_path = os.path.join(base_dir, &#39;Outputs&#39;, &#39;SAND.png&#39;)</span>
-
 <span class="sd">&gt;&gt;&gt; plt_var_from_vector_ddb_netcdf(</span>
 <span class="sd">...     output_basin_path=shapefile_path,</span>
 <span class="sd">...     ddbnetcdf_path=netcdf_path,</span>
@@ -224,10 +223,11 @@
 <span class="sd">...     comid_var=&#39;COMID&#39;</span>
 <span class="sd">... )</span>
 
-<span class="sd">.. image:: /_static/SAND.png</span>
+<span class="sd">.. image:: Figures/SAND.png</span>
 <span class="sd">   :width: 600</span>
 <span class="sd">   :alt: SAND Layer Output Plot</span>
 <span class="sd">   :align: center</span>
+
 
 <span class="sd">Notes:</span>
 <span class="sd">-------</span>

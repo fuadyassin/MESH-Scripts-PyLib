@@ -21,7 +21,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="MESH Streamflow File Preparation" href="MESH_StreamflowFilePrep.html" />
+    <link rel="next" title="animate_var_vector_setup" href="animate_var_vector_setup.html" />
     <link rel="prev" title="remap_climate_to_ddb" href="remap_climate_to_ddb.html" /> 
 </head>
 
@@ -73,6 +73,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#MESHpyPostProcessing.plt_var_vector_setup.plt_var_from_vector_ddb_netcdf"><code class="docutils literal notranslate"><span class="pre">plt_var_from_vector_ddb_netcdf()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="animate_var_vector_setup.html">animate_var_vector_setup</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
 <ul>
@@ -246,9 +247,7 @@ Example: {‘left’: 0.1, ‘right’: 0.9, ‘bottom’: 0.1, ‘top’: 0.9, 
 <span class="gp">... </span>    <span class="s1">&#39;Sub-polar or polar grassland-lichen-moss&#39;</span><span class="p">,</span> <span class="s1">&#39;Wetland&#39;</span><span class="p">,</span> <span class="s1">&#39;Cropland&#39;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="s1">&#39;Barren lands&#39;</span><span class="p">,</span> <span class="s1">&#39;Urban&#39;</span><span class="p">,</span> <span class="s1">&#39;Water&#39;</span><span class="p">,</span> <span class="s1">&#39;Dump&#39;</span>
 <span class="gp">... </span><span class="p">]</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plt_var_from_vector_ddb_netcdf</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt_var_from_vector_ddb_netcdf</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">output_basin_path</span><span class="o">=</span><span class="n">shapefile_path</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">ddbnetcdf_path</span><span class="o">=</span><span class="n">netcdf_path</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">variable_name</span><span class="o">=</span><span class="s1">&#39;GRU&#39;</span><span class="p">,</span>
@@ -266,14 +265,12 @@ Example: {‘left’: 0.1, ‘right’: 0.9, ‘bottom’: 0.1, ‘top’: 0.9, 
 <span class="gp">... </span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_static/GRU.png"><img alt="GRU Output Plot" class="align-center" src="_static/GRU.png" style="width: 600px;" />
+<a class="reference internal image-reference" href="_images/GRU.png"><img alt="GRU Output Plot" class="align-center" src="_images/GRU.png" style="width: 600px;" />
 </a>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example 2: Soil Variable Visualization (e.g., SAND across layers)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">netcdf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;MESH_parameters.nc&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;Outputs&#39;</span><span class="p">,</span> <span class="s1">&#39;SAND.png&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plt_var_from_vector_ddb_netcdf</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt_var_from_vector_ddb_netcdf</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">output_basin_path</span><span class="o">=</span><span class="n">shapefile_path</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">ddbnetcdf_path</span><span class="o">=</span><span class="n">netcdf_path</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">variable_name</span><span class="o">=</span><span class="s1">&#39;SAND&#39;</span><span class="p">,</span>
@@ -288,7 +285,7 @@ Example: {‘left’: 0.1, ‘right’: 0.9, ‘bottom’: 0.1, ‘top’: 0.9, 
 <span class="gp">... </span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_static/SAND.png"><img alt="SAND Layer Output Plot" class="align-center" src="_static/SAND.png" style="width: 600px;" />
+<a class="reference internal image-reference" href="_images/SAND.png"><img alt="SAND Layer Output Plot" class="align-center" src="_images/SAND.png" style="width: 600px;" />
 </a>
 </section>
 <section id="notes">
@@ -322,7 +319,7 @@ Example: {‘left’: 0.1, ‘right’: 0.9, ‘bottom’: 0.1, ‘top’: 0.9, 
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="remap_climate_to_ddb.html" class="btn btn-neutral float-left" title="remap_climate_to_ddb" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="MESH_StreamflowFilePrep.html" class="btn btn-neutral float-right" title="MESH Streamflow File Preparation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="animate_var_vector_setup.html" class="btn btn-neutral float-right" title="animate_var_vector_setup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
