@@ -58,8 +58,7 @@ Visualization
 .. toctree::
    :maxdepth: 2
    :caption: Visualization:
-
-   plt_var_from_vector_ddb_netcdf.rst
+   
    plt_var_vector_setup.rst
 
 Jupyter Notebooks

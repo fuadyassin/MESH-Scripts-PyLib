@@ -1,66 +1,160 @@
 """
-Variable Visualization from Vector and NetCDF Data
-==================================================
+Spatial Variable Visualization from Vector and NetCDF Files
+============================================================
 
-This module provides a function to visualize spatial variables from a NetCDF file and overlay them on a shapefile.
-It supports single-variable plots, land use-based grouped visualizations, and soil layer-specific representations.
+This module provides a unified plotting interface to visualize spatial variables from NetCDF datasets 
+(e.g., MESH drainage database or parameters file) overlaid on a vector shapefile (e.g., subbasin polygons).
+It supports:
+- Single variable plotting per subbasin
+- Multi-class land use variable visualization (e.g., GRUs)
+- Layer-wise soil variable visualization (e.g., SAND, CLAY, OC)
 
-Example Usage
+It automatically interprets the variable's dimensions to choose the appropriate visualization layout 
+(single map or subplots).
+
+----------------------------------------------
+Function: plt_var_from_vector_ddb_netcdf
+---------------------------------------------
+
+Description:
 -------------
->>> from plt_var_vector_setup import plt_var_from_vector_ddb_netcdf
->>> plt_var_from_vector_ddb_netcdf(
-...     output_basin_path='basin.shp',
-...     ddbnetcdf_path='data.nc',
-...     variable_name='SoilMoisture',
-...     save_path='output_plot.png'
-... )
+Plots spatial variables stored in NetCDF files on top of vector shapefiles using GeoPandas and Matplotlib.
+This function is useful for visualizing hydrological model inputs such as grouped land use data (GRUs), 
+soil layers (e.g., SAND, CLAY), or other scalar variables (e.g., Elevation, Drainage Area) in spatial context.
 
->>> plt_var_from_vector_ddb_netcdf(
-...     output_basin_path='basin.shp',
-...     ddbnetcdf_path='data.nc',
-...     variable_name='LandCover',
-...     landuse_classes=['Forest', 'Grassland', 'Urban'],
-...     save_path='landcover_plot.png'
-... )
-
-Function Details
-----------------
-- plt_var_from_vector_ddb_netcdf: Plots a variable from a NetCDF file onto a spatial representation of a watershed.
-
-Parameters
-----------
+Parameters:
+------------
 - output_basin_path : str
-    Path to the input basin shapefile.
+    Full path to the basin shapefile (.shp). Must contain a unique subbasin identifier column (e.g., 'COMID').
 - ddbnetcdf_path : str
-    Path to the NetCDF file containing spatial data.
+    Path to the input NetCDF file containing the spatial variable (e.g., MESH_drainage_database.nc or MESH_parameters.nc).
 - variable_name : str
-    Name of the variable to be visualized from the NetCDF file.
+    Name of the variable to extract and visualize from the NetCDF file.
 - save_path : str, optional (default='plot.png')
-    Path where the output plot should be saved.
+    Full path to save the output image file (.png).
 - text_location : tuple, optional (default=(0.55, 0.95))
-    Location for the text annotation in percentage form.
+    (x, y) coordinates in axes fraction (0–1) to place text annotations inside each subplot.
 - font_size : int, optional (default=10)
-    Font size for labels and titles.
+    Font size for subplot titles and annotations.
 - cmap : str, optional (default='viridis')
-    Colormap to be used for plotting the data.
-- cbar_location : list, optional (default=[0.96, 0.15, 0.02, 0.7])
-    Positioning of the color bar.
+    Matplotlib colormap to use for shading data values.
+- cbar_location : list of float, optional (default=[0.96, 0.15, 0.02, 0.7])
+    Location of colorbar [left, bottom, width, height] in normalized figure coordinates.
 - subplot_adjustments : dict, optional
-    Custom subplot adjustments if needed.
+    Dictionary of subplot spacing and padding adjustments passed to `fig.subplots_adjust()`.
+    Example: {'left': 0.1, 'right': 0.9, 'bottom': 0.1, 'top': 0.9, 'wspace': 0.1, 'hspace': 0.2}
 - subbasin_var : str, optional (default='subbasin')
-    NetCDF variable corresponding to subbasin identifiers.
+    Name of the NetCDF variable that contains subbasin indices.
 - comid_var : str, optional (default='COMID')
-    Column name in the shapefile corresponding to subbasin identifiers.
-- landuse_classes : list, optional
-    List of land use classifications if applicable.
+    Name of the shapefile column used to join NetCDF data to the shapefile geometry.
+- landuse_classes : list of str, optional
+    Used when `variable_name` has GRU land use classes. Overrides land use names from the NetCDF file.
 - grudim : str, optional (default='NGRU')
-    NetCDF dimension representing different land use groups.
+    Name of the NetCDF dimension for land use classes.
 - grunames_var : str, optional (default='LandUse')
-    NetCDF variable containing land use group names.
+    Name of the NetCDF variable containing land use class names.
 - soldim : str, optional (default='nsol')
-    NetCDF dimension representing different soil layers.
-"""
+    Name of the NetCDF dimension representing soil layers.
 
+Processing Logic:
+------------------
+- If `variable_name` has **1D dimension** (e.g., `[subbasin]`), a single map is plotted.
+- If it has **2D shape with land use dim** (e.g., `[subbasin, NGRU]`), a grid of subplots is created per GRU.
+- If it has **2D shape with soil layer dim** (e.g., `[subbasin, nsol]`), a grid of subplots is created per soil layer.
+
+Input Format:
+--------------
+1. **Shapefile (.shp)** with a subbasin identifier column (e.g., 'COMID')
+2. **NetCDF file (.nc)** with variables such as:
+   - `lat`, `lon`
+   - 1D or 2D variable of interest (e.g., GRU, SAND)
+   - Dimension definitions for subbasin, land use, or soil layers
+
+Output:
+--------
+- A static plot (.png) saved at `save_path` location
+- Subplots with dissolved basin outline and percentage annotations
+- Shared colorbar with variable name and units
+
+Example Usage:
+---------------
+
+>>> import os
+>>> from MESHpyPostProcessing.plt_var_vector_setup import plt_var_from_vector_ddb_netcdf
+
+>>> # Example 1: GRU (Grouped Land Use Classes) Visualization
+>>> base_dir = 'D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPostProcessing/ExampleFiles'
+>>> shapefile_path = os.path.join(base_dir, 'sras_subbasins_MAF_Agg.shp')
+>>> netcdf_path = os.path.join(base_dir, 'MESH_drainage_database.nc')
+>>> output_path = os.path.join(base_dir, 'Outputs', 'GRU.png')
+>>> lclass = [
+...     'Temperate or sub-polar needleleaf forest', 'Sub-polar taiga needleleaf forest',
+...     'Temperate or sub-polar broadleaf deciduous forest', 'Mixed forest',
+...     'Temperate or sub-polar shrubland', 'Temperate or sub-polar grassland',
+...     'Sub-polar or polar grassland-lichen-moss', 'Wetland', 'Cropland',
+...     'Barren lands', 'Urban', 'Water', 'Dump'
+... ]
+
+>>> plt_var_from_vector_ddb_netcdf(
+...     output_basin_path=shapefile_path,
+...     ddbnetcdf_path=netcdf_path,
+...     variable_name='GRU',
+...     save_path=output_path,
+...     text_location=(0.55, 0.95),
+...     font_size=10,
+...     cmap='gnuplot2_r',
+...     cbar_location=[0.91, 0.15, 0.02, 0.7],
+...     subplot_adjustments={'left': 0.1, 'right': 0.9, 'bottom': 0.1, 'top': 0.9, 'wspace': 0.1, 'hspace': 0.2},
+...     subbasin_var='subbasin',
+...     comid_var='COMID',
+...     landuse_classes=lclass,
+...     grudim='NGRU',
+...     grunames_var='LandUse'
+... )
+
+.. image:: /_static/GRU.png
+   :width: 600
+   :alt: GRU Output Plot
+   :align: center
+
+>>> # Example 2: Soil Variable Visualization (e.g., SAND across layers)
+>>> netcdf_path = os.path.join(base_dir, 'MESH_parameters.nc')
+>>> output_path = os.path.join(base_dir, 'Outputs', 'SAND.png')
+
+>>> plt_var_from_vector_ddb_netcdf(
+...     output_basin_path=shapefile_path,
+...     ddbnetcdf_path=netcdf_path,
+...     variable_name='SAND',
+...     save_path=output_path,
+...     text_location=(0.55, 0.95),
+...     font_size=10,
+...     cmap='gnuplot2_r',
+...     cbar_location=[0.91, 0.15, 0.02, 0.7],
+...     subplot_adjustments={'left': 0.1, 'right': 0.9, 'bottom': 0.1, 'top': 0.9, 'wspace': 0.1, 'hspace': 0.2},
+...     subbasin_var='subbasin',
+...     comid_var='COMID'
+... )
+
+.. image:: /_static/SAND.png
+   :width: 600
+   :alt: SAND Layer Output Plot
+   :align: center
+
+Notes:
+-------
+- All spatial plotting is done in EPSG:4326 (WGS84)
+- The function automatically merges the NetCDF data with shapefile geometry using the specified ID fields
+- Color scaling (`vmin`, `vmax`) and transparency for `0` values is handled internally
+
+Dependencies:
+-------------
+- geopandas
+- pandas
+- matplotlib
+- numpy
+- netCDF4
+
+"""
 import geopandas as gpd
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -120,7 +214,7 @@ def plt_var_from_vector_ddb_netcdf(
             vmin, vmax = sub_agg_ddb_merged_gdf[variable_name].min(), sub_agg_ddb_merged_gdf[variable_name].max()
 
             # Plot the single variable with lat/lon as x and y axes
-            fig, ax = plt.subplots(figsize=(8, 6))
+            fig, ax = plt.subplots(figsize=(8, 6))  #This needs to be inputs
             sub_agg_ddb_merged_gdf.plot(column=variable_name, ax=ax, cmap=cmap, legend=False, vmin=vmin, vmax=vmax)
             ax.set_title(variable_name, fontsize=font_size)
             ax.set_xlabel('Longitude', fontsize=font_size)

@@ -22,7 +22,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="MESH Streamflow File Preparation" href="MESH_StreamflowFilePrep.html" />
-    <link rel="prev" title="plt_var_from_vector_ddb_netcdf" href="plt_var_from_vector_ddb_netcdf.html" /> 
+    <link rel="prev" title="remap_climate_to_ddb" href="remap_climate_to_ddb.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -58,11 +58,16 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="plt_var_from_vector_ddb_netcdf.html">plt_var_from_vector_ddb_netcdf</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">plt_var_vector_setup</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#variable-visualization-from-vector-and-netcdf-data">Variable Visualization from Vector and NetCDF Data</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#example-usage">Example Usage</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#function-details">Function Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#spatial-variable-visualization-from-vector-and-netcdf-files">Spatial Variable Visualization from Vector and NetCDF Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#description">Description:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#processing-logic">Processing Logic:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#input-format">Input Format:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#output">Output:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-usage">Example Usage:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#notes">Notes:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies">Dependencies:</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#MESHpyPostProcessing.plt_var_vector_setup.plt_var_from_vector_ddb_netcdf"><code class="docutils literal notranslate"><span class="pre">plt_var_from_vector_ddb_netcdf()</span></code></a></li>
@@ -100,128 +105,209 @@
              
   <section id="module-MESHpyPostProcessing.plt_var_vector_setup">
 <span id="plt-var-vector-setup"></span><h1>plt_var_vector_setup<a class="headerlink" href="#module-MESHpyPostProcessing.plt_var_vector_setup" title="Link to this heading"></a></h1>
-<section id="variable-visualization-from-vector-and-netcdf-data">
-<h2>Variable Visualization from Vector and NetCDF Data<a class="headerlink" href="#variable-visualization-from-vector-and-netcdf-data" title="Link to this heading"></a></h2>
-<p>This module provides a function to visualize spatial variables from a NetCDF file and overlay them on a shapefile.
-It supports single-variable plots, land use-based grouped visualizations, and soil layer-specific representations.</p>
+<section id="spatial-variable-visualization-from-vector-and-netcdf-files">
+<h2>Spatial Variable Visualization from Vector and NetCDF Files<a class="headerlink" href="#spatial-variable-visualization-from-vector-and-netcdf-files" title="Link to this heading"></a></h2>
+<p>This module provides a unified plotting interface to visualize spatial variables from NetCDF datasets
+(e.g., MESH drainage database or parameters file) overlaid on a vector shapefile (e.g., subbasin polygons).
+It supports:
+- Single variable plotting per subbasin
+- Multi-class land use variable visualization (e.g., GRUs)
+- Layer-wise soil variable visualization (e.g., SAND, CLAY, OC)</p>
+<p>It automatically interprets the variable’s dimensions to choose the appropriate visualization layout
+(single map or subplots).</p>
+<section id="description">
+<h3>Description:<a class="headerlink" href="#description" title="Link to this heading"></a></h3>
+<p>Plots spatial variables stored in NetCDF files on top of vector shapefiles using GeoPandas and Matplotlib.
+This function is useful for visualizing hydrological model inputs such as grouped land use data (GRUs),
+soil layers (e.g., SAND, CLAY), or other scalar variables (e.g., Elevation, Drainage Area) in spatial context.</p>
+</section>
+<section id="parameters">
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>output_basin_path<span class="classifier">str</span></dt><dd><p>Full path to the basin shapefile (.shp). Must contain a unique subbasin identifier column (e.g., ‘COMID’).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>ddbnetcdf_path<span class="classifier">str</span></dt><dd><p>Path to the input NetCDF file containing the spatial variable (e.g., MESH_drainage_database.nc or MESH_parameters.nc).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>variable_name<span class="classifier">str</span></dt><dd><p>Name of the variable to extract and visualize from the NetCDF file.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>save_path<span class="classifier">str, optional (default=’plot.png’)</span></dt><dd><p>Full path to save the output image file (.png).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>text_location<span class="classifier">tuple, optional (default=(0.55, 0.95))</span></dt><dd><p>(x, y) coordinates in axes fraction (0–1) to place text annotations inside each subplot.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>font_size<span class="classifier">int, optional (default=10)</span></dt><dd><p>Font size for subplot titles and annotations.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cmap<span class="classifier">str, optional (default=’viridis’)</span></dt><dd><p>Matplotlib colormap to use for shading data values.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cbar_location<span class="classifier">list of float, optional (default=[0.96, 0.15, 0.02, 0.7])</span></dt><dd><p>Location of colorbar [left, bottom, width, height] in normalized figure coordinates.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>subplot_adjustments<span class="classifier">dict, optional</span></dt><dd><p>Dictionary of subplot spacing and padding adjustments passed to <cite>fig.subplots_adjust()</cite>.
+Example: {‘left’: 0.1, ‘right’: 0.9, ‘bottom’: 0.1, ‘top’: 0.9, ‘wspace’: 0.1, ‘hspace’: 0.2}</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>subbasin_var<span class="classifier">str, optional (default=’subbasin’)</span></dt><dd><p>Name of the NetCDF variable that contains subbasin indices.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>comid_var<span class="classifier">str, optional (default=’COMID’)</span></dt><dd><p>Name of the shapefile column used to join NetCDF data to the shapefile geometry.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>landuse_classes<span class="classifier">list of str, optional</span></dt><dd><p>Used when <cite>variable_name</cite> has GRU land use classes. Overrides land use names from the NetCDF file.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>grudim<span class="classifier">str, optional (default=’NGRU’)</span></dt><dd><p>Name of the NetCDF dimension for land use classes.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>grunames_var<span class="classifier">str, optional (default=’LandUse’)</span></dt><dd><p>Name of the NetCDF variable containing land use class names.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>soldim<span class="classifier">str, optional (default=’nsol’)</span></dt><dd><p>Name of the NetCDF dimension representing soil layers.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="processing-logic">
+<h3>Processing Logic:<a class="headerlink" href="#processing-logic" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>If <cite>variable_name</cite> has <strong>1D dimension</strong> (e.g., <cite>[subbasin]</cite>), a single map is plotted.</p></li>
+<li><p>If it has <strong>2D shape with land use dim</strong> (e.g., <cite>[subbasin, NGRU]</cite>), a grid of subplots is created per GRU.</p></li>
+<li><p>If it has <strong>2D shape with soil layer dim</strong> (e.g., <cite>[subbasin, nsol]</cite>), a grid of subplots is created per soil layer.</p></li>
+</ul>
+</section>
+<section id="input-format">
+<h3>Input Format:<a class="headerlink" href="#input-format" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Shapefile (.shp)</strong> with a subbasin identifier column (e.g., ‘COMID’)</p></li>
+<li><p><strong>NetCDF file (.nc)</strong> with variables such as:
+- <cite>lat</cite>, <cite>lon</cite>
+- 1D or 2D variable of interest (e.g., GRU, SAND)
+- Dimension definitions for subbasin, land use, or soil layers</p></li>
+</ol>
+</section>
+<section id="output">
+<h3>Output:<a class="headerlink" href="#output" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>A static plot (.png) saved at <cite>save_path</cite> location</p></li>
+<li><p>Subplots with dissolved basin outline and percentage annotations</p></li>
+<li><p>Shared colorbar with variable name and units</p></li>
+</ul>
+</section>
 <section id="example-usage">
-<h3>Example Usage<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h3>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">plt_var_vector_setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">plt_var_from_vector_ddb_netcdf</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt_var_from_vector_ddb_netcdf</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">output_basin_path</span><span class="o">=</span><span class="s1">&#39;basin.shp&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">ddbnetcdf_path</span><span class="o">=</span><span class="s1">&#39;data.nc&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">variable_name</span><span class="o">=</span><span class="s1">&#39;SoilMoisture&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">save_path</span><span class="o">=</span><span class="s1">&#39;output_plot.png&#39;</span>
-<span class="gp">... </span><span class="p">)</span>
+<h3>Example Usage:<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">MESHpyPostProcessing.plt_var_vector_setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">plt_var_from_vector_ddb_netcdf</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example 1: GRU (Grouped Land Use Classes) Visualization</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">base_dir</span> <span class="o">=</span> <span class="s1">&#39;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPostProcessing/ExampleFiles&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shapefile_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;sras_subbasins_MAF_Agg.shp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">netcdf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;MESH_drainage_database.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;Outputs&#39;</span><span class="p">,</span> <span class="s1">&#39;GRU.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lclass</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="s1">&#39;Temperate or sub-polar needleleaf forest&#39;</span><span class="p">,</span> <span class="s1">&#39;Sub-polar taiga needleleaf forest&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;Temperate or sub-polar broadleaf deciduous forest&#39;</span><span class="p">,</span> <span class="s1">&#39;Mixed forest&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;Temperate or sub-polar shrubland&#39;</span><span class="p">,</span> <span class="s1">&#39;Temperate or sub-polar grassland&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;Sub-polar or polar grassland-lichen-moss&#39;</span><span class="p">,</span> <span class="s1">&#39;Wetland&#39;</span><span class="p">,</span> <span class="s1">&#39;Cropland&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;Barren lands&#39;</span><span class="p">,</span> <span class="s1">&#39;Urban&#39;</span><span class="p">,</span> <span class="s1">&#39;Water&#39;</span><span class="p">,</span> <span class="s1">&#39;Dump&#39;</span>
+<span class="gp">... </span><span class="p">]</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plt_var_from_vector_ddb_netcdf</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">output_basin_path</span><span class="o">=</span><span class="s1">&#39;basin.shp&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">ddbnetcdf_path</span><span class="o">=</span><span class="s1">&#39;data.nc&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">variable_name</span><span class="o">=</span><span class="s1">&#39;LandCover&#39;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">landuse_classes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Forest&#39;</span><span class="p">,</span> <span class="s1">&#39;Grassland&#39;</span><span class="p">,</span> <span class="s1">&#39;Urban&#39;</span><span class="p">],</span>
-<span class="gp">... </span>    <span class="n">save_path</span><span class="o">=</span><span class="s1">&#39;landcover_plot.png&#39;</span>
+<span class="gp">... </span>    <span class="n">output_basin_path</span><span class="o">=</span><span class="n">shapefile_path</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">ddbnetcdf_path</span><span class="o">=</span><span class="n">netcdf_path</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">variable_name</span><span class="o">=</span><span class="s1">&#39;GRU&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">save_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">text_location</span><span class="o">=</span><span class="p">(</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">font_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gnuplot2_r&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cbar_location</span><span class="o">=</span><span class="p">[</span><span class="mf">0.91</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">subplot_adjustments</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;wspace&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;hspace&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">subbasin_var</span><span class="o">=</span><span class="s1">&#39;subbasin&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">comid_var</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">landuse_classes</span><span class="o">=</span><span class="n">lclass</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">grudim</span><span class="o">=</span><span class="s1">&#39;NGRU&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">grunames_var</span><span class="o">=</span><span class="s1">&#39;LandUse&#39;</span>
 <span class="gp">... </span><span class="p">)</span>
 </pre></div>
 </div>
+<a class="reference internal image-reference" href="_static/GRU.png"><img alt="GRU Output Plot" class="align-center" src="_static/GRU.png" style="width: 600px;" />
+</a>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example 2: Soil Variable Visualization (e.g., SAND across layers)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">netcdf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;MESH_parameters.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;Outputs&#39;</span><span class="p">,</span> <span class="s1">&#39;SAND.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plt_var_from_vector_ddb_netcdf</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">output_basin_path</span><span class="o">=</span><span class="n">shapefile_path</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">ddbnetcdf_path</span><span class="o">=</span><span class="n">netcdf_path</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">variable_name</span><span class="o">=</span><span class="s1">&#39;SAND&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">save_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">text_location</span><span class="o">=</span><span class="p">(</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">font_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gnuplot2_r&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cbar_location</span><span class="o">=</span><span class="p">[</span><span class="mf">0.91</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">subplot_adjustments</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;wspace&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;hspace&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">subbasin_var</span><span class="o">=</span><span class="s1">&#39;subbasin&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">comid_var</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_static/SAND.png"><img alt="SAND Layer Output Plot" class="align-center" src="_static/SAND.png" style="width: 600px;" />
+</a>
 </section>
-<section id="function-details">
-<h3>Function Details<a class="headerlink" href="#function-details" title="Link to this heading"></a></h3>
+<section id="notes">
+<h3>Notes:<a class="headerlink" href="#notes" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p>plt_var_from_vector_ddb_netcdf: Plots a variable from a NetCDF file onto a spatial representation of a watershed.</p></li>
+<li><p>All spatial plotting is done in EPSG:4326 (WGS84)</p></li>
+<li><p>The function automatically merges the NetCDF data with shapefile geometry using the specified ID fields</p></li>
+<li><p>Color scaling (<cite>vmin</cite>, <cite>vmax</cite>) and transparency for <cite>0</cite> values is handled internally</p></li>
 </ul>
-<dl class="field-list simple">
-<dt class="field-odd">param - output_basin_path<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Path to the input basin shapefile.</p>
-</dd>
-<dt class="field-even">type - output_basin_path<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-<dt class="field-odd">param - ddbnetcdf_path<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Path to the NetCDF file containing spatial data.</p>
-</dd>
-<dt class="field-even">type - ddbnetcdf_path<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-<dt class="field-odd">param - variable_name<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Name of the variable to be visualized from the NetCDF file.</p>
-</dd>
-<dt class="field-even">type - variable_name<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-<dt class="field-odd">param - save_path<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Path where the output plot should be saved.</p>
-</dd>
-<dt class="field-even">type - save_path<span class="colon">:</span></dt>
-<dd class="field-even"><p>str, optional (default=’plot.png’)</p>
-</dd>
-<dt class="field-odd">param - text_location<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Location for the text annotation in percentage form.</p>
-</dd>
-<dt class="field-even">type - text_location<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple, optional (default=(0.55, 0.95))</p>
-</dd>
-<dt class="field-odd">param - font_size<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Font size for labels and titles.</p>
-</dd>
-<dt class="field-even">type - font_size<span class="colon">:</span></dt>
-<dd class="field-even"><p>int, optional (default=10)</p>
-</dd>
-<dt class="field-odd">param - cmap<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Colormap to be used for plotting the data.</p>
-</dd>
-<dt class="field-even">type - cmap<span class="colon">:</span></dt>
-<dd class="field-even"><p>str, optional (default=’viridis’)</p>
-</dd>
-<dt class="field-odd">param - cbar_location<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Positioning of the color bar.</p>
-</dd>
-<dt class="field-even">type - cbar_location<span class="colon">:</span></dt>
-<dd class="field-even"><p>list, optional (default=[0.96, 0.15, 0.02, 0.7])</p>
-</dd>
-<dt class="field-odd">param - subplot_adjustments<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Custom subplot adjustments if needed.</p>
-</dd>
-<dt class="field-even">type - subplot_adjustments<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict, optional</p>
-</dd>
-<dt class="field-odd">param - subbasin_var<span class="colon">:</span></dt>
-<dd class="field-odd"><p>NetCDF variable corresponding to subbasin identifiers.</p>
-</dd>
-<dt class="field-even">type - subbasin_var<span class="colon">:</span></dt>
-<dd class="field-even"><p>str, optional (default=’subbasin’)</p>
-</dd>
-<dt class="field-odd">param - comid_var<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Column name in the shapefile corresponding to subbasin identifiers.</p>
-</dd>
-<dt class="field-even">type - comid_var<span class="colon">:</span></dt>
-<dd class="field-even"><p>str, optional (default=’COMID’)</p>
-</dd>
-<dt class="field-odd">param - landuse_classes<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of land use classifications if applicable.</p>
-</dd>
-<dt class="field-even">type - landuse_classes<span class="colon">:</span></dt>
-<dd class="field-even"><p>list, optional</p>
-</dd>
-<dt class="field-odd">param - grudim<span class="colon">:</span></dt>
-<dd class="field-odd"><p>NetCDF dimension representing different land use groups.</p>
-</dd>
-<dt class="field-even">type - grudim<span class="colon">:</span></dt>
-<dd class="field-even"><p>str, optional (default=’NGRU’)</p>
-</dd>
-<dt class="field-odd">param - grunames_var<span class="colon">:</span></dt>
-<dd class="field-odd"><p>NetCDF variable containing land use group names.</p>
-</dd>
-<dt class="field-even">type - grunames_var<span class="colon">:</span></dt>
-<dd class="field-even"><p>str, optional (default=’LandUse’)</p>
-</dd>
-<dt class="field-odd">param - soldim<span class="colon">:</span></dt>
-<dd class="field-odd"><p>NetCDF dimension representing different soil layers.</p>
-</dd>
-<dt class="field-even">type - soldim<span class="colon">:</span></dt>
-<dd class="field-even"><p>str, optional (default=’nsol’)</p>
-</dd>
-</dl>
+</section>
+<section id="dependencies">
+<h3>Dependencies:<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>geopandas</p></li>
+<li><p>pandas</p></li>
+<li><p>matplotlib</p></li>
+<li><p>numpy</p></li>
+<li><p>netCDF4</p></li>
+</ul>
 </section>
 </section>
 <dl class="py function">
@@ -235,7 +321,7 @@ It supports single-variable plots, land use-based grouped visualizations, and so
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="plt_var_from_vector_ddb_netcdf.html" class="btn btn-neutral float-left" title="plt_var_from_vector_ddb_netcdf" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="remap_climate_to_ddb.html" class="btn btn-neutral float-left" title="remap_climate_to_ddb" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="MESH_StreamflowFilePrep.html" class="btn btn-neutral float-right" title="MESH Streamflow File Preparation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
