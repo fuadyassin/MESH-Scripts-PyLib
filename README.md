@@ -7,7 +7,7 @@ A Python library for preprocessing hydrometric and soil data, performing spatial
 ## Table of Contents
 ### Installation and Overview
 - [Installation and Overview](#installation-and-overview)
-### PreProcessing
+<!-- ### PreProcessing
 - [Streamflow File Preparation (`gen_streamflow_file.py`)](#streamflow-file-preparation)
 - [Soil Data Processing (`gsde_soil.py`)](#soil-data-processing)
 - [Spatial Analysis (`gdf_edit.py`)](#spatial-analysis)
@@ -16,7 +16,7 @@ A Python library for preprocessing hydrometric and soil data, performing spatial
 - [DDB conversion to csv or shapefile (`convert_ddbnetcdf.py`)](#convert-ddb-netcdf-to-csv-shapefile)
 ### PostProcessing
 - [Plot Variable from Vector setup (`plt_var_vector_setup.py`)](#plot-variable-from-vector-setup)
-- [Contributing](#contributing)
+- [Contributing](#contributing) -->
 
 ## Installation and Overview
 
@@ -33,8 +33,13 @@ This library provides several utilities that streamline data preprocessing for h
 - Flagging non-contributing areas in spatial analysis using GeoDataFrames.
 - Aggregation of basin and river networks with custom thresholds.
 - Writing processed soil data to NetCDF format.
+- Generating MESH parameters netcdf files that contians geophysical parameters
+- Plotting vector based drainage database and outputs
+- Generating MESH Class and MESH Hydrologi ini files from database for selected land units
+- Visualization of MESH model outputs, pariculalry the netcdf outpus for vector based model runs
 
-## Streamflow File Preparation
+
+<!-- ## Streamflow File Preparation
 
 `gen_streamflow_file.py` contains a class `GenStreamflowFile` that handles fetching and combining streamflow data from USGS and Environment Canada and generating output in the OBSTXT and ENSIM formats.
 
@@ -362,4 +367,4 @@ plt_var_from_vector_ddb_netcdf(
 )
 ```
 ## Contributing
-If you'd like to contribute to this project, feel free to fork the repository and submit a pull request with your improvements.
+If you'd like to contribute to this project, feel free to fork the repository and submit a pull request with your improvements. -->

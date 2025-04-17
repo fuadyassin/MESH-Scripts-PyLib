@@ -1,1 +1,6 @@
 venv/
+MESHpyPostProcessing/ExampleFiles/sras_subbasins_MAF*
+MESHpyPostProcessing/ExampleFiles/sras_rivers_MAF*
+MESHpyPostProcessing/ExampleFiles/MESH_state_visualize*
+MESHpyPostProcessing/ExampleFiles/MESH_general_visualization_FY.ipynb
+

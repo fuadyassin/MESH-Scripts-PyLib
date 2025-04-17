@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>animate_var_vector_setup &mdash; MESH-Scripts-PyLib 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MESH Streamflow File Preparation" href="MESH_StreamflowFilePrep.html" />
+    <link rel="prev" title="plt_var_vector_setup" href="plt_var_vector_setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MESH-Scripts-PyLib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">File preparation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Aggregation_vector.html">Aggregate vector subbasins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NetCDFWriter.html">Netcdf writer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convert_ddbnetcdf.html">convert_ddbnetcdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gdf_edit.html">gdf_edit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gen_streamflow_file.html">gen_streamflow_file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gsde_soil.html">GSDE soil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remap_climate_to_ddb.html">remap_climate_to_ddb</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="plt_var_vector_setup.html">plt_var_vector_setup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">animate_var_vector_setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#temporal-animation-of-mesh-variables-from-vector-and-netcdf-data">Temporal Animation of MESH Variables from Vector and NetCDF Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#function-animate-mesh-outputs-to-gif">Function: animate_mesh_outputs_to_gif</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameters">Parameters:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#input-format">Input Format:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#output">Output:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-usage">Example Usage:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dependencies">Dependencies:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#MESHpyPostProcessing.animate_var_vector_setup.animate_mesh_outputs_to_gif"><code class="docutils literal notranslate"><span class="pre">animate_mesh_outputs_to_gif()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MESH_StreamflowFilePrep.html">MESH Streamflow File Preparation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MESH-Scripts-PyLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">animate_var_vector_setup</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/fuadyassin/MESH-Scripts-PyLib/blob/main/docs/source/animate_var_vector_setup.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-MESHpyPostProcessing.animate_var_vector_setup">
+<span id="animate-var-vector-setup"></span><h1>animate_var_vector_setup<a class="headerlink" href="#module-MESHpyPostProcessing.animate_var_vector_setup" title="Link to this heading"></a></h1>
+<section id="temporal-animation-of-mesh-variables-from-vector-and-netcdf-data">
+<h2>Temporal Animation of MESH Variables from Vector and NetCDF Data<a class="headerlink" href="#temporal-animation-of-mesh-variables-from-vector-and-netcdf-data" title="Link to this heading"></a></h2>
+<p>This module generates animated GIFs of spatially-distributed MESH model outputs (e.g., Discharge, Snow, Precipitation)
+over time using shapefiles and corresponding NetCDF files. It supports daily, monthly, and yearly animations.</p>
+<p>The function processes time-aware variables stored in NetCDF files and overlays them on subbasin polygons, producing
+frame-by-frame maps and exporting the animation as a <cite>.gif</cite> file using Matplotlib and Pillow.</p>
+<section id="function-animate-mesh-outputs-to-gif">
+<h3>Function: animate_mesh_outputs_to_gif<a class="headerlink" href="#function-animate-mesh-outputs-to-gif" title="Link to this heading"></a></h3>
+<section id="description">
+<h4>Description:<a class="headerlink" href="#description" title="Link to this heading"></a></h4>
+<p>Generates animated visualizations for MESH model state or flux variables across subbasins, overlaying spatial values
+on a shapefile with optional layer suffixes and colorbars. Output is saved as an animated <cite>.gif</cite>.</p>
+</section>
+<section id="parameters">
+<h4>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><dl class="simple">
+<dt>shapefile_path<span class="classifier">str</span></dt><dd><p>Path to the subbasin shapefile (must include a COMID field).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>netcdf_dir<span class="classifier">str</span></dt><dd><p>Directory containing NetCDF variable files (e.g., QO_M_GRD.nc, SNO_M_GRD.nc).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>ddb_path<span class="classifier">str</span></dt><dd><p>Path to the MESH drainage database NetCDF file used to extract subbasin IDs.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>varnames<span class="classifier">list of str</span></dt><dd><p>List of variable names to animate (e.g., [‘QO’, ‘SNO’, ‘PREC’]).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>filenames<span class="classifier">list of str</span></dt><dd><p>List of NetCDF filenames corresponding to each variable (same order as <cite>varnames</cite>).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cbar_labels<span class="classifier">list of str</span></dt><dd><p>List of colorbar labels for each variable (e.g., [‘Discharge [m³/s]’, ‘Snow Mass [mm]’, ‘Precipitation [mm]’]).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>outdir<span class="classifier">str</span></dt><dd><p>Output directory to save the generated <cite>.gif</cite> files.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>mode<span class="classifier">str, optional (default=’monthly’)</span></dt><dd><p>Time mode for animation. Options: ‘daily’, ‘monthly’, or ‘yearly’.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>domain_name<span class="classifier">str, optional (default=’Basin’)</span></dt><dd><p>Prefix to use in animated titles and output filenames.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cmap<span class="classifier">str, optional (default=’gnuplot2_r’)</span></dt><dd><p>Matplotlib colormap to use for the animation.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="input-format">
+<h4>Input Format:<a class="headerlink" href="#input-format" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Subbasin shapefile (.shp) with a <cite>COMID</cite> field</p></li>
+<li><p>Drainage database (.nc) with <cite>subbasin</cite> variable</p></li>
+<li><p>NetCDF model output files with time and subbasin dimensions</p></li>
+</ol>
+</section>
+<section id="output">
+<h4>Output:<a class="headerlink" href="#output" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><cite>.gif</cite> animations for each variable saved in <cite>outdir</cite></p></li>
+<li><p>Each frame shows spatial distribution for a time step</p></li>
+<li><p>Colorbars, labels, and layer info auto-handled</p></li>
+</ul>
+</section>
+<section id="example-usage">
+<h4>Example Usage:<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">MESHpyPostProcessing.animate_var_vector_setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">animate_mesh_outputs_to_gif</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">animate_mesh_outputs_to_gif</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">shapefile_path</span><span class="o">=</span><span class="s1">&#39;/path/to/sras_subbasins_MAF_Agg.shp&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">netcdf_dir</span><span class="o">=</span><span class="s1">&#39;/path/to/MESH/BASINAVG1&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">ddb_path</span><span class="o">=</span><span class="s1">&#39;/path/to/MESH_drainage_database.nc&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;QO&#39;</span><span class="p">,</span> <span class="s1">&#39;SNO&#39;</span><span class="p">,</span> <span class="s1">&#39;PREC&#39;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">filenames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;QO_M_GRD.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;SNO_M_GRD.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;PREC_M_GRD.nc&#39;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">cbar_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Discharge [m³/s]&#39;</span><span class="p">,</span> <span class="s1">&#39;Snow Mass [mm]&#39;</span><span class="p">,</span> <span class="s1">&#39;Precipitation [mm]&#39;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;/path/to/output&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;monthly&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">domain_name</span><span class="o">=</span><span class="s1">&#39;SrAs&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/SNO_yearly_animation.gif"><img alt="SNOW Output Animation" class="align-center" src="_images/SNO_yearly_animation.gif" style="width: 600px;" />
+</a>
+<a class="reference internal image-reference" href="_images/PREC_yearly_animation.gif"><img alt="Precipitation Output Animation" class="align-center" src="_images/PREC_yearly_animation.gif" style="width: 600px;" />
+</a>
+</section>
+<section id="dependencies">
+<h4>Dependencies:<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>geopandas</p></li>
+<li><p>matplotlib</p></li>
+<li><p>netCDF4</p></li>
+<li><p>pandas</p></li>
+<li><p>numpy</p></li>
+<li><p>xarray</p></li>
+<li><p>Pillow (via matplotlib.animation.PillowWriter)</p></li>
+</ul>
+</section>
+</section>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="MESHpyPostProcessing.animate_var_vector_setup.animate_mesh_outputs_to_gif">
+<span class="sig-prename descclassname"><span class="pre">MESHpyPostProcessing.animate_var_vector_setup.</span></span><span class="sig-name descname"><span class="pre">animate_mesh_outputs_to_gif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shapefile_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">netcdf_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddb_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cbar_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'monthly'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Basin'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gnuplot2_r'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPostProcessing/animate_var_vector_setup.html#animate_mesh_outputs_to_gif"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPostProcessing.animate_var_vector_setup.animate_mesh_outputs_to_gif" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="plt_var_vector_setup.html" class="btn btn-neutral float-left" title="plt_var_vector_setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="MESH_StreamflowFilePrep.html" class="btn btn-neutral float-right" title="MESH Streamflow File Preparation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Fuad Yassin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
