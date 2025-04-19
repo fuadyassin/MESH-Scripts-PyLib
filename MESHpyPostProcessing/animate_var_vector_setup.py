@@ -57,17 +57,25 @@ Example Usage:
 
 >>> from MESHpyPostProcessing.animate_var_vector_setup import animate_mesh_outputs_to_gif
 
+
 >>> animate_mesh_outputs_to_gif(
-...     shapefile_path='/path/to/sras_subbasins_MAF_Agg.shp',
-...     netcdf_dir='/path/to/MESH/BASINAVG1',
-...     ddb_path='/path/to/MESH_drainage_database.nc',
+...     shapefile_path='D:/HydrologicalModels/MESH/Baseline/sras-agg-model_1/sras_MESH_PostProcessing/GIS/sras_subbasins_MAF_Agg.shp',
+...     netcdf_dir='D:/HydrologicalModels/MESH/Baseline/sras-agg-model_1/sras_MESH_PostProcessing/BASINAVG4',
+...     ddb_path='D:/HydrologicalModels/MESH/Baseline/sras-agg-model_1/MESH-sras-agg/MESH_drainage_database.nc',
 ...     varnames=['QO', 'SNO', 'PREC'],
-...     filenames=['QO_M_GRD.nc', 'SNO_M_GRD.nc', 'PREC_M_GRD.nc'],
+...     filenames=['QO_Y_GRD.nc', 'SNO_Y_GRD.nc', 'PREC_Y_GRD.nc'],
 ...     cbar_labels=['Discharge [m³/s]', 'Snow Mass [mm]', 'Precipitation [mm]'],
-...     outdir='/path/to/output',
-...     mode='monthly',
+...     outdir='D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPostProcessing/ExampleFiles/Outputs',
+...     mode='Yearly',
 ...     domain_name='SrAs'
 ... )
+
+>>> # This will create animated GIFs for each variable in the specified output directory.
+>>> # The GIFs will be named as follows:    
+
+>>> # QO_yearly_animation.gif
+>>> # SNO_yearly_animation.gif
+>>> # PREC_yearly_animation.gif
 
 .. image:: Figures/SNO_yearly_animation.gif
    :width: 600
