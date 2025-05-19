@@ -19,7 +19,7 @@ Function: plt_var_from_vector_ddb_netcdf
 Description:
 -------------
 Plots spatial variables stored in NetCDF files on top of vector shapefiles using GeoPandas and Matplotlib.
-This function is useful for visualizing hydrological model inputs such as grouped land use data (GRUs), 
+This function is useful for visualizing hydrological model inputs such as Grouped Respone Units (GRUs), 
 soil layers (e.g., SAND, CLAY), or other scalar variables (e.g., Elevation, Drainage Area) in spatial context.
 
 Parameters:
