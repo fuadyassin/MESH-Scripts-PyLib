@@ -1,79 +1,74 @@
-MESH-Scripts-PyLib IO Documentation
-=====================================
+MESH-Scripts-PyLib Documentation
+================================
 
-**MESH-Scripts-PyLib** is a Python library for preprocessing hydrometric and soil data, performing spatial analysis, and generating NetCDF files for use in hydrological modeling. The package includes utilities for:
+**MESH-Scripts-PyLib** is a Python library for preprocessing and analyzing hydrometric, geospatial, and soil datasets for hydrological modeling. It provides tools for:
 
-- Streamflow file preparation
-- Soil data processing
-- Spatial analysis
-- NetCDF file generation
-- Vector Aggregation
-- Generate MESH_CLASS.ini file
-- Generate MESH_HYDROLOGY.ini file
-- Plot Variables from Drainage Database and Parameters file
+- Generating streamflow input files from USGS and EC sources
+- Processing soil and land cover properties into model-ready formats
+- Aggregating basin shapefiles and preparing spatial inputs
+- Writing NetCDF files compatible with the MESH model
+- Visualizing MESH input/output variables (e.g., discharge, snow, climate forcing)
 
 .. note::
-   This project is under active development.
+   This documentation is auto-generated from source code using Sphinx and updated regularly.
+
+Badges
+------
+
+.. image:: https://readthedocs.org/projects/mesh-scripts-pylib/badge/?version=latest
+   :target: https://mesh-scripts-pylib.readthedocs.io/en/latest/
+   :alt: Documentation Status
+
+.. image:: https://img.shields.io/github/license/fuadyassin/MESH-Scripts-PyLib
+   :target: https://github.com/fuadyassin/MESH-Scripts-PyLib/blob/main/LICENSE
+   :alt: License
+
+.. image:: https://img.shields.io/github/stars/fuadyassin/MESH-Scripts-PyLib?style=social
+   :target: https://github.com/fuadyassin/MESH-Scripts-PyLib/stargazers
+   :alt: GitHub stars
+
+.. image:: https://img.shields.io/github/forks/fuadyassin/MESH-Scripts-PyLib?style=social
+   :target: https://github.com/fuadyassin/MESH-Scripts-PyLib/network/members
+   :alt: GitHub forks
 
 Installation
 ------------
 
-You can install the package using pip directly from GitHub:
+Install the package directly from GitHub:
 
 .. code-block:: bash
 
    pip install git+https://github.com/MESH-Model/MESH-Scripts-PyLib.git
 
-Overview
---------
+Alternatively, you can clone the repository and install in editable mode:
 
-This library provides several utilities that streamline data preprocessing for hydrological models like MESH. The key functionalities include:
+.. code-block:: bash
 
-- **Streamflow Data Processing:** Extraction and processing of streamflow data from Canadian and US hydrometric sources.
-- **Soil Data Handling:** Loading, merging, and cleaning soil data from CSV files.
-- **Spatial Analysis:** Flagging non-contributing areas using GeoDataFrames.
-- **Basin & River Aggregation:** Aggregation of basin and river networks with custom thresholds.
-- **NetCDF Generation:** Writing processed soil data to NetCDF format for hydrological modeling.
+   git clone https://github.com/fuadyassin/MESH-Scripts-PyLib.git
+   cd MESH-Scripts-PyLib
+   pip install -e .
 
-Contents
---------
+API Reference
+-------------
 
 .. toctree::
-   :maxdepth: 2
-   :caption: File preparation:
+   :maxdepth: 1
+   :caption: Python Modules
 
-   Aggregation_vector.rst
-   NetCDFWriter.rst
-   convert_ddbnetcdf.rst
-   gdf_edit.rst
-   gen_streamflow_file.rst
-   gsde_soil.rst
-   generate_mesh_class_ini_from_excel.rst
-   generate_mesh_hydrology_ini_from_excel.rst
-   remap_climate_to_ddb.rst
-
-Visualization
----------------
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Visualization:
-   
-   plt_var_vector_setup.rst
-   animate_var_vector_setup.rst
+   modules
 
 Jupyter Notebooks
 -----------------
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Jupyter Notebooks:
+   :maxdepth: 1
+   :caption: Examples
 
-   MESH_StreamflowFilePrep.rst
+   MESH_StreamflowFilePrep.ipynb
 
 Indices and Tables
 ------------------
 
-- :ref:`genindex`
-- :ref:`modindex`
-- :ref:`search`
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

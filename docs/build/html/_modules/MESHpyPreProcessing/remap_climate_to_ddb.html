@@ -41,23 +41,12 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">File preparation:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Python Modules</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../Aggregation_vector.html">Aggregate vector subbasins</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../NetCDFWriter.html">Netcdf writer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../convert_ddbnetcdf.html">convert_ddbnetcdf</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../gdf_edit.html">gdf_edit</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../gen_streamflow_file.html">gen_streamflow_file</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../gsde_soil.html">GSDE soil</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../remap_climate_to_ddb.html">remap_climate_to_ddb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../MESHpyPreProcessing.html">MESHpyPreProcessing package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../MESHpyPostProcessing.html">MESHpyPostProcessing package</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../plt_var_vector_setup.html">plt_var_vector_setup</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../MESH_StreamflowFilePrep.html">MESH Streamflow File Preparation</a></li>
 </ul>
@@ -96,7 +85,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">natsort</span><span class="w"> </span><span class="kn">import</span> <span class="n">natsorted</span>
 
 <div class="viewcode-block" id="remap_rdrs_climate_data">
-<a class="viewcode-back" href="../../remap_climate_to_ddb.html#MESHpyPreProcessing.remap_climate_to_ddb.remap_rdrs_climate_data">[docs]</a>
+<a class="viewcode-back" href="../../MESHpyPreProcessing.html#MESHpyPreProcessing.remap_climate_to_ddb.remap_rdrs_climate_data">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">remap_rdrs_climate_data</span><span class="p">(</span><span class="n">input_directory</span><span class="p">,</span> <span class="n">output_directory</span><span class="p">,</span> <span class="n">input_basin</span><span class="p">,</span> <span class="n">input_ddb</span><span class="p">,</span> <span class="n">start_year</span><span class="p">,</span> <span class="n">end_year</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Remap RDRS climate data to a drainage database (DDB) format for a range of years.</span>
@@ -163,7 +152,7 @@
 
 
 <div class="viewcode-block" id="remap_rdrs_climate_data_single_year">
-<a class="viewcode-back" href="../../remap_climate_to_ddb.html#MESHpyPreProcessing.remap_climate_to_ddb.remap_rdrs_climate_data_single_year">[docs]</a>
+<a class="viewcode-back" href="../../MESHpyPreProcessing.html#MESHpyPreProcessing.remap_climate_to_ddb.remap_rdrs_climate_data_single_year">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">remap_rdrs_climate_data_single_year</span><span class="p">(</span><span class="n">input_directory</span><span class="p">,</span> <span class="n">output_directory</span><span class="p">,</span> <span class="n">input_basin</span><span class="p">,</span> <span class="n">input_ddb</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Remap RDRS climate data to a drainage database (DDB) format for a single year.</span>
@@ -197,7 +186,7 @@
 
 
 <div class="viewcode-block" id="process_file">
-<a class="viewcode-back" href="../../remap_climate_to_ddb.html#MESHpyPreProcessing.remap_climate_to_ddb.process_file">[docs]</a>
+<a class="viewcode-back" href="../../MESHpyPreProcessing.html#MESHpyPreProcessing.remap_climate_to_ddb.process_file">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">process_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">segid</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">output_directory</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Process a single NetCDF file and remap its data to the drainage database (DDB) format.</span>
