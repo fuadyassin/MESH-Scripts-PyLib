@@ -1,0 +1,8 @@
+pandas
+numpy
+geopandas
+netCDF4
+requests
+xarray
+shapely
+owslib

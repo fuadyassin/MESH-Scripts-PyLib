@@ -1,0 +1,28 @@
+Metadata-Version: 2.4
+Name: MESH-Scripts-PyLib
+Version: 0.1
+Summary: Python package for processing and analyzing hydrological data.
+Home-page: https://github.com/MESH-Model/MESH-Scripts-PyLib
+Author: Fuad Yassin
+Author-email: fuad.yassin@usask.ca
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+License-File: LICENSE
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: geopandas
+Requires-Dist: netCDF4
+Requires-Dist: requests
+Requires-Dist: xarray
+Requires-Dist: shapely
+Requires-Dist: owslib
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
