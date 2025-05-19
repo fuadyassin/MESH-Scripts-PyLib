@@ -18,10 +18,75 @@ def save_mesh_outputs_as_png(
     cbar_labels,
     outdir,
     indices_to_save,
-    mode='monthly',  # can now also be 'hourly'
+    mode='monthly',
     domain_name='Basin',
     cmap='gnuplot2_r'
 ):
+    """
+    Generate and save static PNG plots of MESH model output variables for specific time slices.
+
+    This function overlays MESH model output (e.g., discharge, snow, temperature) from NetCDF files 
+    onto a shapefile representing subbasin polygons. For each variable and selected time index, a PNG 
+    figure is generated with consistent colorbar scales and custom titles based on domain, variable, 
+    and time.
+
+    Parameters
+    ----------
+    shapefile_path : str
+        Path to the shapefile (.shp) representing the subbasins with a 'COMID' field.
+    netcdf_dir : str
+        Directory containing the NetCDF output files.
+    ddb_path : str
+        Path to the NetCDF drainage database containing the 'subbasin' variable used for merging.
+    varnames : list of str
+        List of variable names to extract from each NetCDF file (e.g., ['QO', 'SNO']).
+    filenames : list of str
+        List of NetCDF filenames corresponding to each variable in `varnames`.
+    cbar_labels : list of str
+        List of labels for the colorbars corresponding to each variable.
+    outdir : str
+        Directory where output PNG figures will be saved.
+    indices_to_save : list of int
+        List of time indices to extract and plot (e.g., [0, 1, 5]).
+    mode : {'daily', 'monthly', 'yearly', 'hourly'}, optional
+        Time resolution of the data for labeling the figures. Default is 'monthly'.
+    domain_name : str, optional
+        Name of the domain used in the figure title. Default is 'Basin'.
+    cmap : str, optional
+        Matplotlib colormap to use for the plots. Default is 'gnuplot2_r'.
+
+    Returns
+    -------
+    None
+        Saves PNG image files to the specified output directory.
+
+    Raises
+    ------
+    ValueError
+        If an unsupported mode is provided for the `mode` parameter.
+
+    Notes
+    -----
+    - Assumes that each NetCDF file contains a 'time' dimension and that values begin from index 1 (skipping index 0).
+    - Automatically adjusts date labeling based on the selected time `mode`.
+    - Supports automatic detection of layer (e.g., 'Layer1', 'Layer2') from filenames using 'IG1', 'IG2', etc.
+
+    Example
+    -------
+    >>> save_mesh_outputs_as_png(
+    ...     shapefile_path='shapes/sras_subbasins.shp',
+    ...     netcdf_dir='outputs/monthly',
+    ...     ddb_path='outputs/MESH_drainage_database.nc',
+    ...     varnames=['QO', 'SNO'],
+    ...     filenames=['QO_Y_GRD.nc', 'SNO_Y_GRD.nc'],
+    ...     cbar_labels=['Discharge [m³/s]', 'Snow [mm]'],
+    ...     outdir='outputs/pngs',
+    ...     indices_to_save=[0, 3, 6],
+    ...     mode='monthly',
+    ...     domain_name='SrAs',
+    ...     cmap='viridis'
+    ... )
+    """
     font = {'family': 'DejaVu Serif', 'weight': 'bold', 'size': 24}
     matplotlib.rc('font', **font)
 

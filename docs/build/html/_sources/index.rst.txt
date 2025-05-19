@@ -61,6 +61,7 @@ Visualization
    
    plt_var_vector_setup.rst
    animate_var_vector_setup.rst
+   save_mesh_outputs_as_png.rst
 
 Jupyter Notebooks
 -----------------

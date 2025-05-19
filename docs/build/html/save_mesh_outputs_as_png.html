@@ -1,0 +1,190 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>save_mesh_outputs_as_png &mdash; MESH-Scripts-PyLib 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MESH Streamflow File Preparation" href="MESH_StreamflowFilePrep.html" />
+    <link rel="prev" title="animate_var_vector_setup" href="animate_var_vector_setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MESH-Scripts-PyLib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">File preparation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Aggregation_vector.html">Aggregate vector subbasins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NetCDFWriter.html">Netcdf writer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convert_ddbnetcdf.html">convert_ddbnetcdf</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gdf_edit.html">gdf_edit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gen_streamflow_file.html">gen_streamflow_file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gsde_soil.html">GSDE soil</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remap_climate_to_ddb.html">remap_climate_to_ddb</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="plt_var_vector_setup.html">plt_var_vector_setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="animate_var_vector_setup.html">animate_var_vector_setup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">save_mesh_outputs_as_png</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#MESHpyPostProcessing.save_mesh_outputs_as_png.save_mesh_outputs_as_png"><code class="docutils literal notranslate"><span class="pre">save_mesh_outputs_as_png()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="MESH_StreamflowFilePrep.html">MESH Streamflow File Preparation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MESH-Scripts-PyLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">save_mesh_outputs_as_png</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/fuadyassin/MESH-Scripts-PyLib/blob/main/docs/source/save_mesh_outputs_as_png.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-MESHpyPostProcessing.save_mesh_outputs_as_png">
+<span id="save-mesh-outputs-as-png"></span><h1>save_mesh_outputs_as_png<a class="headerlink" href="#module-MESHpyPostProcessing.save_mesh_outputs_as_png" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="MESHpyPostProcessing.save_mesh_outputs_as_png.save_mesh_outputs_as_png">
+<span class="sig-prename descclassname"><span class="pre">MESHpyPostProcessing.save_mesh_outputs_as_png.</span></span><span class="sig-name descname"><span class="pre">save_mesh_outputs_as_png</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shapefile_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">netcdf_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddb_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cbar_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices_to_save</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'monthly'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Basin'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gnuplot2_r'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MESHpyPostProcessing/save_mesh_outputs_as_png.html#save_mesh_outputs_as_png"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MESHpyPostProcessing.save_mesh_outputs_as_png.save_mesh_outputs_as_png" title="Link to this definition"></a></dt>
+<dd><p>Generate and save static PNG plots of MESH model output variables for specific time slices.</p>
+<p>This function overlays MESH model output (e.g., discharge, snow, temperature) from NetCDF files
+onto a shapefile representing subbasin polygons. For each variable and selected time index, a PNG
+figure is generated with consistent colorbar scales and custom titles based on domain, variable,
+and time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shapefile_path</strong> (<em>str</em>) – Path to the shapefile (.shp) representing the subbasins with a ‘COMID’ field.</p></li>
+<li><p><strong>netcdf_dir</strong> (<em>str</em>) – Directory containing the NetCDF output files.</p></li>
+<li><p><strong>ddb_path</strong> (<em>str</em>) – Path to the NetCDF drainage database containing the ‘subbasin’ variable used for merging.</p></li>
+<li><p><strong>varnames</strong> (<em>list</em><em> of </em><em>str</em>) – List of variable names to extract from each NetCDF file (e.g., [‘QO’, ‘SNO’]).</p></li>
+<li><p><strong>filenames</strong> (<em>list</em><em> of </em><em>str</em>) – List of NetCDF filenames corresponding to each variable in <cite>varnames</cite>.</p></li>
+<li><p><strong>cbar_labels</strong> (<em>list</em><em> of </em><em>str</em>) – List of labels for the colorbars corresponding to each variable.</p></li>
+<li><p><strong>outdir</strong> (<em>str</em>) – Directory where output PNG figures will be saved.</p></li>
+<li><p><strong>indices_to_save</strong> (<em>list</em><em> of </em><em>int</em>) – List of time indices to extract and plot (e.g., [0, 1, 5]).</p></li>
+<li><p><strong>mode</strong> (<em>{'daily'</em><em>, </em><em>'monthly'</em><em>, </em><em>'yearly'</em><em>, </em><em>'hourly'}</em><em>, </em><em>optional</em>) – Time resolution of the data for labeling the figures. Default is ‘monthly’.</p></li>
+<li><p><strong>domain_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the domain used in the figure title. Default is ‘Basin’.</p></li>
+<li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>optional</em>) – Matplotlib colormap to use for the plots. Default is ‘gnuplot2_r’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Saves PNG image files to the specified output directory.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If an unsupported mode is provided for the <cite>mode</cite> parameter.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Assumes that each NetCDF file contains a ‘time’ dimension and that values begin from index 1 (skipping index 0).</p></li>
+<li><p>Automatically adjusts date labeling based on the selected time <cite>mode</cite>.</p></li>
+<li><p>Supports automatic detection of layer (e.g., ‘Layer1’, ‘Layer2’) from filenames using ‘IG1’, ‘IG2’, etc.</p></li>
+</ul>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">save_mesh_outputs_as_png</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">shapefile_path</span><span class="o">=</span><span class="s1">&#39;shapes/sras_subbasins.shp&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">netcdf_dir</span><span class="o">=</span><span class="s1">&#39;outputs/monthly&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">ddb_path</span><span class="o">=</span><span class="s1">&#39;outputs/MESH_drainage_database.nc&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;QO&#39;</span><span class="p">,</span> <span class="s1">&#39;SNO&#39;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">filenames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;QO_Y_GRD.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;SNO_Y_GRD.nc&#39;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">cbar_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Discharge [m³/s]&#39;</span><span class="p">,</span> <span class="s1">&#39;Snow [mm]&#39;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;outputs/pngs&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">indices_to_save</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;monthly&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">domain_name</span><span class="o">=</span><span class="s1">&#39;SrAs&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="animate_var_vector_setup.html" class="btn btn-neutral float-left" title="animate_var_vector_setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="MESH_StreamflowFilePrep.html" class="btn btn-neutral float-right" title="MESH Streamflow File Preparation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Fuad Yassin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
