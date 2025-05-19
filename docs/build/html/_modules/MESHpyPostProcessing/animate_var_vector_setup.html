@@ -41,24 +41,12 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">File preparation:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Python Modules</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../Aggregation_vector.html">Aggregate vector subbasins</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../NetCDFWriter.html">Netcdf writer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../convert_ddbnetcdf.html">convert_ddbnetcdf</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../gdf_edit.html">gdf_edit</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../gen_streamflow_file.html">gen_streamflow_file</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../gsde_soil.html">GSDE soil</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../remap_climate_to_ddb.html">remap_climate_to_ddb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../MESHpyPreProcessing.html">MESHpyPreProcessing package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../MESHpyPostProcessing.html">MESHpyPostProcessing package</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../plt_var_vector_setup.html">plt_var_vector_setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../animate_var_vector_setup.html">animate_var_vector_setup</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../MESH_StreamflowFilePrep.html">MESH Streamflow File Preparation</a></li>
 </ul>
@@ -147,17 +135,25 @@
 
 <span class="sd">&gt;&gt;&gt; from MESHpyPostProcessing.animate_var_vector_setup import animate_mesh_outputs_to_gif</span>
 
+
 <span class="sd">&gt;&gt;&gt; animate_mesh_outputs_to_gif(</span>
-<span class="sd">...     shapefile_path=&#39;/path/to/sras_subbasins_MAF_Agg.shp&#39;,</span>
-<span class="sd">...     netcdf_dir=&#39;/path/to/MESH/BASINAVG1&#39;,</span>
-<span class="sd">...     ddb_path=&#39;/path/to/MESH_drainage_database.nc&#39;,</span>
+<span class="sd">...     shapefile_path=&#39;D:/HydrologicalModels/MESH/Baseline/sras-agg-model_1/sras_MESH_PostProcessing/GIS/sras_subbasins_MAF_Agg.shp&#39;,</span>
+<span class="sd">...     netcdf_dir=&#39;D:/HydrologicalModels/MESH/Baseline/sras-agg-model_1/sras_MESH_PostProcessing/BASINAVG4&#39;,</span>
+<span class="sd">...     ddb_path=&#39;D:/HydrologicalModels/MESH/Baseline/sras-agg-model_1/MESH-sras-agg/MESH_drainage_database.nc&#39;,</span>
 <span class="sd">...     varnames=[&#39;QO&#39;, &#39;SNO&#39;, &#39;PREC&#39;],</span>
-<span class="sd">...     filenames=[&#39;QO_M_GRD.nc&#39;, &#39;SNO_M_GRD.nc&#39;, &#39;PREC_M_GRD.nc&#39;],</span>
+<span class="sd">...     filenames=[&#39;QO_Y_GRD.nc&#39;, &#39;SNO_Y_GRD.nc&#39;, &#39;PREC_Y_GRD.nc&#39;],</span>
 <span class="sd">...     cbar_labels=[&#39;Discharge [m³/s]&#39;, &#39;Snow Mass [mm]&#39;, &#39;Precipitation [mm]&#39;],</span>
-<span class="sd">...     outdir=&#39;/path/to/output&#39;,</span>
-<span class="sd">...     mode=&#39;monthly&#39;,</span>
+<span class="sd">...     outdir=&#39;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPostProcessing/ExampleFiles/Outputs&#39;,</span>
+<span class="sd">...     mode=&#39;Yearly&#39;,</span>
 <span class="sd">...     domain_name=&#39;SrAs&#39;</span>
 <span class="sd">... )</span>
+
+<span class="sd">&gt;&gt;&gt; # This will create animated GIFs for each variable in the specified output directory.</span>
+<span class="sd">&gt;&gt;&gt; # The GIFs will be named as follows:    </span>
+
+<span class="sd">&gt;&gt;&gt; # QO_yearly_animation.gif</span>
+<span class="sd">&gt;&gt;&gt; # SNO_yearly_animation.gif</span>
+<span class="sd">&gt;&gt;&gt; # PREC_yearly_animation.gif</span>
 
 <span class="sd">.. image:: Figures/SNO_yearly_animation.gif</span>
 <span class="sd">   :width: 600</span>
@@ -193,7 +189,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
 
 <div class="viewcode-block" id="animate_mesh_outputs_to_gif">
-<a class="viewcode-back" href="../../animate_var_vector_setup.html#MESHpyPostProcessing.animate_var_vector_setup.animate_mesh_outputs_to_gif">[docs]</a>
+<a class="viewcode-back" href="../../MESHpyPostProcessing.html#MESHpyPostProcessing.animate_var_vector_setup.animate_mesh_outputs_to_gif">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">animate_mesh_outputs_to_gif</span><span class="p">(</span>
     <span class="n">shapefile_path</span><span class="p">,</span>
     <span class="n">netcdf_dir</span><span class="p">,</span>

@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MESH-Scripts-PyLib IO Documentation &mdash; MESH-Scripts-PyLib 1.0 documentation</title>
+  <title>MESH-Scripts-PyLib Documentation &mdash; MESH-Scripts-PyLib 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -23,7 +23,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Aggregate vector subbasins" href="Aggregation_vector.html" /> 
+    <link rel="next" title="&lt;no title&gt;" href="modules.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,25 +45,12 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">File preparation:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Python Modules</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Aggregation_vector.html">Aggregate vector subbasins</a></li>
-<li class="toctree-l1"><a class="reference internal" href="NetCDFWriter.html">Netcdf writer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="convert_ddbnetcdf.html">convert_ddbnetcdf</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gdf_edit.html">gdf_edit</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gen_streamflow_file.html">gen_streamflow_file</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gsde_soil.html">GSDE soil</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="remap_climate_to_ddb.html">remap_climate_to_ddb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MESHpyPreProcessing.html">MESHpyPreProcessing package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MESHpyPostProcessing.html">MESHpyPostProcessing package</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="plt_var_vector_setup.html">plt_var_vector_setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="animate_var_vector_setup.html">animate_var_vector_setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="save_mesh_outputs_as_png.html">save_mesh_outputs_as_png</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="MESH_StreamflowFilePrep.html">MESH Streamflow File Preparation</a></li>
 </ul>
@@ -82,7 +69,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">MESH-Scripts-PyLib IO Documentation</li>
+      <li class="breadcrumb-item active">MESH-Scripts-PyLib Documentation</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/fuadyassin/MESH-Scripts-PyLib/blob/main/docs/source/index.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -92,125 +79,58 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="mesh-scripts-pylib-io-documentation">
-<h1>MESH-Scripts-PyLib IO Documentation<a class="headerlink" href="#mesh-scripts-pylib-io-documentation" title="Link to this heading"></a></h1>
-<p><strong>MESH-Scripts-PyLib</strong> is a Python library for preprocessing hydrometric and soil data, performing spatial analysis, and generating NetCDF files for use in hydrological modeling. The package includes utilities for:</p>
+  <section id="mesh-scripts-pylib-documentation">
+<h1>MESH-Scripts-PyLib Documentation<a class="headerlink" href="#mesh-scripts-pylib-documentation" title="Link to this heading"></a></h1>
+<p><strong>MESH-Scripts-PyLib</strong> is a Python library for preprocessing and analyzing hydrometric, geospatial, and soil datasets for hydrological modeling. It provides tools for:</p>
 <ul class="simple">
-<li><p>Streamflow file preparation</p></li>
-<li><p>Soil data processing</p></li>
-<li><p>Spatial analysis</p></li>
-<li><p>NetCDF file generation</p></li>
-<li><p>Vector Aggregation</p></li>
-<li><p>Generate MESH_CLASS.ini file</p></li>
-<li><p>Generate MESH_HYDROLOGY.ini file</p></li>
-<li><p>Plot Variables from Drainage Database and Parameters file</p></li>
+<li><p>Generating streamflow input files from USGS and EC sources</p></li>
+<li><p>Processing soil and land cover properties into model-ready formats</p></li>
+<li><p>Aggregating basin shapefiles and preparing spatial inputs</p></li>
+<li><p>Writing NetCDF files compatible with the MESH model</p></li>
+<li><p>Visualizing MESH input/output variables (e.g., discharge, snow, climate forcing)</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This project is under active development.</p>
+<p>This documentation is auto-generated from source code using Sphinx and updated regularly.</p>
 </div>
+<section id="badges">
+<h2>Badges<a class="headerlink" href="#badges" title="Link to this heading"></a></h2>
+<a class="reference external image-reference" href="https://mesh-scripts-pylib.readthedocs.io/en/latest/"><img alt="Documentation Status" src="https://readthedocs.org/projects/mesh-scripts-pylib/badge/?version=latest" />
+</a>
+<a class="reference external image-reference" href="https://github.com/fuadyassin/MESH-Scripts-PyLib/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/fuadyassin/MESH-Scripts-PyLib" />
+</a>
+<a class="reference external image-reference" href="https://github.com/fuadyassin/MESH-Scripts-PyLib/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/fuadyassin/MESH-Scripts-PyLib?style=social" />
+</a>
+<a class="reference external image-reference" href="https://github.com/fuadyassin/MESH-Scripts-PyLib/network/members"><img alt="GitHub forks" src="https://img.shields.io/github/forks/fuadyassin/MESH-Scripts-PyLib?style=social" />
+</a>
+</section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
-<p>You can install the package using pip directly from GitHub:</p>
+<p>Install the package directly from GitHub:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/MESH-Model/MESH-Scripts-PyLib.git
 </pre></div>
 </div>
-</section>
-<section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
-<p>This library provides several utilities that streamline data preprocessing for hydrological models like MESH. The key functionalities include:</p>
-<ul class="simple">
-<li><p><strong>Streamflow Data Processing:</strong> Extraction and processing of streamflow data from Canadian and US hydrometric sources.</p></li>
-<li><p><strong>Soil Data Handling:</strong> Loading, merging, and cleaning soil data from CSV files.</p></li>
-<li><p><strong>Spatial Analysis:</strong> Flagging non-contributing areas using GeoDataFrames.</p></li>
-<li><p><strong>Basin &amp; River Aggregation:</strong> Aggregation of basin and river networks with custom thresholds.</p></li>
-<li><p><strong>NetCDF Generation:</strong> Writing processed soil data to NetCDF format for hydrological modeling.</p></li>
-</ul>
-</section>
-<section id="contents">
-<h2>Contents<a class="headerlink" href="#contents" title="Link to this heading"></a></h2>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">File preparation:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="Aggregation_vector.html">Aggregate vector subbasins</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Aggregation_vector.html#basin-and-river-network-aggregation">Basin and River Network Aggregation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Aggregation_vector.html#MESHpyPreProcessing.Aggregation_vector.merit_basin_aggregation"><code class="docutils literal notranslate"><span class="pre">merit_basin_aggregation()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="NetCDFWriter.html">Netcdf writer</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="NetCDFWriter.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="NetCDFWriter.html#function-descriptions">Function Descriptions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="NetCDFWriter.html#example-usage">Example Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="NetCDFWriter.html#id0"><code class="docutils literal notranslate"><span class="pre">NetCDFWriter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="convert_ddbnetcdf.html">convert_ddbnetcdf</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="convert_ddbnetcdf.html#netcdf-to-csv-shapefile-converter">NetCDF to CSV/Shapefile Converter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="convert_ddbnetcdf.html#MESHpyPreProcessing.convert_ddbnetcdf.convert_netcdf"><code class="docutils literal notranslate"><span class="pre">convert_netcdf()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="gdf_edit.html">gdf_edit</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="gdf_edit.html#gdf-edit-py">gdf_edit.py</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gdf_edit.html#MESHpyPreProcessing.gdf_edit.flag_ncaalg"><code class="docutils literal notranslate"><span class="pre">flag_ncaalg()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="gdf_edit.html#MESHpyPreProcessing.gdf_edit.flag_ncaalg_from_files"><code class="docutils literal notranslate"><span class="pre">flag_ncaalg_from_files()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="gen_streamflow_file.html">gen_streamflow_file</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="gen_streamflow_file.html#streamflow-file-preparation">Streamflow File Preparation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gen_streamflow_file.html#MESHpyPreProcessing.gen_streamflow_file.GenStreamflowFile"><code class="docutils literal notranslate"><span class="pre">GenStreamflowFile</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="gsde_soil.html">GSDE soil</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="gsde_soil.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gsde_soil.html#function-descriptions">Function Descriptions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gsde_soil.html#example-usage">Example Usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gsde_soil.html#id0"><code class="docutils literal notranslate"><span class="pre">GSDESoil</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="generate_mesh_class_ini_from_excel.html#MESHpyPreProcessing.generate_mesh_class_ini_from_excel.generate_mesh_class_ini_from_excel"><code class="docutils literal notranslate"><span class="pre">generate_mesh_class_ini_from_excel()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="generate_mesh_hydrology_ini_from_excel.html#MESHpyPreProcessing.generate_mesh_hydrology_ini_from_excel.generate_mesh_hydrology_ini_from_excel"><code class="docutils literal notranslate"><span class="pre">generate_mesh_hydrology_ini_from_excel()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="remap_climate_to_ddb.html">remap_climate_to_ddb</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="remap_climate_to_ddb.html#MESHpyPreProcessing.remap_climate_to_ddb.process_file"><code class="docutils literal notranslate"><span class="pre">process_file()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="remap_climate_to_ddb.html#MESHpyPreProcessing.remap_climate_to_ddb.remap_rdrs_climate_data"><code class="docutils literal notranslate"><span class="pre">remap_rdrs_climate_data()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="remap_climate_to_ddb.html#MESHpyPreProcessing.remap_climate_to_ddb.remap_rdrs_climate_data_single_year"><code class="docutils literal notranslate"><span class="pre">remap_rdrs_climate_data_single_year()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="remap_climate_to_ddb.html#slurm-script-usage">SLURM Script Usage</a></li>
-</ul>
-</li>
-</ul>
+<p>Alternatively, you can clone the repository and install in editable mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/fuadyassin/MESH-Scripts-PyLib.git
+<span class="nb">cd</span><span class="w"> </span>MESH-Scripts-PyLib
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
 </div>
 </section>
-<section id="visualization">
-<h2>Visualization<a class="headerlink" href="#visualization" title="Link to this heading"></a></h2>
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Python Modules</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="plt_var_vector_setup.html">plt_var_vector_setup</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="plt_var_vector_setup.html#spatial-variable-visualization-from-vector-and-netcdf-files">Spatial Variable Visualization from Vector and NetCDF Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plt_var_vector_setup.html#MESHpyPostProcessing.plt_var_vector_setup.plt_var_from_vector_ddb_netcdf"><code class="docutils literal notranslate"><span class="pre">plt_var_from_vector_ddb_netcdf()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="animate_var_vector_setup.html">animate_var_vector_setup</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="animate_var_vector_setup.html#temporal-animation-of-mesh-variables-from-vector-and-netcdf-data">Temporal Animation of MESH Variables from Vector and NetCDF Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="animate_var_vector_setup.html#MESHpyPostProcessing.animate_var_vector_setup.animate_mesh_outputs_to_gif"><code class="docutils literal notranslate"><span class="pre">animate_mesh_outputs_to_gif()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="save_mesh_outputs_as_png.html">save_mesh_outputs_as_png</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="save_mesh_outputs_as_png.html#MESHpyPostProcessing.save_mesh_outputs_as_png.save_mesh_outputs_as_png"><code class="docutils literal notranslate"><span class="pre">save_mesh_outputs_as_png()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="MESHpyPreProcessing.html">MESHpyPreProcessing package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MESHpyPostProcessing.html">MESHpyPostProcessing package</a></li>
 </ul>
 </div>
 </section>
 <section id="jupyter-notebooks">
 <h2>Jupyter Notebooks<a class="headerlink" href="#jupyter-notebooks" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="MESH_StreamflowFilePrep.html">MESH Streamflow File Preparation</a></li>
 </ul>
@@ -230,7 +150,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Aggregation_vector.html" class="btn btn-neutral float-right" title="Aggregate vector subbasins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

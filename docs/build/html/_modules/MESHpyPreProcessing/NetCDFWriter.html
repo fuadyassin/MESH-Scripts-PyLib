@@ -41,23 +41,12 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">File preparation:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Python Modules</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../Aggregation_vector.html">Aggregate vector subbasins</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../NetCDFWriter.html">Netcdf writer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../convert_ddbnetcdf.html">convert_ddbnetcdf</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../gdf_edit.html">gdf_edit</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../gen_streamflow_file.html">gen_streamflow_file</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../gsde_soil.html">GSDE soil</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_class_ini_from_excel.html">generate_mesh_class_ini_from_excel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../generate_mesh_hydrology_ini_from_excel.html">generate_mesh_hydrology_ini_from_excel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../remap_climate_to_ddb.html">remap_climate_to_ddb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../MESHpyPreProcessing.html">MESHpyPreProcessing package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../MESHpyPostProcessing.html">MESHpyPostProcessing package</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Visualization:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../plt_var_vector_setup.html">plt_var_vector_setup</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Jupyter Notebooks:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../MESH_StreamflowFilePrep.html">MESH Streamflow File Preparation</a></li>
 </ul>
@@ -88,6 +77,7 @@
              
   <h1>Source code for MESHpyPreProcessing.NetCDFWriter</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
+
 <span class="sd">Overview</span>
 <span class="sd">========</span>
 
@@ -203,7 +193,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xs</span>
 
 <div class="viewcode-block" id="NetCDFWriter">
-<a class="viewcode-back" href="../../NetCDFWriter.html#MESHpyPreProcessing.NetCDFWriter.NetCDFWriter">[docs]</a>
+<a class="viewcode-back" href="../../MESHpyPreProcessing.html#MESHpyPreProcessing.NetCDFWriter.NetCDFWriter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NetCDFWriter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class to generate NetCDF files with soil data merged from shapefiles and NetCDF drainage databases.</span>
@@ -238,7 +228,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">num_soil_lyrs</span> <span class="o">=</span> <span class="mi">0</span>
 
 <div class="viewcode-block" id="NetCDFWriter.read_shapefile">
-<a class="viewcode-back" href="../../NetCDFWriter.html#MESHpyPreProcessing.NetCDFWriter.NetCDFWriter.read_shapefile">[docs]</a>
+<a class="viewcode-back" href="../../MESHpyPreProcessing.html#MESHpyPreProcessing.NetCDFWriter.NetCDFWriter.read_shapefile">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">read_shapefile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reads the shapefile and converts it into a GeoDataFrame.</span>
@@ -250,7 +240,7 @@
 
 
 <div class="viewcode-block" id="NetCDFWriter.set_coordinates">
-<a class="viewcode-back" href="../../NetCDFWriter.html#MESHpyPreProcessing.NetCDFWriter.NetCDFWriter.set_coordinates">[docs]</a>
+<a class="viewcode-back" href="../../MESHpyPreProcessing.html#MESHpyPreProcessing.NetCDFWriter.NetCDFWriter.set_coordinates">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Extracts longitude, latitude, and subbasin IDs from the NetCDF drainage database.</span>
@@ -263,7 +253,7 @@
 
 
 <div class="viewcode-block" id="NetCDFWriter.set_num_soil_layers">
-<a class="viewcode-back" href="../../NetCDFWriter.html#MESHpyPreProcessing.NetCDFWriter.NetCDFWriter.set_num_soil_layers">[docs]</a>
+<a class="viewcode-back" href="../../MESHpyPreProcessing.html#MESHpyPreProcessing.NetCDFWriter.NetCDFWriter.set_num_soil_layers">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_num_soil_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_layers</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the number of soil layers for the NetCDF file.</span>
@@ -277,7 +267,7 @@
 
 
 <div class="viewcode-block" id="NetCDFWriter.add_var_attrs">
-<a class="viewcode-back" href="../../NetCDFWriter.html#MESHpyPreProcessing.NetCDFWriter.NetCDFWriter.add_var_attrs">[docs]</a>
+<a class="viewcode-back" href="../../MESHpyPreProcessing.html#MESHpyPreProcessing.NetCDFWriter.NetCDFWriter.add_var_attrs">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_var_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds attributes to a NetCDF variable.</span>
@@ -294,7 +284,7 @@
 
 
 <div class="viewcode-block" id="NetCDFWriter.write_netcdf">
-<a class="viewcode-back" href="../../NetCDFWriter.html#MESHpyPreProcessing.NetCDFWriter.NetCDFWriter.write_netcdf">[docs]</a>
+<a class="viewcode-back" href="../../MESHpyPreProcessing.html#MESHpyPreProcessing.NetCDFWriter.NetCDFWriter.write_netcdf">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">write_netcdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">variable_info</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a NetCDF file with processed soil data.</span>
