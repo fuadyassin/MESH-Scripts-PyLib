@@ -120,7 +120,8 @@ def animate_mesh_outputs_to_gif(
     outdir,
     mode='monthly',
     domain_name='Basin',
-    cmap='gnuplot2_r'
+    cmap='gnuplot2_r',
+    comid_field='COMID'  # <-- New optional argument
 ):
     font = {'family': 'DejaVu Serif', 'weight': 'bold', 'size': 24}
     matplotlib.rc('font', **font)
@@ -132,7 +133,7 @@ def animate_mesh_outputs_to_gif(
     db.close()
 
     df = pd.DataFrame({'ID': segid})
-    shp = gpd.read_file(shapefile_path).sort_values(by='COMID').reset_index(drop=True)
+    shp = gpd.read_file(shapefile_path).sort_values(by=comid_field).reset_index(drop=True)
 
     # Read one file to get time dimension
     example_file = os.path.join(netcdf_dir, filenames[0])
@@ -162,7 +163,7 @@ def animate_mesh_outputs_to_gif(
 
             merge_df = shp.copy()
             df['value'] = values
-            merged = merge_df.merge(df, left_on='COMID', right_on='ID', how='left')
+            merged = merge_df.merge(df, left_on=comid_field, right_on='ID', how='left')
 
             mn, mx = global_min_max[varnames[i]]
 
