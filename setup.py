@@ -3,7 +3,8 @@ from setuptools import setup, find_packages
 setup(
     name='MESH-Scripts-PyLib',
     version='0.1',
-    packages=find_packages(),
+    package_dir={'': 'src'},  # Tells setuptools to look inside /src
+    packages=find_packages(where='src'),
     install_requires=[
         'pandas',
         'numpy',
