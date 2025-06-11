@@ -13,22 +13,34 @@ Parameters:
 Example Usage (Please check MESH_streamflowFile_example.ipynb for step by step example)
 -----------------------------------------------------------------------------------------
 >>> from MESHpyPreProcessing.gen_streamflow_file import GenStreamflowFile
->>> #Initialize the class
 >>> gen_flow = GenStreamflowFile()
->>> # Define station IDs for Canada and the US
+>>> 
+>>> # 1) Historical daily‐mean (1980–2018)
 >>> station_ca = ["05GG001", "05AC012"]
 >>> station_us = ["06132200", "05020500"]
->>> # Set the date range
 >>> start_date = "1980-03-01"
->>> end_date = "2018-01-10"
->>> # Fetch hydrometric data
->>> combined_data_ca, station_info_ca = gen_flow.fetch_hydrometric_data_ca(station_ca, start_date, end_date)
->>> combined_data_us, station_info_us = gen_flow.extract_flow_data_us(station_us, start_date, end_date)
->>> # Combine the data
->>> combined_data = pd.merge(combined_data_ca, combined_data_us, on='Date', how='outer')
->>> # Write to files in OBSTXT and ENSIM formats
->>> gen_flow.write_flow_data_to_file_obstxt('MESH_input_streamflow.txt', combined_data, station_info_ca + station_info_us)
->>> gen_flow.write_flow_data_to_file_ensim('MESH_input_streamflow.tb0', combined_data, station_info_ca + station_info_us, column_width=12, initial_spacing=28)
+>>> end_date   = "2018-01-10"
+>>> df_ca, meta_ca = gen_flow.fetch_hydrometric_data_ca(station_ca, start_date, end_date)
+>>> df_us, meta_us = gen_flow.extract_flow_data_us(station_us, start_date, end_date)
+>>> combined = pd.merge(df_ca, df_us, on="Date", how="outer")
+>>> 
+>>> # 2) Realtime provisional (last 1 month by 1-day windows)
+>>> from datetime import datetime, timezone
+>>> from dateutil.relativedelta import relativedelta
+>>> end_dt = datetime.now(timezone.utc).replace(microsecond=0)
+>>> start_dt = end_dt - relativedelta(months=1)
+>>> start = start_dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+>>> end   = end_dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+>>> df_rt, meta_rt = gen_flow.fetch_hydrometric_realtime_full_range(
+...     station_numbers=["05GG001","05AC012"],
+...     start=start, end=end,
+...     window_days=1, freq_hours=12
+... )
+>>> 
+>>> # 3) Write files
+>>> all_meta = meta_ca + meta_us + meta_rt
+>>> gen_flow.write_flow_data_to_file_obstxt("streamflow_obs.txt", combined, all_meta)
+>>> gen_flow.write_flow_data_to_file_ensim("streamflow.tb0", combined, all_meta)
 """
 
 import pandas as pd
