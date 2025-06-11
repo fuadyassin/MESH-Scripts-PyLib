@@ -151,7 +151,7 @@ def animate_mesh_outputs_to_gif(
     global_min_max = {}
     for i, fname in enumerate(filenames):
         with nc.Dataset(os.path.join(netcdf_dir, fname)) as ds:
-            data = ds.variables[varnames[i]][1:]
+            data = ds.variables[varnames[i]][:]
             global_min_max[varnames[i]] = (np.nanmin(data), np.nanmax(data))
 
     # Internal animation logic
