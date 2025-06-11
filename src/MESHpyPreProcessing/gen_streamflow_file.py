@@ -137,7 +137,113 @@ class GenStreamflowFile:
 
         combined_df = pd.DataFrame(data_dict)
         return combined_df, station_info
+        
+    def extract_flow_data_us_with_metadata(
+        self,
+        station_list: list[str],
+        start_date: str,
+        end_date: str,
+        limit: int = 1000
+    ) -> tuple[pd.DataFrame, list[dict]]:
+        """
+        Fetch daily‐mean streamflow and full station metadata for USGS gauges.
 
+        Parameters
+        ----------
+        station_list : list of str
+            USGS station numbers (e.g. ['06132200']).
+        start_date : str
+            Start date in 'YYYY-MM-DD' format.
+        end_date : str
+            End   date in 'YYYY-MM-DD' format.
+        limit : int, optional
+            Max records per API request (default=1000).
+
+        Returns
+        -------
+        df : pd.DataFrame
+            Indexed by Date, one column per station with daily mean discharge [m³/s].
+        station_info : list of dict
+            Metadata for each station, including:
+              Station_Number, Station_Name, Latitude, Longitude,
+              Drainage_Area, Elevation, Status, and more.
+        """
+        # 1) Prepare date index
+        dates = pd.date_range(start=start_date, end=end_date, freq='D')
+        df = pd.DataFrame({'Date': dates})
+        idx = {d.strftime('%Y-%m-%d'): i for i, d in enumerate(dates)}
+        for st in station_list:
+            df[st] = np.nan
+
+        # 2) Fetch daily values (DV) from USGS :contentReference[oaicite:0]{index=0}
+        for st in station_list:
+            all_feats = []
+            offset = 0
+            t0 = time.time()
+            while True:
+                dv_url = "https://waterservices.usgs.gov/nwis/dv/"
+                params = {
+                    'format':   'json',
+                    'sites':    st,
+                    'startDT':  start_date,
+                    'endDT':    end_date,
+                    'parameterCd': '00060',
+                    'statCd':     '00003',
+                    'siteStatus': 'all'
+                }
+                r = requests.get(dv_url, params=params)
+                r.raise_for_status()
+                ts = r.json().get('value', {}).get('timeSeries', [])
+                if not ts:
+                    break
+                all_feats.extend(ts[0]['values'][0]['value'])
+                break  # dv returns full range in one go
+
+            # populate flows
+            for rec in all_feats:
+                date = rec['dateTime'][:10]
+                val  = float(rec['value']) if rec['value'] not in (None, '') else np.nan
+                if date in idx:
+                    df.at[idx[date], st] = val
+
+            print(f"Fetched DV for {st} in {time.time()-t0:.1f}s")
+
+        df = df.set_index('Date')
+
+        # 3) Fetch station metadata via Site service :contentReference[oaicite:1]{index=1}
+        station_info = []
+        for st in station_list:
+            t0 = time.time()
+            site_url = "https://waterservices.usgs.gov/nwis/site"
+            params = {'format': 'json', 'sites': st}
+            r = requests.get(site_url, params=params)
+            r.raise_for_status()
+            feats = r.json().get('value', {}).get('timeSeries', [])  # some services nest under 'timeSeries'
+            # fallback to top-level 'sites' if present
+            if not feats and 'features' in r.json():
+                feats = r.json()['features']
+            props = feats[0]['sourceInfo'] if feats and 'sourceInfo' in feats[0] else feats[0]['properties']
+
+            # geometry may live under props or separate
+            lat = props.get('geoLocation', {}).get('geogLocation', {}).get('latitude')
+            lon = props.get('geoLocation', {}).get('geogLocation', {}).get('longitude')
+            # collect known metadata fields
+            mi = {
+                'Station_Number':      props.get('siteCode', [{}])[0].get('value', st),
+                'Station_Name':        props.get('siteName', props.get('station_nm')),
+                'Latitude':            lat,
+                'Longitude':           lon,
+                'Drainage_Area':       next((p['value'] for p in props.get('siteProperty', [])
+                                            if p['name']=='drain_area_va'), None),
+                'Elevation_m':         props.get('alt_va'),
+                'Status':              props.get('siteProperty', [{}])[0].get('value'),
+                'Datum':               props.get('verticalDatum', props.get('VERTICAL_DATUM'))
+            }
+            station_info.append(mi)
+            print(f"Fetched metadata for {st} in {time.time()-t0:.1f}s")
+
+        return df, station_info
+    
     def fetch_hydrometric_data_ca(
         self,
         station_numbers: list[str],
