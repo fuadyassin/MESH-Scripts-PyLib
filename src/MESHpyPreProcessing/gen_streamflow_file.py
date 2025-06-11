@@ -138,7 +138,7 @@ class GenStreamflowFile:
         combined_df = pd.DataFrame(data_dict)
         return combined_df, station_info
 
-    def fetch_hydrometric_data_ca_with_metadata(
+    def fetch_hydrometric_data_ca(
         self,
         station_numbers: list[str],
         start_date: str,
