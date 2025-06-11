@@ -35,7 +35,7 @@ import pandas as pd
 import numpy as np
 import requests
 from owslib.ogcapi.features import Features
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 import time
 
 class GenStreamflowFile:
@@ -208,8 +208,88 @@ class GenStreamflowFile:
         combined_df = pd.DataFrame(data_dict)
         return combined_df, station_info
 
+    def fetch_hydrometric_realtime_full_range(
+        self,
+        station_numbers,
+        start: str,
+        end: str,
+        window_days: int = 1,
+        freq_hours: int = 1,
+        limit: int = 1000
+    ):
+        """
+        Fetches hourly provisional (real-time) discharge by slicing [start,end] into
+        `window_days`-day windows and resampling to `freq_hours`.
+        """
+        base_url = "https://api.weather.gc.ca/collections/hydrometric-realtime/items"
+        headers = {"Accept": "application/geo+json"}
+        iso_fmt = "%Y-%m-%dT%H:%M:%SZ"
 
-    
+        start_dt = datetime.strptime(start, iso_fmt).replace(tzinfo=timezone.utc)
+        end_dt   = datetime.strptime(end,   iso_fmt).replace(tzinfo=timezone.utc)
+
+        records = {st: [] for st in station_numbers}
+        meta    = {}
+
+        win = start_dt
+        while win < end_dt:
+            win_end = min(win + timedelta(days=window_days), end_dt)
+            t0 = time.time()
+            for st in station_numbers:
+                params = {
+                    "STATION_NUMBER": st,
+                    "datetime":       f"{win.strftime(iso_fmt)}/{win_end.strftime(iso_fmt)}",
+                    "limit":          limit,
+                    "offset":         0,
+                    "f":              "json"
+                }
+                resp = requests.get(base_url, headers=headers, params=params)
+                feats = resp.json().get("features", [])
+                for f in feats:
+                    p = f["properties"]
+                    dt = p.get("DATETIME")
+                    q  = p.get("DISCHARGE")
+                    if dt and q is not None:
+                        ts = datetime.strptime(dt, iso_fmt).replace(tzinfo=timezone.utc)
+                        records[st].append((ts, q))
+                if st not in meta and feats:
+                    p0   = feats[0]["properties"]
+                    geom = feats[0]["geometry"]
+                    meta[st] = {
+                        "Station_Number": p0["STATION_NUMBER"],
+                        "Station_Name":   p0["STATION_NAME"],
+                        "Latitude":       geom["coordinates"][1],
+                        "Longitude":      geom["coordinates"][0],
+                        "Drainage_Area":  p0.get("DRAINAGE_AREA_GROSS")
+                    }
+            print(f"Window {win.date()}–{win_end.date()} in {time.time()-t0:.1f}s")
+            win = win_end
+
+        # assemble
+        df_all = pd.DataFrame()
+        for st, recs in records.items():
+            if not recs:
+                continue
+            df = (pd.DataFrame(recs, columns=["DateTime", st])
+                    .drop_duplicates("DateTime")
+                    .set_index("DateTime")
+                    .resample(f"{freq_hours}H")
+                    .mean())
+            df_all = df if df_all.empty else df_all.join(df, how="outer")
+
+        df_all.index.name = "DateTime"
+        meta_list = list(meta.values())
+        for st in station_numbers:
+            if st not in meta:
+                meta_list.append({
+                    "Station_Number": st,
+                    "Station_Name":   "Unknown",
+                    "Latitude":       None,
+                    "Longitude":      None,
+                    "Drainage_Area":  None
+                })
+        return df_all, meta_list
+        
     def write_flow_data_to_file_obstxt(self, file_path, flow_data, site_details):
         flow_data = flow_data.fillna(-1.000)
         flow_data['Date'] = pd.to_datetime(flow_data['Date'])
