@@ -107,19 +107,19 @@ def save_mesh_outputs_as_png(
         times = time_var[:] * 365 if 'years' in time_var.units else time_var[:]
         calendar = getattr(time_var, 'calendar', 'standard')
         dates = nc.num2date(times, units=time_units, calendar=calendar)
-        starting_date = dates[1]
+        starting_date = dates[0]
 
     global_min_max = {}
     for i, fname in enumerate(filenames):
         with nc.Dataset(os.path.join(netcdf_dir, fname)) as ds:
-            data = ds.variables[varnames[i]][1:]
+            data = ds.variables[varnames[i]][:]
             global_min_max[varnames[i]] = (np.nanmin(data), np.nanmax(data))
 
     for i in range(len(varnames)):
         for idx in indices_to_save:
             fig, ax = plt.subplots(figsize=(20, 20))
             with nc.Dataset(os.path.join(netcdf_dir, filenames[i])) as ds:
-                values = ds.variables[varnames[i]][idx + 1, :]
+                values = ds.variables[varnames[i]][idx, :]
 
             merge_df = shp.copy()
             df['value'] = values
