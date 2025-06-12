@@ -64,8 +64,8 @@ Jupyter Notebooks
    :maxdepth: 1
    :caption: Examples
 
+   VisualizationPrep
    MESH_StreamflowFilePrep
-   Visualization
 
 Indices and Tables
 ------------------
