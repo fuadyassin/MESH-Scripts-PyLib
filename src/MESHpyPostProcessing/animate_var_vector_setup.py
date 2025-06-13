@@ -121,7 +121,8 @@ def animate_mesh_outputs_to_gif(
     mode='monthly',
     domain_name='Basin',
     cmap='gnuplot2_r',
-    comid_field='COMID'  # <-- New optional argument
+    comid_field='COMID',  # <-- New optional argument
+    subbasin_var='subbasin' 
 ):
     font = {'family': 'DejaVu Serif', 'weight': 'bold', 'size': 24}
     matplotlib.rc('font', **font)
@@ -129,7 +130,7 @@ def animate_mesh_outputs_to_gif(
     os.makedirs(outdir, exist_ok=True)
 
     db = xr.open_dataset(ddb_path)
-    segid = db['subbasin'].values
+    segid = db[subbasin_var].values
     db.close()
 
     df = pd.DataFrame({'ID': segid})
