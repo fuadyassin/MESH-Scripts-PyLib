@@ -21,7 +21,8 @@ def save_mesh_outputs_as_png(
     mode='monthly',
     domain_name='Basin',
     cmap='gnuplot2_r',
-    comid_field='COMID'  # <-- New optional argument
+    comid_field='COMID',  # <-- New optional argument form shapefile
+    subbasin_var='subbasin'  # <-- New optional argument for subbasin variable in drainage database
 ):
     """
     Generate and save static PNG plots of MESH model output variables for specific time slices.
@@ -55,6 +56,8 @@ def save_mesh_outputs_as_png(
         Name of the domain used in the figure title. Default is 'Basin'.
     cmap : str, optional
         Matplotlib colormap to use for the plots. Default is 'gnuplot2_r'.
+    subbasin_var : str, optional
+        Name of the subbasin variable in the NetCDF drainage database (default: 'subbasin').
 
     Returns
     -------
@@ -85,7 +88,8 @@ def save_mesh_outputs_as_png(
     ...     indices_to_save=[0, 3, 6],
     ...     mode='monthly',
     ...     domain_name='SrAs',
-    ...     cmap='viridis'
+    ...     cmap='viridis',
+    ...     subbasin_var='subbasin'
     ... )
     """
     # Configure global font settings for plots
@@ -95,7 +99,7 @@ def save_mesh_outputs_as_png(
     os.makedirs(outdir, exist_ok=True)
     # Open the drainage database (ddb) to extract subbasin IDs
     db = xr.open_dataset(ddb_path)
-    segid = db['subbasin'].values
+    segid = db[subbasin_var].values
     #print(f"Subbasin IDs (segid): {segid[:5]}...")  # Print first 5 IDs for debugging
     db.close()
     # Create a pandas DataFrame for merging values later
