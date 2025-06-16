@@ -39,6 +39,8 @@ Parameters:
     Prefix to use in animated titles and output filenames.
 - cmap : str, optional (default='gnuplot2_r')
     Matplotlib colormap to use for the animation.
+- subbasin_var : str, optional
+    Name of the subbasin variable in the NetCDF drainage database (default: 'subbasin').
 
 Input Format:
 --------------
@@ -67,7 +69,8 @@ Example Usage:
 ...     cbar_labels=['Discharge [m³/s]', 'Snow Mass [mm]', 'Precipitation [mm]'],
 ...     outdir='D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/MESHpyPostProcessing/ExampleFiles/Outputs',
 ...     mode='Yearly',
-...     domain_name='SrAs'
+...     domain_name='SrAs',
+...     subbasin_var='subbasin'
 ... )
 
 >>> # This will create animated GIFs for each variable in the specified output directory.
