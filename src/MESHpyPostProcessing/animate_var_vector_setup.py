@@ -138,17 +138,28 @@ def animate_mesh_outputs_to_gif(
 
     df = pd.DataFrame({'ID': segid})
     shp = gpd.read_file(shapefile_path).sort_values(by=comid_field).reset_index(drop=True)
-
-    # Read one file to get time dimension
-    example_file = os.path.join(netcdf_dir, filenames[0])
-    with nc.Dataset(example_file) as ds:
-        time_var = ds.variables['time']
-        time_units = time_var.units
-        times = time_var[:] * 365 if 'years' in time_units else time_var[:]
-        time_units = time_units.replace('years', 'days')  # fix units if needed
-        calendar = getattr(time_var, 'calendar', 'standard')
+    # Read one of the NetCDF variable files to extract the time information
+    example_file = os.path.join(netcdf_dir, filenames[0])  # Construct the full path to the first NetCDF file
+    with nc.Dataset(example_file) as ds:  # Open the NetCDF file in read-only mode
+        time_var = ds.variables['time']  # Access the 'time' variable from the dataset
+        time_units = time_var.units  # Read the time units (e.g., 'days since 1980-01-01', or 'years since ...')
+        
+        # Handle special case if time is expressed in years: multiply by 365 to convert to approximate days
+        times = time_var[:] * 365 if 'years' in time_units else time_var[:]  
+        
+        # Replace 'years' with 'days' in the units string so netCDF4 can correctly interpret it
+        time_units = time_units.replace('years', 'days')  
+        
+        # Extract the calendar type (e.g., 'standard', 'gregorian'); default to 'standard' if not present
+        calendar = getattr(time_var, 'calendar', 'standard')  
+        
+        # Convert numeric time values to datetime objects using the corrected time units and calendar
         dates = nc.num2date(times, units=time_units, calendar=calendar)
+        
+        # Store the starting date (first timestep)
         starting_date = dates[0]
+        
+        # Determine how many timesteps are available (for animation loop later)
         date_range_length = len(dates)
 
     # Determine global min/max for each variable
