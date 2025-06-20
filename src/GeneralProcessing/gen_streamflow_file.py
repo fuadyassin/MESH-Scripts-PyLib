@@ -12,7 +12,7 @@ Parameters:
 
 Example Usage (Please check MESH_streamflowFile_example.ipynb for step by step example)
 -----------------------------------------------------------------------------------------
->>> from VectorPreProcessing.gen_streamflow_file import GenStreamflowFile
+>>> from GeneralProcessing.gen_streamflow_file import GenStreamflowFile
 >>> gen_flow = GenStreamflowFile()
 >>> 
 >>> # 1) Historical daily‐mean (1980–2018)

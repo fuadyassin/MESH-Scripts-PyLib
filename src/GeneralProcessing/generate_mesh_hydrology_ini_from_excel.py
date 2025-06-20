@@ -118,12 +118,12 @@ def generate_mesh_hydrology_ini_from_excel(excel_file, output_file="MeshHydrolog
     ---------------------------------------------------------------------------------
     Example Usage:
     ---------------------------------------------------------------------------------
-    >>> # The excel database can be found in the VectorPreProcessing folder.
-    >>> # Directly dowolnload the excel file from the VectorPreProcessing folder.
+    >>> # The excel database can be found in the GeneralProcessing folder.
+    >>> # Directly dowolnload the excel file from the GeneralProcessing folder.
     >>> import requests
-    >>> url = "https://raw.githubusercontent.com/MESH-Scripts-PyLib/MESH-Scripts-PyLib/main/VectorPreProcessing/meshparametersvalues2.xlsx"
+    >>> url = "https://raw.githubusercontent.com/MESH-Scripts-PyLib/MESH-Scripts-PyLib/main/GeneralProcessing/meshparametersvalues2.xlsx"
     >>> # Local path to save the file
-    >>> local_path = "D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/VectorPreProcessing/meshparametersvalues2.xlsx"
+    >>> local_path = "D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/GeneralProcessing/meshparametersvalues2.xlsx"
     >>> # Send a GET request to download the file
     >>> response = requests.get(url)
     >>> # Check if the request was successful (status code 200)
@@ -135,12 +135,12 @@ def generate_mesh_hydrology_ini_from_excel(excel_file, output_file="MeshHydrolog
     >>> else:
     >>>     print(f"Failed to download file. Status code: {response.status_code}")
 
-    >>> from VectorPreProcessing.generate_mesh_hydrology_ini_from_excel import generate_mesh_hydrology_ini_from_excel
+    >>> from GeneralProcessing.generate_mesh_hydrology_ini_from_excel import generate_mesh_hydrology_ini_from_excel
     >>> gen_hydini = generate_mesh_hydrology_ini_from_excel
     >>> gen_hydini(
             sheet_name="hydrology_ini",
             output_file="MeshHydrology2.ini",
-            excel_file="D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/VectorPreProcessing/meshparametersvalues2.xlsx"
+            excel_file="D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/GeneralProcessing/meshparametersvalues2.xlsx"
         )
     
     - This will generate a properly formatted `MeshHydrology.ini` file in the specified path.
@@ -241,6 +241,6 @@ def generate_mesh_hydrology_ini_from_excel(excel_file, output_file="MeshHydrolog
 
     with open(output_file, 'w') as f:
         f.write(content)
-# from VectorPreProcessing.generate_mesh_hydrology_ini_from_excel import generate_mesh_hydrology_ini_from_excel
-# gen_hydini(output_file="MeshHydrology2.ini",excel_file="D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/VectorPreProcessing/meshparametersvalues2.xlsx")
-#gen_hydini(sheet_name="hydrology_ini",output_file="MeshHydrology2.ini",excel_file="D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/VectorPreProcessing/meshparametersvalues2.xlsx")
+# from GeneralProcessing.generate_mesh_hydrology_ini_from_excel import generate_mesh_hydrology_ini_from_excel
+# gen_hydini(output_file="MeshHydrology2.ini",excel_file="D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/GeneralProcessing/meshparametersvalues2.xlsx")
+#gen_hydini(sheet_name="hydrology_ini",output_file="MeshHydrology2.ini",excel_file="D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/GeneralProcessing/meshparametersvalues2.xlsx")

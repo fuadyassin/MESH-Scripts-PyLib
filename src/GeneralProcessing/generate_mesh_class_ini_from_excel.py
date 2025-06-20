@@ -74,12 +74,12 @@ def generate_mesh_class_ini_from_excel(excel_file, output_file="MESH_class_outpu
 
     Example Usage:
     ----------------
-    >>> # The excel database can be found in the VectorPreProcessing folder.
-    >>> # Directly dowolnload the excel file from the VectorPreProcessing folder.
+    >>> # The excel database can be found in the GeneralProcessing folder.
+    >>> # Directly dowolnload the excel file from the GeneralProcessing folder.
     >>> import requests
-    >>> url = "https://raw.githubusercontent.com/MESH-Scripts-PyLib/MESH-Scripts-PyLib/main/VectorPreProcessing/meshparametersvalues2.xlsx"
+    >>> url = "https://raw.githubusercontent.com/MESH-Scripts-PyLib/MESH-Scripts-PyLib/main/GeneralProcessing/meshparametersvalues2.xlsx"
     >>> # Local path to save the file
-    >>> local_path = "D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/VectorPreProcessing/meshparametersvalues2.xlsx"
+    >>> local_path = "D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/GeneralProcessing/meshparametersvalues2.xlsx"
     >>> # Send a GET request to download the file
     >>> response = requests.get(url)
     >>> # Check if the request was successful (status code 200)
@@ -92,9 +92,9 @@ def generate_mesh_class_ini_from_excel(excel_file, output_file="MESH_class_outpu
     >>>     print(f"Failed to download file. Status code: {response.status_code}")
 
     >>> # Example usage of the function
-    >>> from VectorPreProcessing.generate_mesh_class_ini_from_excel import generate_mesh_class_ini_from_excel as gen_classini
+    >>> from GeneralProcessing.generate_mesh_class_ini_from_excel import generate_mesh_class_ini_from_excel as gen_classini
     >>> gen_classini(
-    ...     excel_file="D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/VectorPreProcessing/meshparametersvalues2.xlsx",
+    ...     excel_file="D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/GeneralProcessing/meshparametersvalues2.xlsx",
     ...     output_file="MESH_output2.ini",
     ...     num_cels=7408,
     ...     lat=53.18,
@@ -330,10 +330,10 @@ def generate_mesh_class_ini_from_excel(excel_file, output_file="MESH_class_outpu
     print(f"MESH parameter file '{output_file}' created successfully!")
 
 # Example usage
-#from VectorPreProcessing.generate_mesh_class_ini_from_excel import generate_mesh_class_ini_from_excel as gen_classini
-#gen_classini(excel_file="D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/VectorPreProcessing/meshparametersvalues2.xlsx", output_file="MESH_output2.ini", num_cels=7408, lat=53.18, lon=-99.25, sheet_name='class_ini')
+#from GeneralProcessing.generate_mesh_class_ini_from_excel import generate_mesh_class_ini_from_excel as gen_classini
+#gen_classini(excel_file="D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/GeneralProcessing/meshparametersvalues2.xlsx", output_file="MESH_output2.ini", num_cels=7408, lat=53.18, lon=-99.25, sheet_name='class_ini')
 # generate_mesh_class_ini_from_excel(
-#     excel_file="D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/VectorPreProcessing/meshparametersvalues2.xlsx",
+#     excel_file="D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/GeneralProcessing/meshparametersvalues2.xlsx",
 #     output_file="MESH_output2.ini",
 #     num_cels=7408,
 #     lat=53.18,

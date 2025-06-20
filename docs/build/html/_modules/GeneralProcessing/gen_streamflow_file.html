@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VectorPreProcessing.gen_streamflow_file &mdash; MESH-Scripts-PyLib 1.0 documentation</title>
+  <title>GeneralProcessing.gen_streamflow_file &mdash; MESH-Scripts-PyLib 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -43,7 +43,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Python Modules</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../GeneralProcessing.html">Generalprocessing package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../GeneralProcessing.html">GeneralProcessing package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../VectorPreProcessing.html">VectorPreProcessing package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../VectorPostProcessing.html">VectorPostProcessing package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../GridPreProcessing.html">GridPreProcessing package</a></li>
@@ -70,7 +70,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">VectorPreProcessing.gen_streamflow_file</li>
+      <li class="breadcrumb-item active">GeneralProcessing.gen_streamflow_file</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -79,7 +79,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for VectorPreProcessing.gen_streamflow_file</h1><div class="highlight"><pre>
+  <h1>Source code for GeneralProcessing.gen_streamflow_file</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Streamflow File Preparation</span>
 <span class="sd">===============================================</span>
@@ -94,7 +94,7 @@
 
 <span class="sd">Example Usage (Please check MESH_streamflowFile_example.ipynb for step by step example)</span>
 <span class="sd">-----------------------------------------------------------------------------------------</span>
-<span class="sd">&gt;&gt;&gt; from VectorPreProcessing.gen_streamflow_file import GenStreamflowFile</span>
+<span class="sd">&gt;&gt;&gt; from GeneralProcessing.gen_streamflow_file import GenStreamflowFile</span>
 <span class="sd">&gt;&gt;&gt; gen_flow = GenStreamflowFile()</span>
 <span class="sd">&gt;&gt;&gt; </span>
 <span class="sd">&gt;&gt;&gt; # 1) Historical daily‐mean (1980–2018)</span>
@@ -133,19 +133,19 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
 <div class="viewcode-block" id="GenStreamflowFile">
-<a class="viewcode-back" href="../../VectorPreProcessing.html#VectorPreProcessing.gen_streamflow_file.GenStreamflowFile">[docs]</a>
+<a class="viewcode-back" href="../../GeneralProcessing.html#GeneralProcessing.gen_streamflow_file.GenStreamflowFile">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GenStreamflowFile</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">oafeat</span> <span class="o">=</span> <span class="n">Features</span><span class="p">(</span><span class="s2">&quot;https://api.weather.gc.ca/&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GenStreamflowFile.create_date_range">
-<a class="viewcode-back" href="../../VectorPreProcessing.html#VectorPreProcessing.gen_streamflow_file.GenStreamflowFile.create_date_range">[docs]</a>
+<a class="viewcode-back" href="../../GeneralProcessing.html#GeneralProcessing.gen_streamflow_file.GenStreamflowFile.create_date_range">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">create_date_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end_date</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GenStreamflowFile.extract_flow_data_us">
-<a class="viewcode-back" href="../../VectorPreProcessing.html#VectorPreProcessing.gen_streamflow_file.GenStreamflowFile.extract_flow_data_us">[docs]</a>
+<a class="viewcode-back" href="../../GeneralProcessing.html#GeneralProcessing.gen_streamflow_file.GenStreamflowFile.extract_flow_data_us">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">extract_flow_data_us</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">station_list</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">):</span>
         <span class="n">dates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_date_range</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)</span>
         <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Date&#39;</span><span class="p">:</span> <span class="n">dates</span><span class="p">}</span>
@@ -229,7 +229,7 @@
 
         
 <div class="viewcode-block" id="GenStreamflowFile.extract_flow_data_us_with_metadata">
-<a class="viewcode-back" href="../../VectorPreProcessing.html#VectorPreProcessing.gen_streamflow_file.GenStreamflowFile.extract_flow_data_us_with_metadata">[docs]</a>
+<a class="viewcode-back" href="../../GeneralProcessing.html#GeneralProcessing.gen_streamflow_file.GenStreamflowFile.extract_flow_data_us_with_metadata">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">extract_flow_data_us_with_metadata</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">station_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -340,7 +340,7 @@
 
     
 <div class="viewcode-block" id="GenStreamflowFile.fetch_hydrometric_data_ca">
-<a class="viewcode-back" href="../../VectorPreProcessing.html#VectorPreProcessing.gen_streamflow_file.GenStreamflowFile.fetch_hydrometric_data_ca">[docs]</a>
+<a class="viewcode-back" href="../../GeneralProcessing.html#GeneralProcessing.gen_streamflow_file.GenStreamflowFile.fetch_hydrometric_data_ca">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fetch_hydrometric_data_ca</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">station_numbers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -449,7 +449,7 @@
 
 
 <div class="viewcode-block" id="GenStreamflowFile.fetch_hydrometric_realtime_full_range">
-<a class="viewcode-back" href="../../VectorPreProcessing.html#VectorPreProcessing.gen_streamflow_file.GenStreamflowFile.fetch_hydrometric_realtime_full_range">[docs]</a>
+<a class="viewcode-back" href="../../GeneralProcessing.html#GeneralProcessing.gen_streamflow_file.GenStreamflowFile.fetch_hydrometric_realtime_full_range">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fetch_hydrometric_realtime_full_range</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">station_numbers</span><span class="p">,</span>
@@ -625,7 +625,7 @@
  
     
 <div class="viewcode-block" id="GenStreamflowFile.write_flow_data_to_file_obstxt">
-<a class="viewcode-back" href="../../VectorPreProcessing.html#VectorPreProcessing.gen_streamflow_file.GenStreamflowFile.write_flow_data_to_file_obstxt">[docs]</a>
+<a class="viewcode-back" href="../../GeneralProcessing.html#GeneralProcessing.gen_streamflow_file.GenStreamflowFile.write_flow_data_to_file_obstxt">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">write_flow_data_to_file_obstxt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">flow_data</span><span class="p">,</span> <span class="n">site_details</span><span class="p">):</span>
         <span class="n">flow_data</span> <span class="o">=</span> <span class="n">flow_data</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="o">-</span><span class="mf">1.000</span><span class="p">)</span>
         <span class="n">num_columns</span> <span class="o">=</span> <span class="n">flow_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># Exclude date column</span>
@@ -664,7 +664,7 @@
 
 
 <div class="viewcode-block" id="GenStreamflowFile.write_flow_data_to_file_ensim">
-<a class="viewcode-back" href="../../VectorPreProcessing.html#VectorPreProcessing.gen_streamflow_file.GenStreamflowFile.write_flow_data_to_file_ensim">[docs]</a>
+<a class="viewcode-back" href="../../GeneralProcessing.html#GeneralProcessing.gen_streamflow_file.GenStreamflowFile.write_flow_data_to_file_ensim">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">write_flow_data_to_file_ensim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">flow_data</span><span class="p">,</span> <span class="n">site_details</span><span class="p">,</span> <span class="n">column_width</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">initial_spacing</span><span class="o">=</span><span class="mi">28</span><span class="p">):</span>
         <span class="n">flow_data</span> <span class="o">=</span> <span class="n">flow_data</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="o">-</span><span class="mf">1.000</span><span class="p">)</span>
         

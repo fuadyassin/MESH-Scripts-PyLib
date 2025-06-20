@@ -37,30 +37,6 @@ VectorPreProcessing.gdf\_edit module
    :undoc-members:
    :show-inheritance:
 
-VectorPreProcessing.gen\_streamflow\_file module
-------------------------------------------------
-
-.. automodule:: VectorPreProcessing.gen_streamflow_file
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-VectorPreProcessing.generate\_mesh\_class\_ini\_from\_excel module
-------------------------------------------------------------------
-
-.. automodule:: VectorPreProcessing.generate_mesh_class_ini_from_excel
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-VectorPreProcessing.generate\_mesh\_hydrology\_ini\_from\_excel module
-----------------------------------------------------------------------
-
-.. automodule:: VectorPreProcessing.generate_mesh_hydrology_ini_from_excel
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 VectorPreProcessing.gsde\_soil module
 -------------------------------------
 

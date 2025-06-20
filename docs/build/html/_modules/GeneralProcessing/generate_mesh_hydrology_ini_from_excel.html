@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VectorPreProcessing.generate_mesh_hydrology_ini_from_excel &mdash; MESH-Scripts-PyLib 1.0 documentation</title>
+  <title>GeneralProcessing.generate_mesh_hydrology_ini_from_excel &mdash; MESH-Scripts-PyLib 1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -43,7 +43,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Python Modules</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../GeneralProcessing.html">Generalprocessing package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../GeneralProcessing.html">GeneralProcessing package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../VectorPreProcessing.html">VectorPreProcessing package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../VectorPostProcessing.html">VectorPostProcessing package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../GridPreProcessing.html">GridPreProcessing package</a></li>
@@ -70,7 +70,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">VectorPreProcessing.generate_mesh_hydrology_ini_from_excel</li>
+      <li class="breadcrumb-item active">GeneralProcessing.generate_mesh_hydrology_ini_from_excel</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -79,11 +79,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for VectorPreProcessing.generate_mesh_hydrology_ini_from_excel</h1><div class="highlight"><pre>
+  <h1>Source code for GeneralProcessing.generate_mesh_hydrology_ini_from_excel</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <div class="viewcode-block" id="generate_mesh_hydrology_ini_from_excel">
-<a class="viewcode-back" href="../../VectorPreProcessing.html#VectorPreProcessing.generate_mesh_hydrology_ini_from_excel.generate_mesh_hydrology_ini_from_excel">[docs]</a>
+<a class="viewcode-back" href="../../GeneralProcessing.html#GeneralProcessing.generate_mesh_hydrology_ini_from_excel.generate_mesh_hydrology_ini_from_excel">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">generate_mesh_hydrology_ini_from_excel</span><span class="p">(</span><span class="n">excel_file</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;MeshHydrology.ini&quot;</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;hydrology_ini&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ---------------------------------------------------------------------------------</span>
@@ -202,12 +202,12 @@
 <span class="sd">    ---------------------------------------------------------------------------------</span>
 <span class="sd">    Example Usage:</span>
 <span class="sd">    ---------------------------------------------------------------------------------</span>
-<span class="sd">    &gt;&gt;&gt; # The excel database can be found in the VectorPreProcessing folder.</span>
-<span class="sd">    &gt;&gt;&gt; # Directly dowolnload the excel file from the VectorPreProcessing folder.</span>
+<span class="sd">    &gt;&gt;&gt; # The excel database can be found in the GeneralProcessing folder.</span>
+<span class="sd">    &gt;&gt;&gt; # Directly dowolnload the excel file from the GeneralProcessing folder.</span>
 <span class="sd">    &gt;&gt;&gt; import requests</span>
-<span class="sd">    &gt;&gt;&gt; url = &quot;https://raw.githubusercontent.com/MESH-Scripts-PyLib/MESH-Scripts-PyLib/main/VectorPreProcessing/meshparametersvalues2.xlsx&quot;</span>
+<span class="sd">    &gt;&gt;&gt; url = &quot;https://raw.githubusercontent.com/MESH-Scripts-PyLib/MESH-Scripts-PyLib/main/GeneralProcessing/meshparametersvalues2.xlsx&quot;</span>
 <span class="sd">    &gt;&gt;&gt; # Local path to save the file</span>
-<span class="sd">    &gt;&gt;&gt; local_path = &quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/VectorPreProcessing/meshparametersvalues2.xlsx&quot;</span>
+<span class="sd">    &gt;&gt;&gt; local_path = &quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/GeneralProcessing/meshparametersvalues2.xlsx&quot;</span>
 <span class="sd">    &gt;&gt;&gt; # Send a GET request to download the file</span>
 <span class="sd">    &gt;&gt;&gt; response = requests.get(url)</span>
 <span class="sd">    &gt;&gt;&gt; # Check if the request was successful (status code 200)</span>
@@ -219,12 +219,12 @@
 <span class="sd">    &gt;&gt;&gt; else:</span>
 <span class="sd">    &gt;&gt;&gt;     print(f&quot;Failed to download file. Status code: {response.status_code}&quot;)</span>
 
-<span class="sd">    &gt;&gt;&gt; from VectorPreProcessing.generate_mesh_hydrology_ini_from_excel import generate_mesh_hydrology_ini_from_excel</span>
+<span class="sd">    &gt;&gt;&gt; from GeneralProcessing.generate_mesh_hydrology_ini_from_excel import generate_mesh_hydrology_ini_from_excel</span>
 <span class="sd">    &gt;&gt;&gt; gen_hydini = generate_mesh_hydrology_ini_from_excel</span>
 <span class="sd">    &gt;&gt;&gt; gen_hydini(</span>
 <span class="sd">            sheet_name=&quot;hydrology_ini&quot;,</span>
 <span class="sd">            output_file=&quot;MeshHydrology2.ini&quot;,</span>
-<span class="sd">            excel_file=&quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/VectorPreProcessing/meshparametersvalues2.xlsx&quot;</span>
+<span class="sd">            excel_file=&quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/GeneralProcessing/meshparametersvalues2.xlsx&quot;</span>
 <span class="sd">        )</span>
 <span class="sd">    </span>
 <span class="sd">    - This will generate a properly formatted `MeshHydrology.ini` file in the specified path.</span>
@@ -326,9 +326,9 @@
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span></div>
 
-<span class="c1"># from VectorPreProcessing.generate_mesh_hydrology_ini_from_excel import generate_mesh_hydrology_ini_from_excel</span>
-<span class="c1"># gen_hydini(output_file=&quot;MeshHydrology2.ini&quot;,excel_file=&quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/VectorPreProcessing/meshparametersvalues2.xlsx&quot;)</span>
-<span class="c1">#gen_hydini(sheet_name=&quot;hydrology_ini&quot;,output_file=&quot;MeshHydrology2.ini&quot;,excel_file=&quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/VectorPreProcessing/meshparametersvalues2.xlsx&quot;)</span>
+<span class="c1"># from GeneralProcessing.generate_mesh_hydrology_ini_from_excel import generate_mesh_hydrology_ini_from_excel</span>
+<span class="c1"># gen_hydini(output_file=&quot;MeshHydrology2.ini&quot;,excel_file=&quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/GeneralProcessing/meshparametersvalues2.xlsx&quot;)</span>
+<span class="c1">#gen_hydini(sheet_name=&quot;hydrology_ini&quot;,output_file=&quot;MeshHydrology2.ini&quot;,excel_file=&quot;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/GeneralProcessing/meshparametersvalues2.xlsx&quot;)</span>
 </pre></div>
 
            </div>
