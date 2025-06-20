@@ -1,0 +1,370 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VisualizationPrep &mdash; MESH-Scripts-PyLib 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MESH Streamflow File Preparation" href="MESH_StreamflowFilePrep.html" />
+    <link rel="prev" title="GridPostProcessing package" href="GridPostProcessing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MESH-Scripts-PyLib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Python Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GeneralProcessing.html">Generalprocessing package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VectorPreProcessing.html">VectorPreProcessing package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VectorPostProcessing.html">VectorPostProcessing package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GridPreProcessing.html">GridPreProcessing package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GridPostProcessing.html">GridPostProcessing package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">VisualizationPrep</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MESH_StreamflowFilePrep.html">MESH Streamflow File Preparation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MESH-Scripts-PyLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">VisualizationPrep</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/fuadyassin/MESH-Scripts-PyLib/blob/main/docs/source/VisualizationPrep.ipynb" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="VisualizationPrep">
+<h1>VisualizationPrep<a class="headerlink" href="#VisualizationPrep" title="Link to this heading"></a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot; import os</span>
+<span class="sd">import sys</span>
+
+<span class="sd"># Define the folder path</span>
+<span class="sd">folder_path = r&#39;D:\2_CodeProjects\GitHub\Repos\MESH-Scripts-PyLib\src&#39;</span>
+
+<span class="sd"># Check if the folder is already in sys.path, if not, add it</span>
+<span class="sd">if folder_path not in sys.path:</span>
+<span class="sd">    sys.path.append(folder_path) &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">VectorPostProcessing.plt_var_vector_setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">plt_var_from_vector_ddb_netcdf</span>
+
+<span class="c1"># Option 1: Use forward‐slashes throughout</span>
+<span class="n">base_dir</span>   <span class="o">=</span> <span class="s2">&quot;D:/3a_ModelSimulations/MESH/Baseline/sras-agg-model_1/MESH-sras-agg&quot;</span>
+<span class="n">shp_dir</span>    <span class="o">=</span> <span class="s2">&quot;D:/3a_ModelSimulations/MESH/Baseline/sras-agg-model_1/geofabric-outputs&quot;</span>
+
+<span class="c1"># Option 2: (equivalent) use a raw‐string literal so that backslashes aren’t escapes:</span>
+<span class="c1"># base_dir = r&quot;D:\3a_ModelSimulations\MESH\Baseline\sras-agg-model_1\MESH-sras-agg&quot;</span>
+<span class="c1"># shp_dir  = r&quot;D:\3a_ModelSimulations\MESH\Baseline\sras-agg-model_1\geofabric-outputs&quot;</span>
+
+<span class="n">shapefile_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">shp_dir</span><span class="p">,</span> <span class="s2">&quot;sras_subbasins_MAF_Agg.shp&quot;</span><span class="p">)</span>
+<span class="n">netcdf_path</span>    <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">&quot;MESH_drainage_database.nc&quot;</span><span class="p">)</span>
+<span class="n">output_dir</span>     <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s2">&quot;Outputs&quot;</span><span class="p">)</span>
+
+<span class="c1"># make sure Outputs exists</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;GRU.png&quot;</span><span class="p">)</span>
+
+<span class="c1"># define your land‐use classes</span>
+<span class="n">lclass</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;Temperate or sub-polar needleleaf forest&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Sub-polar taiga needleleaf forest&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Temperate or sub-polar broadleaf deciduous forest&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Mixed forest&#39;</span><span class="p">,</span> <span class="s1">&#39;Temperate or sub-polar shrubland&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Temperate or sub-polar grassland&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Sub-polar or polar grassland-lichen-moss&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Wetland&#39;</span><span class="p">,</span> <span class="s1">&#39;Cropland&#39;</span><span class="p">,</span> <span class="s1">&#39;Barren lands&#39;</span><span class="p">,</span> <span class="s1">&#39;Urban&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Water&#39;</span><span class="p">,</span> <span class="s1">&#39;Dump&#39;</span>
+<span class="p">]</span>
+
+<span class="c1"># sanity‐check that the files exist</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">(</span><span class="n">shapefile_path</span><span class="p">,</span> <span class="n">netcdf_path</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Can&#39;t find file: </span><span class="si">{</span><span class="n">p</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">plt_var_from_vector_ddb_netcdf</span><span class="p">(</span>
+    <span class="n">output_basin_path</span><span class="o">=</span><span class="n">shapefile_path</span><span class="p">,</span>
+    <span class="n">ddbnetcdf_path</span><span class="o">=</span><span class="n">netcdf_path</span><span class="p">,</span>
+    <span class="n">variable_name</span><span class="o">=</span><span class="s1">&#39;GRU&#39;</span><span class="p">,</span>
+    <span class="n">save_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span>
+    <span class="n">text_location</span><span class="o">=</span><span class="p">(</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">),</span>
+    <span class="n">font_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gnuplot2_r&#39;</span><span class="p">,</span>
+    <span class="n">cbar_location</span><span class="o">=</span><span class="p">[</span><span class="mf">0.91</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">],</span>
+    <span class="n">subplot_adjustments</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
+                         <span class="s1">&#39;wspace&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;hspace&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>
+    <span class="n">subbasin_var</span><span class="o">=</span><span class="s1">&#39;subbasin&#39;</span><span class="p">,</span>
+    <span class="n">comid_var</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span>
+    <span class="n">landuse_classes</span><span class="o">=</span><span class="n">lclass</span><span class="p">,</span>
+    <span class="n">grudim</span><span class="o">=</span><span class="s1">&#39;NGRU&#39;</span><span class="p">,</span>
+    <span class="n">grunames_var</span><span class="o">=</span><span class="s1">&#39;LandUse&#39;</span>
+<span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+len(dims) == 2 and dims[1] == grudim
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/VisualizationPrep_2_1.png" src="_images/VisualizationPrep_2_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">VectorPostProcessing.plt_var_vector_setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">plt_var_from_vector_ddb_netcdf</span>
+<span class="c1"># Option 1: Use forward‐slashes throughout</span>
+<span class="n">base_dir</span>   <span class="o">=</span> <span class="s2">&quot;D:/3a_ModelSimulations/MESH/Baseline/sras-agg-model_1/MESH-sras-agg&quot;</span>
+<span class="n">shp_dir</span>    <span class="o">=</span> <span class="s2">&quot;D:/3a_ModelSimulations/MESH/Baseline/sras-agg-model_1/geofabric-outputs&quot;</span>
+
+<span class="c1"># Option 2: (equivalent) use a raw‐string literal so that backslashes aren’t escapes:</span>
+<span class="c1"># base_dir = r&quot;D:\3a_ModelSimulations\MESH\Baseline\sras-agg-model_1\MESH-sras-agg&quot;</span>
+<span class="c1"># shp_dir  = r&quot;D:\3a_ModelSimulations\MESH\Baseline\sras-agg-model_1\geofabric-outputs&quot;</span>
+
+<span class="n">output_basin_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">shp_dir</span><span class="p">,</span> <span class="s1">&#39;sras_subbasins_MAF_Agg.shp&#39;</span><span class="p">)</span>
+<span class="n">ParametersNetcdf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;MESH_parameters.nc&#39;</span><span class="p">)</span>
+<span class="n">variable_name</span> <span class="o">=</span> <span class="s1">&#39;SAND&#39;</span>  <span class="c1"># or &#39;GRU&#39; or any other variable in the drainage database netcdf file</span>
+<span class="n">save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;Outputs&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">variable_name</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">)</span>
+
+
+
+<span class="n">plt_var_from_vector_ddb_netcdf</span><span class="p">(</span>
+    <span class="n">output_basin_path</span><span class="p">,</span>
+    <span class="n">ParametersNetcdf</span><span class="p">,</span>
+    <span class="n">variable_name</span><span class="p">,</span>
+    <span class="n">save_path</span><span class="p">,</span>
+    <span class="n">text_location</span><span class="o">=</span><span class="p">(</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">),</span>
+    <span class="n">font_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gnuplot2_r&#39;</span><span class="p">,</span>  <span class="c1"># You can specify a different colormap here if needed</span>
+    <span class="n">cbar_location</span><span class="o">=</span><span class="p">[</span><span class="mf">0.91</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">],</span>  <span class="c1"># Custom colorbar location if needed</span>
+    <span class="n">subplot_adjustments</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;wspace&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;hspace&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>  <span class="c1"># Optional subplot adjustments</span>
+    <span class="n">subbasin_var</span><span class="o">=</span><span class="s1">&#39;subbasin&#39;</span><span class="p">,</span>  <span class="c1"># Default to &#39;subbasin&#39; it is identifier from drainage database</span>
+    <span class="n">comid_var</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span>  <span class="c1"># Default to &#39;COMID&#39; this is your shapefile identifier for merging</span>
+    <span class="n">landuse_classes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1">#  use None or specify lclass</span>
+    <span class="n">grudim</span> <span class="o">=</span> <span class="s1">&#39;NGRU&#39;</span><span class="p">,</span>    <span class="c1">#from netcdf ddb</span>
+    <span class="n">grunames_var</span> <span class="o">=</span> <span class="s1">&#39;LandUse&#39;</span>  <span class="c1">#from netcdf ddb</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+len(dims) == 2 and dims[1] ==  soldim
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/VisualizationPrep_3_1.png" src="_images/VisualizationPrep_3_1.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">VectorPostProcessing.save_mesh_outputs_as_png</span><span class="w"> </span><span class="kn">import</span> <span class="n">save_mesh_outputs_as_png</span>
+<span class="c1"># Option 1: Use forward‐slashes throughout</span>
+<span class="n">base_dir</span>   <span class="o">=</span> <span class="s2">&quot;D:/3a_ModelSimulations/MESH/Baseline/sras-agg-model_1/MESH-sras-agg&quot;</span>
+<span class="n">shp_dir</span>    <span class="o">=</span> <span class="s2">&quot;D:/3a_ModelSimulations/MESH/Baseline/sras-agg-model_1/geofabric-outputs&quot;</span>
+<span class="n">netcdf_path</span> <span class="o">=</span> <span class="s2">&quot;D:/3a_ModelSimulations/MESH/Baseline/sras-agg-model_1/sras_MESH_PostProcessing/BASINAVG4&quot;</span>
+
+
+
+<span class="n">shape_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">shp_dir</span><span class="p">,</span> <span class="s1">&#39;sras_subbasins_MAF_Agg.shp&#39;</span><span class="p">)</span>
+<span class="n">ddbnetcdf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;MESH_drainage_database.nc&#39;</span><span class="p">)</span>
+<span class="n">variable_name</span> <span class="o">=</span> <span class="s1">&#39;SAND&#39;</span>  <span class="c1"># or &#39;GRU&#39; or any other variable in the drainage database netcdf file</span>
+<span class="n">save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">netcdf_path</span><span class="p">,</span> <span class="s1">&#39;Outputs&#39;</span><span class="p">)</span>
+
+<span class="n">save_mesh_outputs_as_png</span><span class="p">(</span>
+    <span class="n">shapefile_path</span><span class="o">=</span><span class="n">shape_path</span><span class="p">,</span>
+    <span class="n">netcdf_dir</span><span class="o">=</span><span class="n">netcdf_path</span><span class="p">,</span>
+    <span class="n">ddb_path</span><span class="o">=</span><span class="n">ddbnetcdf</span><span class="p">,</span>
+    <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;QO&#39;</span><span class="p">,</span> <span class="s1">&#39;SNO&#39;</span><span class="p">],</span>
+    <span class="n">filenames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;QO_Y_GRD.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;SNO_Y_GRD.nc&#39;</span><span class="p">],</span>
+    <span class="n">cbar_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Discharge [m³/s]&#39;</span><span class="p">,</span> <span class="s1">&#39;Snow Mass [mm]&#39;</span><span class="p">],</span>
+    <span class="n">outdir</span><span class="o">=</span><span class="n">save_path</span><span class="p">,</span>
+    <span class="n">indices_to_save</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;yearly&#39;</span><span class="p">,</span>
+    <span class="n">domain_name</span><span class="o">=</span><span class="s1">&#39;SrAs&#39;</span><span class="p">,</span>
+    <span class="n">comid_field</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span>
+<span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">VectorPostProcessing.save_mesh_outputs_as_png</span><span class="w"> </span><span class="kn">import</span> <span class="n">save_mesh_outputs_as_png</span>
+
+<span class="c1"># Option 1: Use forward‐slashes throughout</span>
+<span class="n">base_dir</span>   <span class="o">=</span> <span class="s2">&quot;D:/3a_ModelSimulations/MESH/Baseline/sras-agg-model_1/MESH-sras-agg&quot;</span>
+<span class="n">shp_dir</span>    <span class="o">=</span> <span class="s2">&quot;D:/3a_ModelSimulations/MESH/Baseline/sras-agg-model_1/geofabric-outputs&quot;</span>
+<span class="n">netcdf_path</span> <span class="o">=</span> <span class="s2">&quot;D:/3a_ModelSimulations/MESH/Baseline/sras-agg-model_1/MESH-sras-agg&quot;</span>
+
+
+
+<span class="n">shape_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">shp_dir</span><span class="p">,</span> <span class="s1">&#39;sras_subbasins_MAF_Agg.shp&#39;</span><span class="p">)</span>
+<span class="n">ddbnetcdf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;MESH_drainage_database.nc&#39;</span><span class="p">)</span>
+<span class="n">variable_name</span> <span class="o">=</span> <span class="s1">&#39;SAND&#39;</span>  <span class="c1"># or &#39;GRU&#39; or any other variable in the drainage database netcdf file</span>
+<span class="n">save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">netcdf_path</span><span class="p">,</span> <span class="s1">&#39;Outputs&#39;</span><span class="p">)</span>
+
+<span class="n">save_mesh_outputs_as_png</span><span class="p">(</span>
+    <span class="n">shapefile_path</span><span class="o">=</span><span class="n">shape_path</span><span class="p">,</span>
+    <span class="n">netcdf_dir</span><span class="o">=</span><span class="n">netcdf_path</span><span class="p">,</span>
+    <span class="n">ddb_path</span><span class="o">=</span><span class="n">ddbnetcdf</span><span class="p">,</span>
+    <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;RDRS_v2.1_P_TT_09944&#39;</span><span class="p">],</span>
+    <span class="n">filenames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;MESH_forcing.nc&#39;</span><span class="p">],</span>
+    <span class="n">cbar_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Temperature [K]&#39;</span><span class="p">],</span>
+    <span class="n">outdir</span><span class="o">=</span><span class="n">save_path</span><span class="p">,</span>
+    <span class="n">indices_to_save</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;hourly&#39;</span><span class="p">,</span>
+    <span class="n">domain_name</span><span class="o">=</span><span class="s1">&#39;SrAs&#39;</span><span class="p">,</span>
+    <span class="n">comid_field</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span> <span class="s1">&#39;gnuplot2_r&#39;</span>  <span class="c1"># Specify a colormap if needed</span>
+<span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">VectorPostProcessing.animate_var_vector_setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">animate_mesh_outputs_to_gif</span>
+<span class="c1"># Option 1: Use forward‐slashes throughout</span>
+<span class="n">base_dir</span>   <span class="o">=</span> <span class="s2">&quot;D:/3a_ModelSimulations/MESH/Baseline/sras-agg-model_1/MESH-sras-agg&quot;</span>
+<span class="n">shp_dir</span>    <span class="o">=</span> <span class="s2">&quot;D:/3a_ModelSimulations/MESH/Baseline/sras-agg-model_1/geofabric-outputs&quot;</span>
+<span class="n">netcdf_path</span> <span class="o">=</span> <span class="s2">&quot;D:/3a_ModelSimulations/MESH/Baseline/sras-agg-model_1/sras_MESH_PostProcessing/BASINAVG4&quot;</span>
+
+<span class="n">shape_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">shp_dir</span><span class="p">,</span> <span class="s1">&#39;sras_subbasins_MAF_Agg.shp&#39;</span><span class="p">)</span>
+<span class="n">ddbnetcdf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;MESH_drainage_database.nc&#39;</span><span class="p">)</span>
+<span class="n">save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">netcdf_path</span><span class="p">,</span> <span class="s1">&#39;Outputs&#39;</span><span class="p">)</span>
+
+
+<span class="n">animate_mesh_outputs_to_gif</span><span class="p">(</span>
+    <span class="n">shapefile_path</span><span class="o">=</span><span class="n">shape_path</span><span class="p">,</span>
+    <span class="n">netcdf_dir</span><span class="o">=</span><span class="n">netcdf_path</span><span class="p">,</span>
+    <span class="n">ddb_path</span><span class="o">=</span><span class="n">ddbnetcdf</span><span class="p">,</span>
+    <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;QO&#39;</span><span class="p">,</span> <span class="s1">&#39;SNO&#39;</span><span class="p">,</span> <span class="s1">&#39;PREC&#39;</span><span class="p">],</span>
+    <span class="n">filenames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;QO_Y_GRD.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;SNO_Y_GRD.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;PREC_Y_GRD.nc&#39;</span><span class="p">],</span>
+    <span class="n">cbar_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Discharge [m³/s]&#39;</span><span class="p">,</span> <span class="s1">&#39;Snow Mass [mm]&#39;</span><span class="p">,</span> <span class="s1">&#39;Precipitation [mm]&#39;</span><span class="p">],</span>
+    <span class="n">outdir</span><span class="o">=</span><span class="n">save_path</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;monthly&#39;</span><span class="p">,</span>
+    <span class="n">domain_name</span><span class="o">=</span><span class="s1">&#39;SrAs&#39;</span><span class="p">,</span>
+    <span class="n">comid_field</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span> <span class="s1">&#39;gnuplot2_r&#39;</span>  <span class="c1"># Specify a colormap if needed</span>
+<span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="GridPostProcessing.html" class="btn btn-neutral float-left" title="GridPostProcessing package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="MESH_StreamflowFilePrep.html" class="btn btn-neutral float-right" title="MESH Streamflow File Preparation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Fuad Yassin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
