@@ -541,8 +541,15 @@ class GenStreamflowFile:
                 values = [row[c] for c in data_columns]
                 # format each value to width=12, 4 decimals
                 line = " ".join(f"{v:12.4f}" for v in values)
-                file_conn.write(f"{line}\n")
-
+                # same date grab/format/append
+                if date_cols:
+                    date_val = flow_data[date_cols[0]].iloc[idx]
+                else:
+                    date_val = flow_data.index[idx]
+                date_str = date_val.strftime("%Y/%m/%d")
+                
+                file_conn.write(f"{line}  {date_str}\n")
+                #file_conn.write(f"{line}\n")
 
     def write_flow_data_to_file_ensim(
         self,
@@ -680,5 +687,15 @@ class GenStreamflowFile:
                 values = [row[col] for col in data_columns]
                 # Format each value to fixed width, 4 decimal places
                 line = " ".join(f"{val:>{column_width}.4f}" for val in values)
+                # grab the date for this row
+                if date_cols:
+                    date_val = row[date_cols[0]]
+                else:
+                    date_val = row.name           # assuming a DatetimeIndex
+                # format it
+                date_str = date_val.strftime("%Y/%m/%d")
+                # 3append it
+                line = f"{line}  {date_str}"
+                
                 # Write the indented data line
                 f.write(" " * initial_spacing + line + "\n")
