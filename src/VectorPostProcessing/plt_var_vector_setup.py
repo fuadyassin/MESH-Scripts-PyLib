@@ -252,9 +252,13 @@ def plt_var_from_vector_ddb_netcdf(
 
             sub_agg_ddb_merged_gdf = sub_agg_gdf.merge(df, left_on=comid_var, right_index=True, how='left')
 
-            percentage_pairs = [(landuse, round(sub_agg_ddb_merged_gdf[landuse].mean() * 100, 2)) for landuse in landuse_classes]
-            sorted_landuse_columns, sorted_percentages = zip(*sorted(percentage_pairs, key=lambda x: x[1], reverse=True))
-            sorted_landuse_columns = [str(c) for c in sorted_landuse_columns]
+            if sort_gru_by_mean:
+                percentage_pairs = [(landuse, round(sub_agg_ddb_merged_gdf[landuse].mean() * 100, 2)) for landuse in landuse_classes]
+                sorted_landuse_columns, sorted_percentages = zip(*sorted(percentage_pairs, key=lambda x: x[1], reverse=True))
+                sorted_landuse_columns = [str(c) for c in sorted_landuse_columns]
+            else:
+                sorted_landuse_columns = [str(c) for c in landuse_classes]
+                sorted_percentages = [None] * len(sorted_landuse_columns)
 
 
             num_plots = len(sorted_landuse_columns)
