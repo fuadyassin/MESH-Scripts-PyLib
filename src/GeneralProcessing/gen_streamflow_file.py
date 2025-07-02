@@ -466,12 +466,32 @@ class GenStreamflowFile:
 
     def write_flow_data_to_file_ensim(self, file_path, flow_data, site_details, column_width=12, initial_spacing=28):
         flow_data = flow_data.fillna(-1.000)
-        
-        num_columns = flow_data.shape[1] - 1  # Exclude date column
+        # DIAGNOSTIC PRINTS:
+        print(">>> flow_data.shape:", flow_data.shape)
+        print(">>> flow_data.columns:", flow_data.columns.tolist())
+        # check for a date-like column
+        date_cols = [c for c in flow_data.columns if 'date' in c.lower()]
+        if date_cols:
+            print(f">>> Detected date column(s): {date_cols}")
+        else:
+            print(">>> No date column detected.")
+        # now decide how many data columns you actually have
+        # if you found a date column, subtract 1, else subtract 0
+        num_date_cols = len(date_cols)
+        num_columns = flow_data.shape[1] - num_date_cols
+        print(f">>> num_date_cols = {num_date_cols}, so num_columns = {num_columns}")        
 
-        # Ensure site_details length matches the number of data columns
+        # Ensure site_details length matches
         if len(site_details) != num_columns:
-            raise ValueError("The number of site details entries must match the number of data columns in flow_data")
+            print(">>> site_details:", site_details)
+            raise ValueError(
+                f"The number of site_details entries ({len(site_details)}) "
+                f"must match the number of data columns ({num_columns}) in flow_data"
+            )
+        #num_columns = flow_data.shape[1] - 1  # Exclude date column
+        # Ensure site_details length matches the number of data columns
+        #if len(site_details) != num_columns:
+        #    raise ValueError("The number of site details entries must match the number of data columns in flow_data")
 
         # Header with metadata
         header = [
