@@ -59,6 +59,9 @@ Parameters:
     Lower bound for color scaling. If not provided, determined automatically per variable type.
 - vmax : float, optional
     Upper bound for color scaling. If not provided, determined automatically per variable type.
+- sort_gru_by_mean : bool, optional (default=True)
+    If True, sorts GRUs by mean area fraction and adds percentage annotations in each subplot.
+    If False, plots GRUs in original order with no annotation.
 
 
 Processing Logic:
@@ -116,6 +119,7 @@ Example Usage:
 ...     grunames_var='LandUse',
         soldim='nsol',    # from netcdf parameter file
         vmin=None,
+    sort_gru_by_mean: bool = True,
         vmax=None 
 ... )
 
@@ -187,6 +191,7 @@ def plt_var_from_vector_ddb_netcdf(
     grunames_var='LandUse',  # from netcdf ddb
     soldim='nsol',    # from netcdf parameter file
     vmin=None,
+    sort_gru_by_mean: bool = True,
     vmax=None 
 ):
     # Load and dissolve the shapefile to get a single boundary sub_agg_gdf
@@ -249,6 +254,8 @@ def plt_var_from_vector_ddb_netcdf(
 
             percentage_pairs = [(landuse, round(sub_agg_ddb_merged_gdf[landuse].mean() * 100, 2)) for landuse in landuse_classes]
             sorted_landuse_columns, sorted_percentages = zip(*sorted(percentage_pairs, key=lambda x: x[1], reverse=True))
+            sorted_landuse_columns = [str(c) for c in sorted_landuse_columns]
+
 
             num_plots = len(sorted_landuse_columns)
             num_rows = math.floor(math.sqrt(num_plots))
@@ -279,8 +286,9 @@ def plt_var_from_vector_ddb_netcdf(
                 title = split_title(col)
                 ax.set_title(title, fontsize=font_size, ha='center')
                 #ax.set_title(col, fontsize=font_size, ha='center')
-                ax.text(text_location[0], text_location[1], f"{percent}%", transform=ax.transAxes, fontsize=font_size,
-                        verticalalignment='top', bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="none", alpha=0.5))
+                if sort_gru_by_mean and percent is not None:
+                    ax.text(text_location[0], text_location[1], f"{percent}%", transform=ax.transAxes, fontsize=font_size,
+                            verticalalignment='top', bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="none", alpha=0.5))
                 ax.set_xticks([])
                 ax.set_yticks([])
 
