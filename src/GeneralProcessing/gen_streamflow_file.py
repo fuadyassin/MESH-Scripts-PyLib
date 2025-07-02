@@ -337,7 +337,7 @@ class GenStreamflowFile:
                     'Station_Name':         p.get('STATION_NAME'),
                     'CONTRIBUTOR_EN':       p.get('CONTRIBUTOR_EN'),
                     'PROV_TERR_STATE_LOC':  p.get('PROV_TERR_STATE_LOC'),
-                    'DRAINAGE_AREA_GROSS':  p.get('DRAINAGE_AREA_GROSS'),
+                    'Drainage_Area':  p.get('DRAINAGE_AREA_GROSS'),
                     'DRAINAGE_AREA_EFFECT': p.get('DRAINAGE_AREA_EFFECT'),
                     'REAL_TIME':            p.get('REAL_TIME'),
                     'RHBN':                 p.get('RHBN'),
