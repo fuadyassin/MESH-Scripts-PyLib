@@ -1,0 +1,570 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VectorPostProcessing package &mdash; MESH-Scripts-PyLib 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="GridPreProcessing package" href="GridPreProcessing.html" />
+    <link rel="prev" title="VectorPreProcessing package" href="VectorPreProcessing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MESH-Scripts-PyLib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Python Modules</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="GeneralProcessing.html">GeneralProcessing package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VectorPreProcessing.html">VectorPreProcessing package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">VectorPostProcessing package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-VectorPostProcessing.animate_var_vector_setup">VectorPostProcessing.animate_var_vector_setup module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#temporal-animation-of-mesh-variables-from-vector-and-netcdf-data">Temporal Animation of MESH Variables from Vector and NetCDF Data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function-animate-mesh-outputs-to-gif">Function: animate_mesh_outputs_to_gif</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#VectorPostProcessing.animate_var_vector_setup.animate_mesh_outputs_to_gif"><code class="docutils literal notranslate"><span class="pre">animate_mesh_outputs_to_gif()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-VectorPostProcessing.plt_var_vector_setup">VectorPostProcessing.plt_var_vector_setup module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#spatial-variable-visualization-from-vector-and-netcdf-files">Spatial Variable Visualization from Vector and NetCDF Files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function-plt-var-from-vector-ddb-netcdf">Function: plt_var_from_vector_ddb_netcdf</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#VectorPostProcessing.plt_var_vector_setup.plt_var_from_vector_ddb_netcdf"><code class="docutils literal notranslate"><span class="pre">plt_var_from_vector_ddb_netcdf()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-VectorPostProcessing.save_mesh_outputs_as_png">VectorPostProcessing.save_mesh_outputs_as_png module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#VectorPostProcessing.save_mesh_outputs_as_png.save_mesh_outputs_as_png"><code class="docutils literal notranslate"><span class="pre">save_mesh_outputs_as_png()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-VectorPostProcessing">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="GridPreProcessing.html">GridPreProcessing package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GridPostProcessing.html">GridPostProcessing package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="VisualizationPrep.html">VisualizationPrep</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MESH_StreamflowFilePrep.html">MESH Streamflow File Preparation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MESH-Scripts-PyLib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">&lt;no title&gt;</a></li>
+      <li class="breadcrumb-item active">VectorPostProcessing package</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/fuadyassin/MESH-Scripts-PyLib/blob/main/docs/source/VectorPostProcessing.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="vectorpostprocessing-package">
+<h1>VectorPostProcessing package<a class="headerlink" href="#vectorpostprocessing-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-VectorPostProcessing.animate_var_vector_setup">
+<span id="vectorpostprocessing-animate-var-vector-setup-module"></span><h2>VectorPostProcessing.animate_var_vector_setup module<a class="headerlink" href="#module-VectorPostProcessing.animate_var_vector_setup" title="Link to this heading"></a></h2>
+<section id="temporal-animation-of-mesh-variables-from-vector-and-netcdf-data">
+<h3>Temporal Animation of MESH Variables from Vector and NetCDF Data<a class="headerlink" href="#temporal-animation-of-mesh-variables-from-vector-and-netcdf-data" title="Link to this heading"></a></h3>
+<p>This module generates animated GIFs of spatially-distributed MESH model outputs (e.g., Discharge, Snow, Precipitation)
+over time using shapefiles and corresponding NetCDF files. It supports daily, monthly, and yearly animations.</p>
+<p>The function processes time-aware variables stored in NetCDF files and overlays them on subbasin polygons, producing
+frame-by-frame maps and exporting the animation as a <cite>.gif</cite> file using Matplotlib and Pillow.</p>
+<section id="function-animate-mesh-outputs-to-gif">
+<h4>Function: animate_mesh_outputs_to_gif<a class="headerlink" href="#function-animate-mesh-outputs-to-gif" title="Link to this heading"></a></h4>
+<section id="description">
+<h5>Description:<a class="headerlink" href="#description" title="Link to this heading"></a></h5>
+<p>Generates animated visualizations for MESH model state or flux variables across subbasins, overlaying spatial values
+on a shapefile with optional layer suffixes and colorbars. Output is saved as an animated <cite>.gif</cite>.</p>
+</section>
+<section id="parameters">
+<h5>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h5>
+<ul class="simple">
+<li><dl class="simple">
+<dt>shapefile_path<span class="classifier">str</span></dt><dd><p>Path to the subbasin shapefile (must include a COMID field).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>netcdf_dir<span class="classifier">str</span></dt><dd><p>Directory containing NetCDF variable files (e.g., QO_M_GRD.nc, SNO_M_GRD.nc).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>ddb_path<span class="classifier">str</span></dt><dd><p>Path to the MESH drainage database NetCDF file used to extract subbasin IDs.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>varnames<span class="classifier">list of str</span></dt><dd><p>List of variable names to animate (e.g., [‘QO’, ‘SNO’, ‘PREC’]).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>filenames<span class="classifier">list of str</span></dt><dd><p>List of NetCDF filenames corresponding to each variable (same order as <cite>varnames</cite>).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cbar_labels<span class="classifier">list of str</span></dt><dd><p>List of colorbar labels for each variable (e.g., [‘Discharge [m³/s]’, ‘Snow Mass [mm]’, ‘Precipitation [mm]’]).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>outdir<span class="classifier">str</span></dt><dd><p>Output directory to save the generated <cite>.gif</cite> files.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>mode<span class="classifier">str, optional (default=’monthly’)</span></dt><dd><p>Time mode for animation. Options: ‘daily’, ‘monthly’, or ‘yearly’.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>domain_name<span class="classifier">str, optional (default=’Basin’)</span></dt><dd><p>Prefix to use in animated titles and output filenames.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cmap<span class="classifier">str, optional (default=’gnuplot2_r’)</span></dt><dd><p>Matplotlib colormap to use for the animation.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>subbasin_var<span class="classifier">str, optional</span></dt><dd><p>Name of the subbasin variable in the NetCDF drainage database (default: ‘subbasin’).</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="input-format">
+<h5>Input Format:<a class="headerlink" href="#input-format" title="Link to this heading"></a></h5>
+<ol class="arabic simple">
+<li><p>Subbasin shapefile (.shp) with a <cite>COMID</cite> field</p></li>
+<li><p>Drainage database (.nc) with <cite>subbasin</cite> variable</p></li>
+<li><p>NetCDF model output files with time and subbasin dimensions</p></li>
+</ol>
+</section>
+<section id="output">
+<h5>Output:<a class="headerlink" href="#output" title="Link to this heading"></a></h5>
+<ul class="simple">
+<li><p><cite>.gif</cite> animations for each variable saved in <cite>outdir</cite></p></li>
+<li><p>Each frame shows spatial distribution for a time step</p></li>
+<li><p>Colorbars, labels, and layer info auto-handled</p></li>
+</ul>
+</section>
+<section id="example-usage">
+<h5>Example Usage:<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h5>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">VectorPostProcessing.animate_var_vector_setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">animate_mesh_outputs_to_gif</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">animate_mesh_outputs_to_gif</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">shapefile_path</span><span class="o">=</span><span class="s1">&#39;D:/HydrologicalModels/MESH/Baseline/sras-agg-model_1/sras_MESH_PostProcessing/GIS/sras_subbasins_MAF_Agg.shp&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">netcdf_dir</span><span class="o">=</span><span class="s1">&#39;D:/HydrologicalModels/MESH/Baseline/sras-agg-model_1/sras_MESH_PostProcessing/BASINAVG4&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">ddb_path</span><span class="o">=</span><span class="s1">&#39;D:/HydrologicalModels/MESH/Baseline/sras-agg-model_1/MESH-sras-agg/MESH_drainage_database.nc&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;QO&#39;</span><span class="p">,</span> <span class="s1">&#39;SNO&#39;</span><span class="p">,</span> <span class="s1">&#39;PREC&#39;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">filenames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;QO_Y_GRD.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;SNO_Y_GRD.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;PREC_Y_GRD.nc&#39;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">cbar_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Discharge [m³/s]&#39;</span><span class="p">,</span> <span class="s1">&#39;Snow Mass [mm]&#39;</span><span class="p">,</span> <span class="s1">&#39;Precipitation [mm]&#39;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/VectorPostProcessing/ExampleFiles/Outputs&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;Yearly&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">domain_name</span><span class="o">=</span><span class="s1">&#39;SrAs&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">subbasin_var</span><span class="o">=</span><span class="s1">&#39;subbasin&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># This will create animated GIFs for each variable in the specified output directory.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># The GIFs will be named as follows:</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># QO_yearly_animation.gif</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># SNO_yearly_animation.gif</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># PREC_yearly_animation.gif</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/SNO_yearly_animation.gif"><img alt="SNOW Output Animation" class="align-center" src="_images/SNO_yearly_animation.gif" style="width: 600px;" />
+</a>
+<a class="reference internal image-reference" href="_images/PREC_yearly_animation.gif"><img alt="Precipitation Output Animation" class="align-center" src="_images/PREC_yearly_animation.gif" style="width: 600px;" />
+</a>
+</section>
+<section id="dependencies">
+<h5>Dependencies:<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h5>
+<ul class="simple">
+<li><p>geopandas</p></li>
+<li><p>matplotlib</p></li>
+<li><p>netCDF4</p></li>
+<li><p>pandas</p></li>
+<li><p>numpy</p></li>
+<li><p>xarray</p></li>
+<li><p>Pillow (via matplotlib.animation.PillowWriter)</p></li>
+</ul>
+</section>
+</section>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="VectorPostProcessing.animate_var_vector_setup.animate_mesh_outputs_to_gif">
+<span class="sig-prename descclassname"><span class="pre">VectorPostProcessing.animate_var_vector_setup.</span></span><span class="sig-name descname"><span class="pre">animate_mesh_outputs_to_gif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shapefile_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">netcdf_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddb_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cbar_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'monthly'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Basin'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gnuplot2_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comid_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'COMID'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subbasin_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'subbasin'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/VectorPostProcessing/animate_var_vector_setup.html#animate_mesh_outputs_to_gif"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#VectorPostProcessing.animate_var_vector_setup.animate_mesh_outputs_to_gif" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-VectorPostProcessing.plt_var_vector_setup">
+<span id="vectorpostprocessing-plt-var-vector-setup-module"></span><h2>VectorPostProcessing.plt_var_vector_setup module<a class="headerlink" href="#module-VectorPostProcessing.plt_var_vector_setup" title="Link to this heading"></a></h2>
+<section id="spatial-variable-visualization-from-vector-and-netcdf-files">
+<h3>Spatial Variable Visualization from Vector and NetCDF Files<a class="headerlink" href="#spatial-variable-visualization-from-vector-and-netcdf-files" title="Link to this heading"></a></h3>
+<p>This module provides a unified plotting interface to visualize spatial variables from NetCDF datasets
+(e.g., MESH drainage database or parameters file) overlaid on a vector shapefile (e.g., subbasin polygons).
+It supports:
+- Single variable plotting per subbasin
+- Multi-class land use variable visualization (e.g., GRUs)
+- Layer-wise soil variable visualization (e.g., SAND, CLAY, OC)</p>
+<p>It automatically interprets the variable’s dimensions to choose the appropriate visualization layout
+(single map or subplots).</p>
+<section id="function-plt-var-from-vector-ddb-netcdf">
+<h4>Function: plt_var_from_vector_ddb_netcdf<a class="headerlink" href="#function-plt-var-from-vector-ddb-netcdf" title="Link to this heading"></a></h4>
+<section id="id1">
+<h5>Description:<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
+<p>Plots spatial variables stored in NetCDF files on top of vector shapefiles using GeoPandas and Matplotlib.
+This function is useful for visualizing hydrological model inputs such as Grouped Respone Units (GRUs),
+soil layers (e.g., SAND, CLAY), or other scalar variables (e.g., Elevation, Drainage Area) in spatial context.</p>
+</section>
+<section id="id2">
+<h5>Parameters:<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
+<ul class="simple">
+<li><dl class="simple">
+<dt>output_basin_path<span class="classifier">str</span></dt><dd><p>Full path to the basin shapefile (.shp). Must contain a unique subbasin identifier column (e.g., ‘COMID’).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>ddbnetcdf_path<span class="classifier">str</span></dt><dd><p>Path to the input NetCDF file containing the spatial variable (e.g., MESH_drainage_database.nc or MESH_parameters.nc).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>variable_name<span class="classifier">str</span></dt><dd><p>Name of the variable to extract and visualize from the NetCDF file.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>save_path<span class="classifier">str, optional (default=’plot.png’)</span></dt><dd><p>Full path to save the output image file (.png).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>text_location<span class="classifier">tuple, optional (default=(0.55, 0.95))</span></dt><dd><p>(x, y) coordinates in axes fraction (0–1) to place text annotations inside each subplot.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>font_size<span class="classifier">int, optional (default=10)</span></dt><dd><p>Font size for subplot titles and annotations.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cmap<span class="classifier">str, optional (default=’viridis’)</span></dt><dd><p>Matplotlib colormap to use for shading data values.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cbar_location<span class="classifier">list of float, optional (default=[0.96, 0.15, 0.02, 0.7])</span></dt><dd><p>Location of colorbar [left, bottom, width, height] in normalized figure coordinates.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>subplot_adjustments<span class="classifier">dict, optional</span></dt><dd><p>Dictionary of subplot spacing and padding adjustments passed to <cite>fig.subplots_adjust()</cite>.
+Example: {‘left’: 0.1, ‘right’: 0.9, ‘bottom’: 0.1, ‘top’: 0.9, ‘wspace’: 0.1, ‘hspace’: 0.2}</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>subbasin_var<span class="classifier">str, optional (default=’subbasin’)</span></dt><dd><p>Name of the NetCDF variable that contains subbasin indices.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>comid_var<span class="classifier">str, optional (default=’COMID’)</span></dt><dd><p>Name of the shapefile column used to join NetCDF data to the shapefile geometry.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>landuse_classes<span class="classifier">list of str, optional</span></dt><dd><p>Used when <cite>variable_name</cite> has GRU land use classes. Overrides land use names from the NetCDF file.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>grudim<span class="classifier">str, optional (default=’NGRU’)</span></dt><dd><p>Name of the NetCDF dimension for land use classes.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>grunames_var<span class="classifier">str, optional (default=’LandUse’)</span></dt><dd><p>Name of the NetCDF variable containing land use class names.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>soldim<span class="classifier">str, optional (default=’nsol’)</span></dt><dd><p>Name of the NetCDF dimension representing soil layers.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="processing-logic">
+<h5>Processing Logic:<a class="headerlink" href="#processing-logic" title="Link to this heading"></a></h5>
+<ul class="simple">
+<li><p>If <cite>variable_name</cite> has <strong>1D dimension</strong> (e.g., <cite>[subbasin]</cite>), a single map is plotted.</p></li>
+<li><p>If it has <strong>2D shape with land use dim</strong> (e.g., <cite>[subbasin, NGRU]</cite>), a grid of subplots is created per GRU.</p></li>
+<li><p>If it has <strong>2D shape with soil layer dim</strong> (e.g., <cite>[subbasin, nsol]</cite>), a grid of subplots is created per soil layer.</p></li>
+</ul>
+</section>
+<section id="id3">
+<h5>Input Format:<a class="headerlink" href="#id3" title="Link to this heading"></a></h5>
+<ol class="arabic simple">
+<li><p><strong>Shapefile (.shp)</strong> with a subbasin identifier column (e.g., ‘COMID’)</p></li>
+<li><p><strong>NetCDF file (.nc)</strong> with variables such as:
+- <cite>lat</cite>, <cite>lon</cite>
+- 1D or 2D variable of interest (e.g., GRU, SAND)
+- Dimension definitions for subbasin, land use, or soil layers</p></li>
+</ol>
+</section>
+<section id="id4">
+<h5>Output:<a class="headerlink" href="#id4" title="Link to this heading"></a></h5>
+<ul class="simple">
+<li><p>A static plot (.png) saved at <cite>save_path</cite> location</p></li>
+<li><p>Subplots with dissolved basin outline and percentage annotations</p></li>
+<li><p>Shared colorbar with variable name and units</p></li>
+</ul>
+</section>
+<section id="id5">
+<h5>Example Usage:<a class="headerlink" href="#id5" title="Link to this heading"></a></h5>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">VectorPostProcessing.plt_var_vector_setup</span><span class="w"> </span><span class="kn">import</span> <span class="n">plt_var_from_vector_ddb_netcdf</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example 1: GRU (Grouped Land Use Classes) Visualization</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">base_dir</span> <span class="o">=</span> <span class="s1">&#39;D:/Coding/GitHub/Repos/MESH-Scripts-PyLib/VectorPostProcessing/ExampleFiles&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shapefile_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;sras_subbasins_MAF_Agg.shp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">netcdf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;MESH_drainage_database.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;Outputs&#39;</span><span class="p">,</span> <span class="s1">&#39;GRU.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lclass</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="s1">&#39;Temperate or sub-polar needleleaf forest&#39;</span><span class="p">,</span> <span class="s1">&#39;Sub-polar taiga needleleaf forest&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;Temperate or sub-polar broadleaf deciduous forest&#39;</span><span class="p">,</span> <span class="s1">&#39;Mixed forest&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;Temperate or sub-polar shrubland&#39;</span><span class="p">,</span> <span class="s1">&#39;Temperate or sub-polar grassland&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;Sub-polar or polar grassland-lichen-moss&#39;</span><span class="p">,</span> <span class="s1">&#39;Wetland&#39;</span><span class="p">,</span> <span class="s1">&#39;Cropland&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s1">&#39;Barren lands&#39;</span><span class="p">,</span> <span class="s1">&#39;Urban&#39;</span><span class="p">,</span> <span class="s1">&#39;Water&#39;</span><span class="p">,</span> <span class="s1">&#39;Dump&#39;</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt_var_from_vector_ddb_netcdf</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">output_basin_path</span><span class="o">=</span><span class="n">shapefile_path</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">ddbnetcdf_path</span><span class="o">=</span><span class="n">netcdf_path</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">variable_name</span><span class="o">=</span><span class="s1">&#39;GRU&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">save_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">text_location</span><span class="o">=</span><span class="p">(</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">font_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gnuplot2_r&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cbar_location</span><span class="o">=</span><span class="p">[</span><span class="mf">0.91</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">subplot_adjustments</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;wspace&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;hspace&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">subbasin_var</span><span class="o">=</span><span class="s1">&#39;subbasin&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">comid_var</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">landuse_classes</span><span class="o">=</span><span class="n">lclass</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">grudim</span><span class="o">=</span><span class="s1">&#39;NGRU&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">grunames_var</span><span class="o">=</span><span class="s1">&#39;LandUse&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/GRU.png"><img alt="GRU Output Plot" class="align-center" src="_images/GRU.png" style="width: 600px;" />
+</a>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Example 2: Soil Variable Visualization (e.g., SAND across layers)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">netcdf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;MESH_parameters.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;Outputs&#39;</span><span class="p">,</span> <span class="s1">&#39;SAND.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt_var_from_vector_ddb_netcdf</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">output_basin_path</span><span class="o">=</span><span class="n">shapefile_path</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">ddbnetcdf_path</span><span class="o">=</span><span class="n">netcdf_path</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">variable_name</span><span class="o">=</span><span class="s1">&#39;SAND&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">save_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">text_location</span><span class="o">=</span><span class="p">(</span><span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">font_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gnuplot2_r&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cbar_location</span><span class="o">=</span><span class="p">[</span><span class="mf">0.91</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">subplot_adjustments</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;wspace&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;hspace&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="n">subbasin_var</span><span class="o">=</span><span class="s1">&#39;subbasin&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">comid_var</span><span class="o">=</span><span class="s1">&#39;COMID&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/SAND.png"><img alt="SAND Layer Output Plot" class="align-center" src="_images/SAND.png" style="width: 600px;" />
+</a>
+</section>
+<section id="notes">
+<h5>Notes:<a class="headerlink" href="#notes" title="Link to this heading"></a></h5>
+<ul class="simple">
+<li><p>All spatial plotting is done in EPSG:4326 (WGS84)</p></li>
+<li><p>The function automatically merges the NetCDF data with shapefile geometry using the specified ID fields</p></li>
+<li><p>Color scaling (<cite>vmin</cite>, <cite>vmax</cite>) and transparency for <cite>0</cite> values is handled internally</p></li>
+</ul>
+</section>
+<section id="id6">
+<h5>Dependencies:<a class="headerlink" href="#id6" title="Link to this heading"></a></h5>
+<ul class="simple">
+<li><p>geopandas</p></li>
+<li><p>pandas</p></li>
+<li><p>matplotlib</p></li>
+<li><p>numpy</p></li>
+<li><p>netCDF4</p></li>
+</ul>
+</section>
+</section>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="VectorPostProcessing.plt_var_vector_setup.plt_var_from_vector_ddb_netcdf">
+<span class="sig-prename descclassname"><span class="pre">VectorPostProcessing.plt_var_vector_setup.</span></span><span class="sig-name descname"><span class="pre">plt_var_from_vector_ddb_netcdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_basin_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddbnetcdf_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'plot.png'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.55,</span> <span class="pre">0.95)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cbar_location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.96,</span> <span class="pre">0.15,</span> <span class="pre">0.02,</span> <span class="pre">0.7]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subplot_adjustments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subbasin_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'subbasin'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comid_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'COMID'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">landuse_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grudim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NGRU'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grunames_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LandUse'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">soldim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nsol'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/VectorPostProcessing/plt_var_vector_setup.html#plt_var_from_vector_ddb_netcdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#VectorPostProcessing.plt_var_vector_setup.plt_var_from_vector_ddb_netcdf" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-VectorPostProcessing.save_mesh_outputs_as_png">
+<span id="vectorpostprocessing-save-mesh-outputs-as-png-module"></span><h2>VectorPostProcessing.save_mesh_outputs_as_png module<a class="headerlink" href="#module-VectorPostProcessing.save_mesh_outputs_as_png" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="VectorPostProcessing.save_mesh_outputs_as_png.save_mesh_outputs_as_png">
+<span class="sig-prename descclassname"><span class="pre">VectorPostProcessing.save_mesh_outputs_as_png.</span></span><span class="sig-name descname"><span class="pre">save_mesh_outputs_as_png</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shapefile_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">netcdf_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddb_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cbar_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices_to_save</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'monthly'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Basin'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gnuplot2_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comid_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'COMID'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subbasin_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'subbasin'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/VectorPostProcessing/save_mesh_outputs_as_png.html#save_mesh_outputs_as_png"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#VectorPostProcessing.save_mesh_outputs_as_png.save_mesh_outputs_as_png" title="Link to this definition"></a></dt>
+<dd><p>Generate and save static PNG plots of MESH model output variables for specific time slices.</p>
+<p>This function overlays MESH model output (e.g., discharge, snow, temperature) from NetCDF files
+onto a shapefile representing subbasin polygons. For each variable and selected time index, a PNG
+figure is generated with consistent colorbar scales and custom titles based on domain, variable,
+and time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shapefile_path</strong> (<em>str</em>) – Path to the shapefile (.shp) representing the subbasins with a ‘COMID’ field.</p></li>
+<li><p><strong>netcdf_dir</strong> (<em>str</em>) – Directory containing the NetCDF output files.</p></li>
+<li><p><strong>ddb_path</strong> (<em>str</em>) – Path to the NetCDF drainage database containing the ‘subbasin’ variable used for merging.</p></li>
+<li><p><strong>varnames</strong> (<em>list</em><em> of </em><em>str</em>) – List of variable names to extract from each NetCDF file (e.g., [‘QO’, ‘SNO’]).</p></li>
+<li><p><strong>filenames</strong> (<em>list</em><em> of </em><em>str</em>) – List of NetCDF filenames corresponding to each variable in <cite>varnames</cite>.</p></li>
+<li><p><strong>cbar_labels</strong> (<em>list</em><em> of </em><em>str</em>) – List of labels for the colorbars corresponding to each variable.</p></li>
+<li><p><strong>outdir</strong> (<em>str</em>) – Directory where output PNG figures will be saved.</p></li>
+<li><p><strong>indices_to_save</strong> (<em>list</em><em> of </em><em>int</em>) – List of time indices to extract and plot (e.g., [0, 1, 5]).</p></li>
+<li><p><strong>mode</strong> (<em>{'daily'</em><em>, </em><em>'monthly'</em><em>, </em><em>'yearly'</em><em>, </em><em>'hourly'}</em><em>, </em><em>optional</em>) – Time resolution of the data for labeling the figures. Default is ‘monthly’.</p></li>
+<li><p><strong>domain_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the domain used in the figure title. Default is ‘Basin’.</p></li>
+<li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>optional</em>) – Matplotlib colormap to use for the plots. Default is ‘gnuplot2_r’.</p></li>
+<li><p><strong>subbasin_var</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the subbasin variable in the NetCDF drainage database (default: ‘subbasin’).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Saves PNG image files to the specified output directory.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If an unsupported mode is provided for the <cite>mode</cite> parameter.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Assumes that each NetCDF file contains a ‘time’ dimension and that values begin from index 1 (skipping index 0).</p></li>
+<li><p>Automatically adjusts date labeling based on the selected time <cite>mode</cite>.</p></li>
+<li><p>Supports automatic detection of layer (e.g., ‘Layer1’, ‘Layer2’) from filenames using ‘IG1’, ‘IG2’, etc.</p></li>
+</ul>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">save_mesh_outputs_as_png</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">shapefile_path</span><span class="o">=</span><span class="s1">&#39;shapes/sras_subbasins.shp&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">netcdf_dir</span><span class="o">=</span><span class="s1">&#39;outputs/monthly&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">ddb_path</span><span class="o">=</span><span class="s1">&#39;outputs/MESH_drainage_database.nc&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">varnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;QO&#39;</span><span class="p">,</span> <span class="s1">&#39;SNO&#39;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">filenames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;QO_Y_GRD.nc&#39;</span><span class="p">,</span> <span class="s1">&#39;SNO_Y_GRD.nc&#39;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">cbar_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Discharge [m³/s]&#39;</span><span class="p">,</span> <span class="s1">&#39;Snow [mm]&#39;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;outputs/pngs&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">indices_to_save</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;monthly&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">domain_name</span><span class="o">=</span><span class="s1">&#39;SrAs&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">subbasin_var</span><span class="o">=</span><span class="s1">&#39;subbasin&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-VectorPostProcessing">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-VectorPostProcessing" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="VectorPreProcessing.html" class="btn btn-neutral float-left" title="VectorPreProcessing package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="GridPreProcessing.html" class="btn btn-neutral float-right" title="GridPreProcessing package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Fuad Yassin.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
