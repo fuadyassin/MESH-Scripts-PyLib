@@ -417,7 +417,7 @@ class GenStreamflowFile:
             df = (pd.DataFrame(recs, columns=["DateTime", st])
                     .drop_duplicates("DateTime")
                     .set_index("DateTime")
-                    .resample(f"{freq_hours}H")
+                    .resample(f"{freq_hours}h")
                     .mean())
             df_all = df if df_all.empty else df_all.join(df, how="outer")
 
